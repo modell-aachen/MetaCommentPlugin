@@ -1,0 +1,8 @@
+data/System/MetaCommentPlugin.txt 0644
+lib/Foswiki/Plugins/MetaCommentPlugin/Core.pm 0644
+lib/Foswiki/Plugins/MetaCommentPlugin.pm 0644
+pub/System/MetaCommentPlugin/metacomment.css 0644
+pub/System/MetaCommentPlugin/metacomment.js 0644
+pub/System/MetaCommentPlugin/nobody.gif 0644
+templates/metacomments.tmpl 0644
+templates/view.comments.tmpl 0644
