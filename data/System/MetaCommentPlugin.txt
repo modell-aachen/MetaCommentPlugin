@@ -1,18 +1,85 @@
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1266001119" format="1.1" reprev="1.2" version="1.2"}%
 ---+!! !MetaCommentPlugin
 <!--
-One line description, required for extensions repository catalog.
-BuildContrib will fill in the SHORTDESCRIPTION with the value of
-$SHORTDESCRIPTION from the .pm module, or you can redefine it here if you
-prefer.
    * Set SHORTDESCRIPTION = %$SHORTDESCRIPTION%
 -->
 %SHORTDESCRIPTION%
 
 %TOC%
 
----++ Usage
+This is YACS (yet another comment system) which tries 
 
----++ Examples
+   * (a) to be easy to use 
+   * (b) to scale up to lots of comments
+   * (c) to provide different layouts and commenting requirements
+
+<nop>%TOPIC% allows to easily add commenting to any topic. Discussiosn can
+either be displayed in linear or threaded mode. Different comment styles and
+layouts can easily be created and switched from one to the other.  Comments can
+be edited and deleted inline easily.  Commenting can be enabled independently
+from the normal change access rights to a topic while they are still stored as
+meta data to a topic. That way a keyword search matching on different comments
+of the same discussion will generate a hit on the discussion itself in a
+natural way.
+
+Note, that this plugin is in alpha state as some features are still missing:
+
+   * implement an approval system
+   * implement a RECENTCOMMENTS macro to display a list of all activities in a forum
+   * extend METACOMMENT to display/suppress comments that are approved/need approvement
+
+---++ Screenshot
+
+%IMAGE{"MetaCommentSnap1.jpeg" type="simple"}%
+
+---++ Data Model
+
+Each comment is stored into a =META:COMMENT= field of a topic with properties
+
+   * name: id of the comment, used in =ref= for threaded comments
+   * author: !WikiName of the author of this comment
+   * date: timestamp when this comment was created
+   * modified: timestamp when this comment was last modified 
+   * ref: name of another comment within the same thread this comment is a subcomment of
+   * text: the comment text
+   * title: title text of this comment
+
+---++ Syntax
+
+---+++ METACOMMENT
+
+Renders a discussion on a given topic
+
+<verbatim class="tml">
+%METACOMMENT{
+  topic="..."
+  ...
+}%
+</verbatim>
+
+Parameters:
+
+   * topic: the topic to render the discussion for, defaults to the current topic
+   * header: string prepended to the output
+   * footer: string appended to the output
+   * format: format string used to render each comment, defaults to =<h3>$title</h3>$text=
+   * template: template to be used instead of the inline =format= parameter
+   * separator: separats the list of comments
+   * subheader: string prepended to the list of subcommnets, defaults to =&lt;div class='cmtSubComments'>=
+   * subfooter: string appended to the list of subcommnets, defaults to =&lt;/div=
+   * subformat: format string used for subcomments, defaults to the value of the =format= parameter
+   * ref: only list comments that are a subcomments of the given comment
+   * skip: number of comments to skip in the list, useful for pagination
+   * limit: maximum number of comments to list, useful for pagination
+   * singular: title used when only one comment is present, defaults to =One comment=
+   * plural: title when there are more than one comment, defaults to ="$count comments=
+   * mindate: minimum date of a comment to be displayed
+   * maxdate: maximum date of a comment to be displayed
+   * threaded: switch on/off threaded rendering, comments will be rendered recursively
+
+---+++ RECENTCOMMENTS
+
+%RED%todo%ENDCOLOR%
 
 ---++ Installation Instructions
 
@@ -20,11 +87,8 @@ prefer.
 
 ---++ Info
 
-Many thanks to the following sponsors for supporting this work:
-   * Acknowledge any sponsors here
-
-|  Author(s): | |
-|  Copyright: | &copy; |
+|  Author(s): | Foswiki:Main/MichaelDaum |
+|  Copyright &copy;: | 2009-2010, Michael Daum http://michaeldaumconsulting.com |
 |  License: | [[http://www.gnu.org/licenses/gpl.html][GPL (Gnu General Public License)]] |
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
@@ -34,3 +98,6 @@ Many thanks to the following sponsors for supporting this work:
 |  Support: | Foswiki:Support/MetaCommentPlugin |
 
 <!-- Do _not_ attempt to edit this topic; it is auto-generated. -->
+
+
+%META:FILEATTACHMENT{name="MetaCommentSnap1.jpeg" attachment="MetaCommentSnap1.jpeg" attr="h" comment="" date="1266001003" path="MetaCommentSnap1.jpeg" size="51144" user="ProjectContributor" version="1"}%
