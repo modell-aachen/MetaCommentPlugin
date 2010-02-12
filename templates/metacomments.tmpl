@@ -46,11 +46,15 @@
   <div class='cmtComment'>
     <a name='comment$index'></a>
     <h3 class='cmtCommentNr'>$index</h3>
-    %IF{"'%ENCODE{$title}%'!=''" then="<h3>%ENCODE{"$title" type="quote"}%</h3>"}%<!-- title -->
+    %IF{"'%ENCODE{"$title" type="entity"}%'!=''" then="<h3>%ENCODE{"$title" type="entity"}%</h3>"}%<!-- title -->
     <div class='cmtCommentText'>$n$text</div>
     <div class='foswikiRight cmtToolbar' style='display:none'>
-      %IF{"$'COMMENTSTRUCTURE' = 'threaded'" then="<a href='#' class='cmtReply' title='%MAKETEXT{"Reply to comment [_1]" args="$index"}%'>%JQICON{"comment"}%</a>"}%<!-- linear replies -->
-      <a href='#' class='cmtEdit' title='%MAKETEXT{"Edit this comment"}%'>%JQICON{"pencil"}%</a>
+      %IF{"$'COMMENTSTRUCTURE' = 'threaded' and ($'COMMENTSTATE'='open' or isempty 'COMMENTSTATE')" 
+        then="<a href='#' class='cmtReply' title='%MAKETEXT{"Reply to comment [_1]" args="$index"}%'>%JQICON{"comment"}%</a>"
+      }%<!-- linear replies -->
+      %IF{"$'COMMENTSTATE'='open' or isempty 'COMMENTSTATE'" 
+        then="<a href='#' class='cmtEdit' title='%MAKETEXT{"Edit this comment"}%'>%JQICON{"pencil"}%</a>"
+      }%<!-- edit -->
       <a href='#' class='cmtDelete' title='%MAKETEXT{"Delete this comment"}%'>%JQICON{"bin"}%</a>
     </div>
     <div class='foswikiSmallish foswikiGrayText cmtAuthorDate'>[[%USERSWEB%.$author][%SPACEOUT{$author}%]] - $date</div>
@@ -71,7 +75,7 @@
   <div class='cmtComment'>
     <a name='comment$index'></a>
     <h3 class='foswikiRight cmtCommentNr'>$index</h3>
-    %IF{"'%ENCODE{$title}%'!=''" then="<h3>%ENCODE{"$title" type="quote"}%</h3>"}%<!-- title -->
+    %IF{"'%ENCODE{"$title" type="entity"}%'!=''" then="<h3>%ENCODE{"$title" type="entity"}%</h3>"}%<!-- title -->
     %TMPL:P{
       "comment::photo" 
       web="%USERSWEB%" 
@@ -79,8 +83,12 @@
     }%
     <div class='cmtCommentText'>$n$text</div>
     <div class='foswikiRight cmtToolbar' style='display:none'>
-      %IF{"$'COMMENTSTRUCTURE' = 'threaded'" then="<a href='#' class='cmtReply' title='%MAKETEXT{"Reply to comment [_1]" args="$index"}%'>%JQICON{"comment"}%</a>"}%<!-- linear replies -->
-      <a href='#' class='cmtEdit' title='%MAKETEXT{"Edit this comment"}%'>%JQICON{"pencil"}%</a>
+      %IF{"$'COMMENTSTRUCTURE' = 'threaded' and ($'COMMENTSTATE'='open' or isempty 'COMMENTSTATE')" 
+        then="<a href='#' class='cmtReply' title='%MAKETEXT{"Reply to comment [_1]" args="$index"}%'>%JQICON{"comment"}%</a>"
+      }%<!-- linear replies -->
+      %IF{"$'COMMENTSTATE'='open' or isempty 'COMMENTSTATE'" 
+        then="<a href='#' class='cmtEdit' title='%MAKETEXT{"Edit this comment"}%'>%JQICON{"pencil"}%</a>"
+      }%<!-- edit -->
       <a href='#' class='cmtDelete' title='%MAKETEXT{"Delete this comment"}%'>%JQICON{"bin"}%</a>
     </div>
     <div class='foswikiSmallish foswikiGrayText cmtAuthorDate'>[[%USERSWEB%.$author][%SPACEOUT{$author}%]] - $date</div>

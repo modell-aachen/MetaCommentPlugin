@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2009 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2009-2010 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -231,12 +231,13 @@ sub METACOMMENTS {
 
   Foswiki::Plugins::JQueryPlugin::createPlugin("simplemodal");
   Foswiki::Plugins::JQueryPlugin::createPlugin("form");
-  Foswiki::Func::addToHEAD("METACOMMENTPLUGIN", <<'HERE', 'JQUERYPLUGIN::SIMPLEMODAL');
-
+  Foswiki::Func::addToZone("head", "METACOMMENTPLUGIN::CSS", <<'HERE', 'JQUERYPLUGIN::SIMPLEMODAL');
 <link rel='stylesheet' href='%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/metacomment.css' type='text/css' media='all' />
-<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/metacomment.js'></script>
 HERE
 
+  Foswiki::Func::addToZone("body", "METACOMMENTPLUGIN::JS", <<'HERE', 'JQUERYPLUGIN::SIMPLEMODAL');
+<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/metacomment.js'></script>
+HERE
 
   # sanitize params
   $params->{topic} ||= $topic;

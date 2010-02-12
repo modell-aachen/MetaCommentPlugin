@@ -1,0 +1,92 @@
+.cmtComments {
+  margin:1.3846em 0em 0em;
+}
+
+.cmtComments h3 {
+  margin:0px;
+}
+.cmtAddComment {
+  margin-top:1.3846em;
+}
+.cmtAddComment .cmtCancel {
+  display:none;
+}
+.cmtAddCommentTitle2 {
+  display:none;
+}
+
+.cmtCommentContainer {
+  margin:1.3846em 0em;
+  padding:1.3076em 1.3846em;
+}
+
+.cmtCommentContainer .cmtAddComment {
+  margin-left:-1.3846em;
+  margin-right:-1.3846em;
+  margin-bottom:-1.3846em;
+}
+.cmtUpdater {
+  margin:-1.3076em -1.3846em;
+}
+.cmtCommentContainer.cmtCommentOdd {
+  border-top:1px #ddd solid;
+  border-bottom:1px #ddd solid;
+}
+.cmtCommentOdd .cmtUpdater {
+  border:0px;
+}
+.cmtSubComments .cmtCommentContainer {
+  margin:0px;
+  padding-right:5px;
+}
+.cmtSubComments .cmtUpdater {
+  margin-right:-5px;
+}
+.cmtSubComments {
+  border-left:5px solid #ddd;
+  margin-top:1.3846em;
+}
+
+.cmtComments h3 {
+  margin:0em 0em 1.0588em;
+}
+h3.cmtCommentNr {
+  float:right;
+  color:#444;
+  margin:0em 0em 1em 1em;
+}
+.cmtCommentOdd {
+  background:#f6f6f6;
+}
+.cmtCommentText {
+  margin:0em 0em 1.3846em;
+}
+.cmtToolbar a {
+  margin-left:10px
+}
+.cmtComments input,
+.cmtComments textarea {
+  font-family:arial,Helvetica,sans-serif;
+  font-size:inherit;
+}
+.cmtComments textarea {
+  width:99%;
+}
+
+/* pattern skin */
+#patternScreen .cmtComments h2,
+#patternScreen .cmtComments h3 {
+  padding:0px;
+}
+#patternScreen .foswikiFormSteps h2 {
+  border:none;
+  margin:0 0 .1em 0;
+  padding:1em 40px 0px;
+  background:none;
+  font-size:130%;
+  font-weight:bold;
+}
+
+.cmtComments .foswikiFormSteps h2 {
+  margin-bottom:0px;
+}
