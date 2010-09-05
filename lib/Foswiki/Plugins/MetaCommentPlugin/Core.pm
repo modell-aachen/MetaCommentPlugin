@@ -235,7 +235,7 @@ sub METACOMMENTS {
 <link rel='stylesheet' href='%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/metacomment.css' type='text/css' media='all' />
 HERE
 
-  Foswiki::Func::addToZone("body", "METACOMMENTPLUGIN::JS", <<'HERE', 'JQUERYPLUGIN::SIMPLEMODAL');
+  Foswiki::Func::addToZone("script", "METACOMMENTPLUGIN::JS", <<'HERE', 'JQUERYPLUGIN::SIMPLEMODAL');
 <script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/metacomment.js'></script>
 HERE
 
