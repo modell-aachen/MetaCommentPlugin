@@ -1,0 +1,56 @@
+<noautolink>
+<?xml version="1.0" encoding="%CHARSET%" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://purl.org/rss/1.0/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:wiki="http://purl.org/rss/1.0/modules/wiki/" >
+<channel rdf:about="%SCRIPTURL{"view"}%/%BASEWEB%%/%BASETOPIC%">
+  <title>%ENCODE{"%WIKITOOLNAME% - %GETTOPICTITLE{"%BASEWEB%.%BASETOPIC%"}%" type="html"}%</title>
+  <link>%SCRIPTURL{"view"}%/%BASEWEB%/%BASETOPIC%</link>
+  <description>%MAKETEXT{"Comments"}%</description>
+  <image rdf:resource="%IF{"defined WEBLOGOIMG" then="%WEBLOGOIMG%" else="%WIKILOGOIMG%"}%" />
+  <dc:language>en-us</dc:language>
+  <dc:rights>%WEBRSSCOPYRIGHT%</dc:rights>
+  <dc:publisher>%WIKIWEBMASTERNAME% [%WIKIWEBMASTER%]</dc:publisher>
+  <dc:creator>The contributing authors of %WIKITOOLNAME%</dc:creator>
+  <dc:source>%WIKITOOLNAME%</dc:source>
+%METACOMMENTS{
+  sort="date"
+  reverse="on"
+  limit="10"
+  header="  <items>$n    <rdf:Seq>$n"
+  format="      <rdf:li rdf:resource=\"%SCRIPTURL{"view"}%/%BASEWEB%/%BASETOPIC%%IF{"$COMMENTFORMAT='insidetab'" then="?tab=comments"}%#comment$id\" />"
+  footer="$n    </rdf:Seq>$n  </items>"
+  separator="$n"
+  %IF{"$COMMENTAPPROVAL='on'" then="approval=\"on\"" else="approval=\"off\""}%
+}%
+</channel>
+<image rdf:about="%IF{"defined WEBLOGOIMG" then="%WEBLOGOIMG%" else="%WIKILOGOIMG%"}%">
+  <title>%IF{"defined WEBLOGOALT" then="%WEBLOGOALT%" else="%WIKILOGOALT%"}%</title>
+  <link>%WEBLOGOURL%</link>
+  <url>%IF{"defined WEBLOGOIMG" then="%WEBLOGOIMG%" else="%WIKILOGOIMG%"}%</url>
+</image>
+%METACOMMENTS{
+  sort="date"
+  reverse="on"
+  limit="10"
+  %IF{"$COMMENTAPPROVAL='on'" then="approval=\"on\"" else="approval=\"off\""}%
+  format="<item rdf:about=\"%SCRIPTURL{"view"}%/%BASEWEB%/%BASETOPIC%%IF{"$COMMENTFORMAT='insidetab'" then="?tab=comments"}%#comment$id\">
+  <title>$title $percntIF{\"$isapprover and '$state'=~'unapproved'\" then=\"(needs appoval)\"}$percnt</title>
+  <link>%SCRIPTURL{"view"}%/%BASEWEB%/%BASETOPIC%%IF{"$COMMENTFORMAT='insidetab'" then="?tab=comments"}%#comment$id</link>
+  <dc:creator>$author</dc:creator>
+  <dc:date>$date</dc:date>
+  <dc:subject>$title</dc:subject>
+  <dc:contributor>
+    <rdf:Description link=\"%SCRIPTURL{"view"}%/%USERWEB%/$author\">
+      <rdf:value>$author</rdf:value>
+    </rdf:Description>
+  </dc:contributor>
+  <description>
+    $percntENCODE{
+      \"$text\" 
+      type=\"html\"
+    }$percnt
+  </description>
+</item>"
+  separator="$n"
+}%
+</rdf:RDF>
+</noautolink>

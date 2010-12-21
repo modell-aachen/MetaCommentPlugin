@@ -1,0 +1,4 @@
+%TMPL:INCLUDE{"view"}%
+%TMPL:INCLUDE{"metacomments"}%
+%TMPL:DEF{"contentfooter"}%%TMPL:P{"comments"}%%TMPL:END%
+%TMPL:DEF{"comments"}% %IF{ "$'DISPLAYCOMMENTS'='on'" then="<div>$percntTMPL:P{\"metacomments\"}$percnt</div>" else="<!-- -->" }%%TMPL:END%

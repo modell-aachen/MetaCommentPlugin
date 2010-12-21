@@ -1,209 +1,318 @@
-var cmtUpdater = {};
+/*
 
-(function($) {
-  // switch on the update dialog for a comment
-  cmtUpdater.edit = function(container) {
-    container.find(".cmtComment:first").hide();
-    //$(".cmtAddComment").hide();
-    container.find(".cmtUpdater:first").animate({opacity:'toggle'});
-    cmtUpdater.cancelReply();
-  };
+Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 
-  // cancel updates 
-  cmtUpdater.cancelUpdate = function(container) {
-    container.find(".cmtComment:first").animate({opacity:'toggle'});
-    //$(".cmtAddComment").show();
-    container.find(".cmtUpdater:first").hide();
-    container.find(".cmtToolbar:first").hide();
-  };
+(c)opyright 2010 Michael Daum http://michaeldaumconsulting.com
 
-  // delete a comment
-  cmtUpdater.submitDelete = function(container) {
-    container.find("input[name=cmt_action]").val('delete');
-    var form = container.find("form[name=updater]"); 
-    if (typeof(foswikiStrikeOne) == 'function') {
-      foswikiStrikeOne(form[0]); 
-    }
-    form.submit();
-    container.animate({ opacity:'toggle' }, {
-      complete: function () {
-        container.remove();
+are listed in the AUTHORS file in the root of this distribution.
+NOTE: Please extend that file, not this notice.
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version. For
+more details read LICENSE in the root of this distribution.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+As per the GPL, removal of this notice is prohibited.
+
+*/
+
+jQuery(function($) {
+  $(".cmtComments:not(.cmtCommentsInited)").livequery(function() {
+    var $this = $(this),
+        $container = $this.parent(),
+        defaults = {
+          topic: foswiki.getPreference("TOPIC"),
+          web: foswiki.getPreference("WEB")
+        },
+        opts = $.extend({}, defaults, $this.metadata());
+
+    /* function to reload all comments *************************************/
+    function loadComments(message) {
+      var url = foswiki.getPreference("SCRIPTURL") + 
+          "/rest/RenderPlugin/template" +
+          "?name=metacomments" + 
+          ";render=on" +
+          ";topic="+opts.web+"."+opts.topic +
+          ";expand=metacomments";
+
+      if (!message) {
+        message = "Loading ...";
       }
-    });
-    var outer = container.parents(".cmtComments")
-    var counter = outer.find(".cmtCounter");
-    var text = counter.html();
-    if (text.match(/One/)) {
-      counter.remove();
-      outer.find(".cmtScroller").remove();
-    } else {
-      var nrComments = parseInt(text)-1;
-      if (nrComments == 0) {
-        counter.remove();
-        outer.find(".cmtScroller").remove();
-      } else {
-        counter.html(text.replace(/[0-9]+/, nrComments));
-        counter.effect("highlight");
-      }
+      message = "<h1>"+message+"</h1>";
+      $.blockUI({
+        message:message,
+        fadeIn: 0,
+        fadeOut: 0,
+        overlayCSS: {
+          cursor:'progress'
+        }
+      });
+      $container.load(url, function() {
+        $.unblockUI();
+        $container.height('auto');
+      });
     }
-  };
-  
-  // reply to one comment in threaded mode
-  cmtUpdater.reply = function(container) {
-    var index = container.find(".cmtCommentNr").html();
-    var cmtId = container.find("input[name=cmt_id]:first").val();
-    var addForm = $(".cmtAddComment")
-    
-    addForm.hide();
-    addForm.find(".cmtCancel").show();
-    addForm.find(".cmtAddCommentTitle1").hide();
-    addForm.find("input[name=cmt_ref]").val(cmtId);
-    addForm.insertAfter(container.find(".cmtUpdater:first"));
 
-    var redirect = addForm.find("input[name=redirectto]").val();
-    redirect = redirect.replace(/#.*$/, "#comment"+index);
-    addForm.find("input[name=redirectto]").val(redirect);
-    
-    var replyTitle = addForm.find(".cmtAddCommentTitle2");
-    var newTitle = replyTitle.html();
-    if (newTitle.match(/\$index/)) {
-      newTitle = newTitle.replace(/\$index/, index);
-    } else {
-      newTitle = newTitle.replace(/\s*[0-9\.]*$/, " "+index);
-    }
-    replyTitle.html(newTitle);
-    replyTitle.show();
-    addForm.animate({opacity:'toggle'}, {
-      complete: function() {
-        addForm.find("textarea").focus();
-      }
-    });
-  };
-
-  // cancel reply to comment
-  cmtUpdater.cancelReply = function() {
-    var addForm = $(".cmtAddComment")
-    addForm.appendTo(".cmtComments");
-    addForm.find(".cmtCancel").hide();
-    addForm.find(".cmtAddCommentTitle1").show();
-    addForm.find(".cmtAddCommentTitle2").hide();
-    addForm.find("input[name=cmt_ref]").val('');
-
-    var redirect = addForm.find("input[name=redirectto]").val();
-    redirect = redirect.replace(/#.*$/, "#lastcomment");
-    addForm.find("input[name=redirectto]").val(redirect);
-
-    var container = addForm.parents(".cmtCommentContainer:first");
-    container.find(".cmtToolbar").show();
-  };
-
-  // confirm dialog used by delete action
-  cmtUpdater.confirmDialog = function(elem, options) {
-    $(elem).modal({ 
-      close:false,
-      onShow: function(dialog) {
-        dialog.data.find("h2 .cmtCommentNr").html(options.index);
-        dialog.data.find("#submit").click(function() {
-          if (typeof(options.onSubmit) == 'function') {
-            options.onSubmit(dialog);
-          }
-          return false;
-        });
-        dialog.data.find("#cancel").click(function() {
-          if (typeof(options.onCancel) == 'function') {
-            options.onCancel(dialog);
-          }
-          $.modal.close();
-          return false;
-        });
-        $(window).trigger("resize.simplemodal");
-      },
-    });
-  };
-
-  // init the gui of a comment inside the given container
-  cmtUpdater.init = function(container) {
-    container.find(".cmtComment:first").hover(
+    // add hover 
+    $this.find(".cmtComment").hover(
       function() {
-        $(this).find(".cmtToolbar").show();
+        $(this).addClass("cmtHover");
       },
       function() {
-        $(this).find(".cmtToolbar").hide();
+        $(this).removeClass("cmtHover");
       }
     );
 
-    container.find(".cmtEdit:first").click(function() {
-      $(".cmtUpdater").hide();
-      $(".cmtToolbar").hide();
-      $(".cmtComment").show();
-      cmtUpdater.edit(container);
-      return false;
-    });
+    // ajaxify add and reply forms
+    $this.find(".cmtAddCommentForm").each(function() {
+      var $form = $(this), rev, $errorContainer;
 
-    container.find(".cmtReply:first").click(function() {
-      cmtUpdater.reply(container);
-      return false;
-    });
+      $form.ajaxForm({
+        dataType:"json",
+        beforeSubmit: function() {
+          rev = $form.find("input[name=ref]").val(),
+          $errorContainer = rev?$this.find("a[name=comment"+rev+"]").parent().parent():$form.parent();
 
-    container.find(".cmtSave:first").click(function() {
-      var form = container.find(".UpdaterForm:first"); 
-      if (typeof(foswikiStrikeOne) == 'function') {
-        foswikiStrikeOne(form[0]); 
-      }
-      form.submit();
-      return false;
-    });
-
-    container.find(".cmtCancel:first").click(function() {
-      cmtUpdater.cancelUpdate(container);
-      return false;
-    });
-
-    container.find(".cmtDelete:first").click(function() {
-      var index = $("input[name=cmt_index]", container).val();
-      cmtUpdater.confirmDialog("#cmtConfirmDelete", {
-        onSubmit: function(dialog) {
-          cmtUpdater.submitDelete(container);
+          $this.find(".foswikiErrorMessage").remove();
+          $.blockUI({
+            message:"<h1>Submitting comment ...</h1>",
+            fadeIn: 0,
+            fadeOut: 0
+          });
+        },
+        success: function(data, statusText, xhr) {
+          $.unblockUI();
+          if(data.error) {
+            $errorContainer.after("<p><div class='foswikiErrorMessage'>Error: "+data.error.message+"</div></p>");
+          } else {
+            loadComments();
+          }
           $.modal.close();
         },
-        index: index
-      });
-      return false;
-    });
-
-    container.find(".UpdaterForm:first").each(function() {
-      var $this = $(this);
-      var target = $this.parents(".cmtCommentContainer:first");
-      $this.ajaxForm({
-        success: function (data) {
-          var $data = $(data);
-          $data = $data.children(); // strip off new cmtCommentContainer
-          $data.hide();
-          target.html($data);
-          cmtUpdater.init(target);
-          target.find(".cmtCommentContainer").each(function() {
-            cmtUpdater.init($(this));
-          });
-          $data.animate({opacity:'toggle'});
-          target.find(".cmtUpdater:first").hide();
-          target.find(".cmtToolbar:first").hide();
-          target.effect("highlight", {
-            duration:3000
-          });
+        error: function(xhr, msg) {
+          var data = $.parseJSON(xhr.responseText);
+          $.unblockUI();
+          $errorContainer.after("<p><div class='foswikiErrorMessage'>Error: "+data.error.message+"</div></p>");
+          $.modal.close();
         }
       });
     });
-  };
 
-  // onload initialization
-  $(function() {
-    $(".cmtAddComment .cmtCancel").click(function() {
-      cmtUpdater.cancelReply();
+    // ajaxify update form
+    $this.find(".cmtUpdateCommentForm").each(function() {
+      var $form = $(this), 
+          $errorContainer, 
+          id, index;
+
+      $form.ajaxForm({
+        dataType:"json",
+        beforeSubmit: function() {
+          id = $form.find("input[name=id]").val();
+          index = $form.find("input[name=index]").val();
+          $errorContainer = $this.find("a[name=comment"+id+"]").parent().parent();
+          $this.find(".foswikiErrorMessage").remove();
+          $.blockUI({
+            message:"<h1>Updating comment "+index+" ...</h1>",
+            fadeIn: 0,
+            fadeOut: 0
+          });
+        },
+        success: function(data, statusText, xhr) {
+          $.unblockUI();
+          if(data.error) {
+            $errorContainer.after("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
+          } else {
+            loadComments();
+          }
+          $.modal.close();
+        },
+        error: function(xhr, msg) {
+          var data = $.parseJSON(xhr.responseText);
+          $.unblockUI();
+          $errorContainer.after("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
+          $.modal.close();
+        }
+      });
+    });
+
+    // add reply behaviour
+    $this.find(".cmtReply").click(function() {
+      var $comment = $(this).parents(".cmtComment:first"),
+          commentOpts = $.extend({}, $comment.metadata());
+
+      $this.find(".foswikiErrorMessage").remove();
+
+      foswiki.openDialog('#cmtReplyComment', {
+        persist:true,
+        close:false,
+        containerCss: {
+          width:600
+        },
+        onShow: function(dialog) { 
+          dialog.container.find(".cmtCommentIndex").text(commentOpts.index);
+          dialog.container.find("input[name=ref]").val(commentOpts.id);
+        }
+      });
+
       return false;
     });
-    $(".cmtCommentContainer").each(function() {
-      cmtUpdater.init($(this));
+
+    // add edit behaviour
+    $this.find(".cmtEdit").click(function() {
+      var $comment = $(this).parents(".cmtComment:first"),
+          commentOpts = $.extend({}, $comment.metadata()),
+          getUrl = foswiki.getPreference("SCRIPTURL") +
+            "/rest/MetaCommentPlugin/handle?action=get" +
+            ";topic="+opts.web+"."+opts.topic +
+            ";id="+commentOpts.id,
+          gotError = false,
+          title, text;
+
+      $this.find(".foswikiErrorMessage").remove();
+      $.ajax({
+        async: false,
+        url: getUrl,
+        type: "GET",
+        dataType: "json",
+        success: function(data, msg) {
+          $.unblockUI();
+          if(data.error) {
+            $comment.parent().append("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
+            gotError = true;
+          } else {
+            title = unescape(data.result.title);
+            text = unescape(data.result.text);
+          }
+        },
+        error: function(xhr, msg, error) {
+          var data = $.parseJSON(xhr.responseText);
+          $.unblockUI();
+          $comment.parent().append("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
+          gotError = true;
+        }
+      });
+
+      if (!gotError) {
+        foswiki.openDialog('#cmtUpdateComment', {
+          persist:true,
+          close:false,
+          containerCss: {
+            width:600
+          },
+          onShow: function(dialog) { 
+            dialog.container.find("input[name=id]").val(commentOpts.id);
+            dialog.container.find("input[name=index]").val(commentOpts.index);
+            dialog.container.find(".cmtCommentIndex").text(commentOpts.index);
+            dialog.container.find("input[name=title]").val(title);
+            dialog.container.find("textarea[name=text]").val(text);
+          }
+        });
+      }
+
+      return false;
     });
-    $(".jqHighlight").effect("highlight");
+
+    // add approve behaviour
+    $this.find(".cmtApprove").click(function() {
+      var $comment = $(this).parents(".cmtComment:first"),
+          commentOpts = $.extend({}, $comment.metadata()),
+          approveUrl = foswiki.getPreference("SCRIPTURL") +
+            "/rest/MetaCommentPlugin/handle?action=approve" +
+            ";topic="+opts.web+"."+opts.topic +
+            ";state=approved" +
+            ";id="+commentOpts.id;
+
+      $this.find(".foswikiErrorMessage").remove();
+
+      foswiki.openDialog('#cmtConfirmApprove', {
+        persist:false,
+        close:false,
+        containerCss: {
+          width:300
+        },
+        onShow: function(dialog) { 
+          dialog.container.find(".cmtCommentNr").text(commentOpts.index);
+          dialog.container.find(".cmtAuthor").text(commentOpts.author);
+          dialog.container.find(".cmtDate").text(commentOpts.date);
+        },
+        onSubmit: function(dialog) {
+          $.blockUI({
+            message:"<h1>Approving comment "+commentOpts.index+" ...</h1>",
+            fadeIn: 0,
+            fadeOut: 0
+          });
+          $.ajax({
+            url: approveUrl,
+            type: "GET",
+            dataType: "json",
+            error: function(xhr, msg, error) {
+              var data = $.parseJSON(xhr.responseText);
+              $.unblockUI();
+              $comment.find(".cmtCommentContainer").append("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
+            },
+            success: function(data, msg) {
+              $.unblockUI();
+              loadComments();
+            }
+          });
+        }
+      });
+      return false;
+    });
+
+    // add delete behaviour 
+    $this.find(".cmtDelete").click(function() {
+      var $comment = $(this).parents(".cmtComment:first"),
+          commentOpts = $.extend({}, $comment.metadata()),
+          deleteUrl = foswiki.getPreference("SCRIPTURL") +
+            "/rest/MetaCommentPlugin/handle?action=delete" +
+            ";topic="+opts.web+"."+opts.topic +
+            ";id="+commentOpts.id;
+
+      $this.find(".foswikiErrorMessage").remove();
+
+      foswiki.openDialog('#cmtConfirmDelete', {
+        persist:false,
+        close:false,
+        containerCss: {
+          width:300
+        },
+        onShow: function(dialog) { 
+          dialog.container.find(".cmtCommentNr").text(commentOpts.index);
+          dialog.container.find(".cmtAuthor").text(commentOpts.author);
+          dialog.container.find(".cmtDate").text(commentOpts.date);
+        },
+        onSubmit: function(dialog) {
+          $.blockUI({
+            message:"<h1>Deleting comment "+commentOpts.index+" ...</h1>",
+            fadeIn: 0,
+            fadeOut: 0
+          });
+          $.ajax({
+            url: deleteUrl,
+            type: "GET",
+            dataType: "json",
+            error: function(xhr, msg, error) {
+              var data = $.parseJSON(xhr.responseText);
+              $.unblockUI();
+              $comment.find(".cmtCommentContainer").append("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
+            },
+            success: function(data, msg) {
+              $.unblockUI();
+              $comment.slideUp(function() {
+                $comment.parent().hide();
+                loadComments();
+              });
+            }
+          });
+        }
+      });
+      return false;
+    });
   });
-})(jQuery);
+});

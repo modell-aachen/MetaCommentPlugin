@@ -16,7 +16,7 @@ use strict;
 use Foswiki::Func ();
 
 our $VERSION = '$Rev$';
-our $RELEASE = '0.2';
+our $RELEASE = '0.9.0';
 our $SHORTDESCRIPTION = 'An easy to use comment system';
 our $NO_PREFS_IN_TOPIC = 1;
 our $baseWeb;
@@ -27,8 +27,16 @@ sub initPlugin {
   ($baseTopic, $baseWeb) = @_;
 
   Foswiki::Func::registerTagHandler('METACOMMENTS', \&METACOMMENTS);
-  Foswiki::Func::registerRESTHandler('comment', \&restComment);
+  Foswiki::Func::registerRESTHandler('handle', \&restHandle);
   $isInitialized = 0;
+
+  # SMELL this is not reliable as it depends on plugin order
+  # if (Foswiki::Func::getContext()->{SolrPluginEnabled}) {
+  if ($Foswiki::cfg{Plugins}{SolrPlugin}{Enabled}) {
+    require Foswiki::Plugins::SolrPlugin;
+    Foswiki::Plugins::SolrPlugin::registerIndexTopicHandler(\&indexTopicHandler);
+  }
+
   return 1;
 }
 
@@ -43,9 +51,19 @@ sub METACOMMENTS {
   Foswiki::Plugins::MetaCommentPlugin::Core::METACOMMENTS(@_);
 }
 
-sub restComment {
+sub restHandle {
   init();
-  Foswiki::Plugins::MetaCommentPlugin::Core::restComment(@_);
+  Foswiki::Plugins::MetaCommentPlugin::Core::restHandle(@_);
+}
+
+sub restIndex {
+  init();
+  Foswiki::Plugins::MetaCommentPlugin::Core::restIndex(@_);
+}
+
+sub indexTopicHandler {
+  init();
+  Foswiki::Plugins::MetaCommentPlugin::Core::indexTopicHandler(@_);
 }
 
 1;
