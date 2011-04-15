@@ -2,7 +2,7 @@
 
 Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 
-(c)opyright 2010 Michael Daum http://michaeldaumconsulting.com
+(c)opyright 2010-2011 Michael Daum http://michaeldaumconsulting.com
 
 are listed in the AUTHORS file in the root of this distribution.
 NOTE: Please extend that file, not this notice.
@@ -59,14 +59,21 @@ jQuery(function($) {
     }
 
     // add hover 
-    $this.find(".cmtComment").hover(
-      function() {
-        $(this).addClass("cmtHover");
+    $this.find(".cmtComment").hoverIntent({
+      over: function() {
+        var $controls = $(this).find(".cmtControls");
+        $controls.fadeIn(500, function() {
+          $controls.css({opacity: 1.0});
+          $(this).addClass("cmtHover");
+        });
       },
-      function() {
+      out: function() {
+        var $controls = $(this).find(".cmtControls");
+        $controls.stop();
+        $controls.css({display:'none', opacity: 1.0});
         $(this).removeClass("cmtHover");
       }
-    );
+    });
 
     // ajaxify add and reply forms
     $this.find(".cmtAddCommentForm").each(function() {
@@ -149,7 +156,6 @@ jQuery(function($) {
 
       foswiki.openDialog('#cmtReplyComment', {
         persist:true,
-        close:false,
         containerCss: {
           width:600
         },
@@ -200,7 +206,6 @@ jQuery(function($) {
       if (!gotError) {
         foswiki.openDialog('#cmtUpdateComment', {
           persist:true,
-          close:false,
           containerCss: {
             width:600
           },
@@ -231,7 +236,6 @@ jQuery(function($) {
 
       foswiki.openDialog('#cmtConfirmApprove', {
         persist:false,
-        close:false,
         containerCss: {
           width:300
         },
@@ -278,7 +282,6 @@ jQuery(function($) {
 
       foswiki.openDialog('#cmtConfirmDelete', {
         persist:false,
-        close:false,
         containerCss: {
           width:300
         },
@@ -314,5 +317,8 @@ jQuery(function($) {
       });
       return false;
     });
+
+    // work around blinking twisties
+    $this.find(".twistyPlugin").show();
   });
 });

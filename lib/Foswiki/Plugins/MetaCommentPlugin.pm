@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2009-2010 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2009-2011 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,7 +16,7 @@ use strict;
 use Foswiki::Func ();
 
 our $VERSION = '$Rev$';
-our $RELEASE = '0.9.0';
+our $RELEASE = '0.91';
 our $SHORTDESCRIPTION = 'An easy to use comment system';
 our $NO_PREFS_IN_TOPIC = 1;
 our $baseWeb;

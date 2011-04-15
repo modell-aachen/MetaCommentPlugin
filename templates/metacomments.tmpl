@@ -2,9 +2,9 @@
    metacomments - entry point
 }%
 %TMPL:DEF{"metacomments"}%<!-- -->
-<div class='cmtComments cmtStyle_%IF{"defined COMMENTFORMAT" then="%COMMENTFORMAT%" else="%TMPL:P{"comments::format::default"}%"}% cmtState_%IF{"defined COMMENTSTATE" then="%COMMENTSTATE%" else="open"}%'>
+<div class='cmtComments cmtStyle_%IF{"defined COMMENTFORMAT" then="%COMMENTFORMAT%" else="%TMPL:P{"comments::format::default"}%"}% cmtState_%IF{"defined COMMENTSTATE" then="%COMMENTSTATE%" else="open"}% cmtApproval_%IF{"defined COMMENTAPPROVAL" then="%COMMENTAPPROVAL%" else="off"}%'>
 <a name='comments'></a>
-%TMPL:P{"comments::topbar"}%
+%TMPL:P{"comments::topbar"}%<!-- -->
 %IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
   then="$percntTMPL:P{\"comments::add::simple\"}$percnt"
 }%<!-- -->
@@ -27,15 +27,14 @@
 }%
 %TMPL:DEF{"comments::topbar"}%<!-- -->
 %METACOMMENTS{
-  header="<a href='%SCRIPTURLPATH{"view"}%/%BASEWEB%/%BASETOPIC%?template=metacommentsrss;contenttype=text/xml' class='cmtRssFeed foswikiGrayText foswikiSmallish' title='%MAKETEXT{"RSS feed of the comments on this topic"}%'>%JQICON{"feed"}% RSS</a><h2 class='cmtCounter'>$count </h2>"
+  header="<a href='%SCRIPTURLPATH{"view"}%/%BASEWEB%/%BASETOPIC%?template=metacommentsrss;contenttype=text/xml' class='cmtRssFeed foswikiGrayText foswikiSmallish' title='%MAKETEXT{"RSS feed of the comments on this topic"}%'>%JQICON{"feed"}% RSS</a><h2 class='cmtCounter'>$count </h2>%CLEAR%"
   singular="%MAKETEXT{"One comment"}%"
   plural="%MAKETEXT{"[_1] comments" args="$count"}%"
   limit="1"
   template=""
   %IF{"'%TMPL:P{"comments::format"}%' = 'threaded'" then="threaded=\"on\"" else="threaded=\"off\""}%
   %IF{"$COMMENTAPPROVAL='on'" then="approval=\"on\"" else="approval=\"off\""}%
-}%
-<!-- -->%TMPL:END%
+}%<!-- -->%TMPL:END%
 
 %{ ################################################################################ 
    comments::add::default - constructing the form to add a new comment
@@ -108,8 +107,10 @@
       "comment::photo" 
       web="%USERSWEB%" 
       topic="$author"
-    }%
-    %IF{"'%ENCODE{"$title" type="entity"}%'!=''" then="<h3>%ENCODE{"$title" type="entity"}%</h3>"}%<!-- -->
+    }%<!-- -->
+    %IF{"'$percntENCODE{\"$title\" type=\"entity\"}$percnt'!=''" 
+      then="<h3><noautolink>%ENCODE{"$title" type="entity"}%</noautolink></h3>"
+    }%<!-- -->
     <div class='cmtCommentText'>
       <span class='cmtAuthor'>[[%USERSWEB%.$author][%SPACEOUT{$author}%]]</span>$n$text
     </div>
@@ -135,7 +136,7 @@
   %IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and $COMMENTSTATE!='closed'" 
     then="<a href='#' class='cmtEdit' title='%MAKETEXT{"Edit this comment"}%'>%JQICON{"pencil"}%</a>"
   }%<!-- --> 
-  %IF{"'%BASEWEB%.%BASETOPIC%' allows 'APPROVE' and not('$state'=~'\bapproved\b')"
+  %IF{"'%BASEWEB%.%BASETOPIC%' allows 'APPROVE' and not('$state'=~'\bapproved\b') and $COMMENTAPPROVAL='on'"
     then="<a href='#' class='cmtApprove' title='%MAKETEXT{"Approve this comment"}%'>%JQICON{"medal_gold_1"}%</a>"
   }%<!-- -->
   %IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and $COMMENTSTATE!='closed'" 
@@ -162,7 +163,9 @@
       web="%USERSWEB%" 
       topic="$author"
     }%
-    %IF{"'%ENCODE{"$title" type="entity"}%'!=''" then="<h3>%ENCODE{"$title" type="entity"}%</h3>"}%<!-- -->
+    %IF{"'$percntENCODE{\"$title\" type=\"entity\"}$percnt'!=''" 
+      then="<h3><noautolink>%ENCODE{"$title" type="entity"}%</noautolink></h3>"
+    }%<!-- -->
     <div class='cmtCommentText'>
       <span class='cmtAuthor'>[[%USERSWEB%.$author][%SPACEOUT{$author}%]]</span>$n$text
     </div>
@@ -195,6 +198,9 @@
       web="%USERSWEB%" 
       topic="$author"
     }%
+    %IF{"'$percntENCODE{\"$title\" type=\"entity\"}$percnt'!=''" 
+      then="<h3><noautolink>%ENCODE{"$title" type="entity"}%</noautolink></h3>"
+    }%<!-- -->
     <div class='cmtCommentText'>
       <span class='cmtAuthor'>[[%USERSWEB%.$author][%SPACEOUT{$author}%]]</span>$n$text
     </div>
@@ -216,7 +222,7 @@
 %TMPL:DEF{"comments::confirmdelete"}%<!-- -->
 <div id="cmtConfirmDelete" style="display:none" class="foswikiPage foswikiDialog foswikiFormSteps">
   <div class="foswikiFormStep">
-    <h2>%MAKETEXT{"Delete comment [_1]?" args="<span class='cmtCommentNr'></span>"}%</h2>
+    <h2 class="foswikiDialogTitle">%MAKETEXT{"Delete comment [_1]?" args="<span class='cmtCommentNr'></span>"}%</h2>
     %MAKETEXT{"Are you sure that you want to delete this comment posted by [_1] on [_2]?" 
       args="<span class='cmtAuthor'></span>, <span class='cmtDate'></span>"
     }%
@@ -235,7 +241,7 @@
 %TMPL:DEF{"comments::confirmapprove"}%<!-- -->
 <div id="cmtConfirmApprove" style="display:none" class="foswikiPage foswikiDialog foswikiFormSteps">
   <div class="foswikiFormStep">
-    <h2>%MAKETEXT{"Approve comment [_1]?" args="<span class='cmtCommentNr'></span>"}%</h2>
+    <h2 class="foswikiDialogTitle">%MAKETEXT{"Approve comment [_1]?" args="<span class='cmtCommentNr'></span>"}%</h2>
     %MAKETEXT{"Are you sure that you want to approve this comment posted by [_1] on [_2]?" 
       args="<span class='cmtAuthor'></span>, <span class='cmtDate'></span>"
     }%
@@ -260,7 +266,7 @@
 <input type="hidden" name="index" value="" />
 <input type="hidden" name="t" value="%GMTIME{"$epoch"}%" />
 <div class="foswikiFormSteps">
-  <h2>%MAKETEXT{"Edit comment [_1]" args="<span class='cmtCommentIndex'></span>"}%</h2>
+  <h2 class="foswikiDialogTitle">%MAKETEXT{"Edit comment [_1]" args="<span class='cmtCommentIndex'></span>"}%</h2>
   <div class="foswikiFormStep">
     <input type="text" size="60" name="title" class="foswikiInputField" value="" />
     <label for="title"><strong>Title</strong></label>
@@ -284,8 +290,11 @@
 %TMPL:DEF{"comment::photo"}%<!-- -->
   %IMAGE{
     "%IF{"'%web%.%topic%'/Photo"
-      then="$percntFORMFIELD{\"Photo\" topic=\"%web%.%topic%\"}$percnt"
-      else="%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/nobody.gif"
+      then="$percntFORMFIELD{\"Photo\" topic=\"%web%.%topic%\"}$percnt" 
+      else="%IF{"'%web%.%topic%'/attachments[name=~'\.(gif|png|jpe?g)$']"
+        then="%QUERY{"'%web%.%topic%'/attachments[name=~'\.(gif|png|jpe?g)'][0].name"}%"
+        else="%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/nobody.gif"
+      }%"
     }%"
     topic="%web%.%topic%"
     type="simple"
@@ -305,8 +314,8 @@
 %TMPL:DEF{"comments::formstart"}%<!-- -->
 <a name="addcomment"></a>
 <div class="foswikiFormSteps cmtAddComment">
-<h2 class='cmtAddCommentTitle1'>%TMPL:P{"comments::title"}%</h2>
-<h2 class='cmtAddCommentTitle2'>%TMPL:P{"comments::reply"}%</h2>
+<h2 class='foswikiDialogTitle cmtAddCommentTitle1'>%TMPL:P{"comments::title"}%</h2>
+<h2 class='foswikiDialogTitle cmtAddCommentTitle2'>%TMPL:P{"comments::reply"}%</h2>
 <form class="cmtAddCommentForm" name="addCommentForm" action="%SCRIPTURLPATH{"rest"}%/MetaCommentPlugin/handle" method="post">
 <input type="hidden" name="topic" value="%BASEWEB%.%BASETOPIC%" />
 <input type="hidden" name="action" value="save" />

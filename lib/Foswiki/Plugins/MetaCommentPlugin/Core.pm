@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2009-2010 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2009-2011 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@ use Foswiki::Time ();
 use Foswiki::Func ();
 use Foswiki::OopsException ();
 use Error qw( :try );
+use JSON ();
 
 use constant DEBUG => 0; # toggle me
 use constant DRY => 0; # toggle me
@@ -49,19 +50,29 @@ sub printJSONRPC {
     -type    => 'text/plain',
   );
 
-  my $msg;
   $id = 'id' unless defined $id;
-  $text = 'null' unless defined $text;
 
-  if($code) {
-    $msg = '{"jsonrpc" : "2.0", "error" : {"code": '.$code.', "message": "'.$text.'"}, "id" : "'.$id.'"}';
+  my $message;
+  
+  if ($code) {
+    $message = {
+      jsonrpc => "2.0",
+      error => {
+        code => $code,
+        message => $text,
+        id => $id,
+      }
+    };
   } else {
-    $msg = '{"jsonrpc" : "2.0", "result" : '.$text.', "id" : "'.$id.'"}';
+    $message = {
+      jsonrpc => "2.0",
+      result => ($text?$text:'null'),
+      id => $id,
+    };
   }
 
-  $response->print($msg);
-
-  #writeDebug("JSON-RPC: $msg");
+  $message = JSON::to_json($message, {pretty=>1});
+  $response->print($message);
 }
 
 ##############################################################################
@@ -105,14 +116,7 @@ sub restHandle {
       printJSONRPC($response, 104, "comment not found");
       return;
     }
-    my @data = ();
-    foreach my $key (keys %$comment) {
-      my $val = $comment->{$key};
-      #$val =~ s/'/\\'/g;
-      $val =~ s/([^0-9a-zA-Z-_.:~!*'\/])/'%'.sprintf('%02x',ord($1))/ge;
-      push @data, '"'.$key.'":"'.$val.'"';
-    }
-    printJSONRPC($response, 0, '{'.join(', ', @data).'}');
+    printJSONRPC($response, 0, $comment);
     return;
   }
 
@@ -124,6 +128,10 @@ sub restHandle {
     my $ref = $request->param('ref') || '';
     my $id = getNewId($meta);
     my $date = time();
+
+    $cmtText = fromUtf8($cmtText);
+    $title = fromUtf8($title);
+
     $meta->putKeyed(
       'COMMENT',
       {
@@ -150,6 +158,8 @@ sub restHandle {
     if ($error) {
       printJSONRPC($response, 1, $error)
     } else {
+
+      Foswiki::Func::writeEvent("comment", "state=(new, unapproved) title=".($title||'').' text='.substr($cmtText, 0, 200)); # SMELL: does not objey approval state
       printJSONRPC($response, 0, undef)
     }
 
@@ -188,6 +198,7 @@ sub restHandle {
     if ($error) {
       printJSONRPC($response, 1, $error)
     } else {
+      Foswiki::Func::writeEvent("commentapprove", "state=($comment->{state}) title=".($comment->{title}||'').' text='.substr($comment->{text}, 0, 200)); 
       printJSONRPC($response, 0, undef)
     }
 
@@ -219,12 +230,16 @@ sub restHandle {
     push (@new_state, "updated") if $state =~ /\b(new|updated)\b/;
     push (@new_state, "approved") if $state =~ /\bapproved\b/;
     push (@new_state, "unapproved") if $state =~ /\bunapproved\b/;
+    $state = join(", ", @new_state);
+
+    $cmtText = fromUtf8($cmtText);
+    $title = fromUtf8($title);
 
     $meta->putKeyed(
       'COMMENT',
       {
         author => $author,
-        state => join(", ", @new_state),
+        state => $state,
         date => $date,
         modified => $modified,
         name => $id,
@@ -246,6 +261,7 @@ sub restHandle {
     if ($error) {
       printJSONRPC($response, 1, $error)
     } else {
+      Foswiki::Func::writeEvent("commentupdate", "state=($state) title=".($title||'')." text=".substr($cmtText, 0, 200)); 
       printJSONRPC($response, 0, undef)
     }
 
@@ -279,6 +295,7 @@ sub restHandle {
     if ($error) {
       printJSONRPC($response, 1, $error)
     } else {
+      Foswiki::Func::writeEvent("commentdelete", "state=($comment->{state}) title=".($comment->{title}||'')." text=".substr($comment->{text}, 0, 200)); 
       printJSONRPC($response, 0, undef)
     }
 
@@ -350,9 +367,9 @@ HERE
   $params->{plural} = '$count comments' 
     unless defined $params->{plural};
   $params->{mindate} = Foswiki::Time::parseTime($params->{mindate})
-    if defined $params->{mindate};
+    if defined $params->{mindate} && $params->{mindate} !~ /^\d+$/;
   $params->{maxdate} = Foswiki::Time::parseTime($params->{maxdate}) 
-    if defined $params->{maxdate};
+    if defined $params->{maxdate} && $params->{mindate} !~ /^\d+$/;
   $params->{threaded} = 'off'
     unless defined $params->{threaded};
   $params->{isclosed} = ((Foswiki::Func::getPreferencesValue("COMMENTSTATE")||'open') eq 'closed')?1:0;
@@ -415,7 +432,7 @@ sub getComments {
     next if $params->{id} && $id ne $params->{id};
     next if $params->{ref} && $params->{ref} ne $comment->{ref};
     next if $params->{approval} eq 'on' && !($isApprover || $comment->{author} eq $wikiName) && (!$comment->{state} || $comment->{state} !~ /\bapproved\b/);
-    next if $params->{isclosed} && (!$comment->{state} || $comment->{state} !~ /\bapproved\b/);
+    next if $params->{approval} eq 'on' && $params->{isclosed} && (!$comment->{state} || $comment->{state} !~ /\bapproved\b/);
 
     next if $params->{include} && !(
       $comment->{author} =~ /$params->{include}/ ||
@@ -520,13 +537,19 @@ sub formatComments {
     }
 
     my $title = $comment->{title};
-    $title = substr($comment->{text}, 0, 10)."..." unless $title;
+    unless ($title) {
+      my $session = $Foswiki::Plugins::SESSION;
+      $title = substr($comment->{text}, 0, 40);
+      $title =~ s/^\s*\-\-\-++//g; # don't remove heading, just strip tml
+      $title = $session->renderer->TML2PlainText($title, undef, "showvar") . " ...";
+    }
 
     my $line = expandVariables($params->{format},
       author=>$comment->{author},
       state=>$comment->{state},
       count=>$params->{count},
       isapprover=>$params->{isapprover},
+      timestamp=>$comment->{date} || 0,
       date=>Foswiki::Time::formatTime(($comment->{date}||0)),
       modified=>Foswiki::Time::formatTime(($comment->{modified}||0)),
       evenodd=>($index % 2)?'Odd':'Even',
@@ -587,7 +610,7 @@ sub indexTopicHandler {
   my ($indexer, $doc, $web, $topic, $meta, $text) = @_;
 
   # delete all previous comments of this topic
-  $indexer->deleteByQuery("type:comment web:$web topic:$topic");
+  #$indexer->deleteByQuery("type:comment web:$web topic:$topic");
 
   my @comments = $meta->find('COMMENT');
   return unless @comments;
@@ -634,6 +657,42 @@ sub indexTopicHandler {
       my $e = shift;
       $indexer->log("ERROR: ".$e->{-text});
     };
+  }
+}
+
+##############################################################################
+sub fromUtf8 {
+  my $string = shift;
+
+  my $charset = $Foswiki::cfg{Site}{CharSet};
+  return $string if $charset =~ /^utf-?8$/i;
+
+  if ($] < 5.008) {
+
+    # use Unicode::MapUTF8 for Perl older than 5.8
+    require Unicode::MapUTF8;
+    if (Unicode::MapUTF8::utf8_supported_charset($charset)) {
+      return Unicode::MapUTF8::from_utf8({ -string => $string, -charset => $charset });
+    } else {
+      Foswiki::Func::writeWarning("Conversion from $charset no supported, ' . 'or name not recognised - check perldoc Unicode::MapUTF8");
+      return $string;
+    }
+  } else {
+
+    # good Perl version, just use Encode
+    require Encode;
+    import Encode;
+    my $encoding = Encode::resolve_alias($charset);
+    if (not $encoding) {
+      Foswiki::Func::writeWarning("Warning: Conversion from $charset not supported, or name not recognised - check perldoc Encode::Supported");
+      return $string;
+    } else {
+
+      # converts to $charset, generating HTML NCR's when needed
+      my $octets = $string;
+      $octets = Encode::decode('utf-8', $string) unless utf8::is_utf8($string);
+      return Encode::encode($encoding, $octets, 0);#&Encode::FB_HTMLCREF());
+    }
   }
 }
 

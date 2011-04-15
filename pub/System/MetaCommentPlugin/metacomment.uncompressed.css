@@ -96,9 +96,6 @@ h3.cmtCommentNr {
 .cmtHover .cmtAlert {
   display:none;
 }
-.cmtHover .cmtControls {
-  display:block;
-}
 .cmtState_closed .cmtControls {
   display:none;
 }
@@ -126,6 +123,10 @@ h3.cmtCommentNr {
   display:none;
 }
 
+.cmtStyle_insidetab .twistyPlugin {
+  display:none; /* switched on by js */
+}
+
 /* pattern skin */
 #patternScreen .cmtComments h2,
 #patternScreen .cmtComments h3 {
@@ -144,7 +145,4 @@ h3.cmtCommentNr {
 }
 .patternBorder .foswikiFormSteps {
   border:0px;
-}
-.foswikiFormSteps hr { 
-  display:none; 
 }
