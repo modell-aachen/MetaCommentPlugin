@@ -540,7 +540,7 @@ sub formatComments {
     unless ($title) {
       my $session = $Foswiki::Plugins::SESSION;
       $title = substr($comment->{text}, 0, 40);
-      $title =~ s/^\s*\-\-\-++//g; # don't remove heading, just strip tml
+      $title =~ s/^\s*\-\-\-\++//g; # don't remove heading, just strip tml
       $title = $session->renderer->TML2PlainText($title, undef, "showvar") . " ...";
     }
 

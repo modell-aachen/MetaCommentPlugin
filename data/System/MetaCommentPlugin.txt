@@ -93,6 +93,7 @@ Parameters:
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  20 Apr 2011: | fixed error in regular expression |
 |  15 Apr 2011: | using CPAN:JSON to properly encode json-rpc data; \
                   fixed recoding of received data to the site's own charset; \
                   improved the way photos are gathered |

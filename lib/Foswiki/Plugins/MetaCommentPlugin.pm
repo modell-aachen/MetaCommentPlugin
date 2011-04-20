@@ -16,7 +16,7 @@ use strict;
 use Foswiki::Func ();
 
 our $VERSION = '$Rev$';
-our $RELEASE = '0.91';
+our $RELEASE = '0.92';
 our $SHORTDESCRIPTION = 'An easy to use comment system';
 our $NO_PREFS_IN_TOPIC = 1;
 our $baseWeb;
