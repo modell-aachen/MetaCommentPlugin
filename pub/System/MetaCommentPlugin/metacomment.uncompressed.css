@@ -16,10 +16,6 @@
 .cmtComments h3 {
   margin:0px;
 }
-.jqTabContents .cmtAddComment,
-.cmtAddComment {
-  margin-top:1.3846em;
-}
 
 #cmtReplyComment .cmtAddCommentTitle1,
 .cmtAddComment .jqSimpleModalCancel,
@@ -82,7 +78,6 @@ h3.cmtCommentNr {
 }
 .cmtAuthor a {
   text-decoration:none;
-  font-weight:bold;
 }
 .cmtControls {
   position:absolute;
@@ -94,7 +89,7 @@ h3.cmtCommentNr {
   margin-left:0.6923em;
 }
 .cmtHover .cmtAlert {
-  display:none;
+  visibility:hidden;
 }
 .cmtState_closed .cmtControls {
   display:none;
@@ -132,17 +127,15 @@ h3.cmtCommentNr {
 #patternScreen .cmtComments h3 {
   padding:0px;
 }
-#patternScreen .foswikiFormSteps h2 {
-  border:none;
-  margin:0 0 .1em 0;
-  padding:1em 40px 0px;
-  background:none;
-  font-size:130%;
-  font-weight:bold;
+#patternScreen .cmtComments .foswikiFormSteps {
+  margin-top:1.3846em; /* 18px */
+  border-left:0px;
+  border-right:0px;
 }
-.foswikiFormSteps {
-  border-top:1px solid #ddd;
+#patternScreen .cmtStyle_threaded .foswikiFormSteps {
+  border-bottom:0px;
+  margin-bottom:0px;
 }
-.patternBorder .foswikiFormSteps {
+#patternScreen .cmtComments .foswikiFormStep {
   border:0px;
 }

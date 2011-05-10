@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1266001119" format="1.1" reprev="1.2" version="1.2"}%
+%META:TOPICINFO{author="micha" comment="reprev" date="1305044315" format="1.1" reprev="3" version="3"}%
 ---+!! !MetaCommentPlugin
 <!--
    * Set SHORTDESCRIPTION = %$SHORTDESCRIPTION%
@@ -7,11 +7,12 @@
 
 %TOC%
 
-This is YACS (yet another comment system) which tries 
+This is YACS (yet another comment system) which tries to
 
-   * (a) to be easy to use 
-   * (b) to scale up to lots of comments
-   * (c) to provide different layouts and commenting requirements
+   * (a) be easy to use,
+   * (b) scale up to lots of comments
+   * (c) provide different layouts and commenting requirements and
+   * (d) implement a moderation workflow for comments before they go live.
 
 <nop>%TOPIC% allows to easily add commenting to any topic. Discussiosn can
 either be displayed in linear or threaded mode. Different comment styles and
@@ -21,12 +22,6 @@ from the normal change access rights to a topic while they are still stored as
 meta data to a topic. That way a keyword search matching on different comments
 of the same discussion will generate a hit on the discussion itself in a
 natural way.
-
-Note, that this plugin is in alpha state as some features are still missing:
-
-   * implement an approval system
-   * implement a RECENTCOMMENTS macro to display a list of all activities in a forum
-   * extend METACOMMENTS to display/suppress comments that are approved/need approvement
 
 ---++ Screenshot
 
@@ -44,9 +39,80 @@ Each comment is stored into a =META:COMMENT= field of a topic with properties
    * text: the comment text
    * title: title text of this comment
 
----++ Syntax
+---++ Configuring the comment system
 
----+++ METACOMMENTS
+---+++ Using !MetaCommentPlugin on !NatSkin
+The easiest way to switch on commenting on a page is when using it together with Foswiki:Extensions/NatSkin.
+When opening the topic editor, there's a "Settings" tab that allows you to switch on and off commenting,
+switch between different commenting styles as well as configure moderation.
+
+---+++ Using !MetaCommentPlugin on !PatternSkin
+On a standard !PatternSkin install you will have to use preference variables to control the system.
+First, to enable commenting add the =metacomment= skin overlay to your =SKIN= variable in %LOCALSITEPREFS%.
+
+<verbatim>   * Set SKIN = metacomment, pattern</verbatim>
+
+There are a couple of formats how comments are displayed on the topic:
+
+<verbatim>   * Set COMMENTFORMAT = threaded</verbatim>
+
+Other values: 
+   * linear: list comments in linear order, i.e. there are no replies to comments directly
+   * threaded (default): nested commenting; allows to reply on a reply
+   * reverse: list comments in linear order in reverse twitter-like fashion
+   * insidetab: list comments inside a tab at the bottom of the page; 
+     only available when used together with Foswiki:Extensions/TopicInteractionPlugin)
+
+A discussion can be either open or closed:
+
+<verbatim>   * Set COMMENTSTATE = open</verbatim>
+
+By setting this to =closed= comments gathered so far are still listed while the form to add more comments is hidden
+
+These preferences can of course be set per topic or added to the WebPreferences in case you want to enable commenting
+on all of the web.
+
+---+++ Permissions
+
+!MetaCommentPlugin separaters permission to comment on a topic from plain change access rights of a topic.
+That way you may restrict write access to a topic while still open it up for commenting to a wider audience.
+This is done by using a separate =COMMENT= access control list. Given the current topic is write restricted only
+allowing the original author to make changes, the following setting will permit commenting:
+
+<verbatim>   * Set ALLOWTOPICCOMMENT = <comma separated list of users and/or groups></verbatim>
+
+See [[System.AccessControl][AccessControl]] for more information on setting up access control lists for various
+use cases.
+
+---+++ Moderation
+
+Moderating comments allows you a bit more control of which comments are approved to be okay to be displayed to the public.
+This is mostly used on public environments to hide comments until they are approved by a list of moderators.
+Only the original author and moderators will see unapproved comments. For everybody else, unapproved comments are hidden
+until they are approved.
+
+To enable moderation set the COMMENTMODERATION preference setting (defaults to off):
+
+<verbatim>   * Set COMMENTMODERATION = on</verbatim>
+
+The list of people allowed to moderate a comment is configured by using Foswiki's permission system using the MODERATE
+role. So to configure moderators per topic use:
+
+<verbatim>
+   * Set ALLOWTOPICMODERATE = <comma separated list of users and/or groups>
+   * Set DENYTOPICMODERATE = <comma separated list of users and/or groups>
+</verbatim>
+
+Or use a per web configuration in the !WebPreferences using 
+
+<verbatim>
+   * Set ALLOWWEBMODERATE = <comma separated list of users and/or groups>
+   * Set DENYWEBMODERATE = <comma separated list of users and/or groups>
+</verbatim>
+
+See [[System.AccessControl][AccessControl]] for more information on setting up access control lists.
+
+---++ METACOMMENTS
 
 Renders a discussion on a given topic
 
@@ -62,7 +128,7 @@ Parameters:
    * topic: the topic to render the discussion for, defaults to the current topic
    * header: string prepended to the output
    * footer: string appended to the output
-   * format: format string used to render each comment, defaults to =<h3>$title</h3>$text=
+   * format: format string used to render each comment, defaults to =&lt;h3>$title&lt;/h3>$text=
    * template: template to be used instead of the inline =format= parameter
    * separator: separats the list of comments
    * subheader: string prepended to the list of subcommnets, defaults to =&lt;div class='cmtSubComments'>=
@@ -76,10 +142,26 @@ Parameters:
    * mindate: minimum date of a comment to be displayed
    * maxdate: maximum date of a comment to be displayed
    * threaded: switch on/off threaded rendering, comments will be rendered recursively
+   * sort: specify the way comments are sorted; possible values: name (default), date, modified, author
+   * reverse: switch on/off reverse order of sorted comments
 
----+++ RECENTCOMMENTS
+When rendering a comment, the following variables can be used in the =format= strings:
 
-%RED%todo%ENDCOLOR%
+   * $author: the name of the user that wrote this comment
+   * $state: the state of this comment
+   * $count: the total number of comments
+   * $ismoderator: true/false if the current user is allowed to moderate the comments or not
+   * $timestamp: the date when this comment was created; format in epoch seconds
+   * $date: the date when this comment was created in Foswiki's default time format
+   * $modified: the date this comment was last modified
+   * $evenodd: expands to =even= or =odd= while formatting all comments in the list; useful to implement zebra striped
+     comments
+   * $id: the unique identifier of this comment (stored in the =name= attribute of the comment)
+   * $index: the running number of the current comment while rendering a list of comments
+   * $ref: the identifier of the comment this one is a reply to; used in threaded commenting mode
+   * $text: the actual comment
+   * $title: the title of the comment
+   * $subcomments: expands to the list of all comments that are a reply to the current one
 
 ---++ Installation Instructions
 
@@ -93,6 +175,8 @@ Parameters:
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  10 May 2011: | 1.00 - partial rewrite to use Foswiki:Extensions/JsonRpcContrib; \
+                  renamed preference COMMENTAPPROVAL to COMMENTMODERATION |
 |  20 Apr 2011: | fixed error in regular expression |
 |  15 Apr 2011: | using CPAN:JSON to properly encode json-rpc data; \
                   fixed recoding of received data to the site's own charset; \

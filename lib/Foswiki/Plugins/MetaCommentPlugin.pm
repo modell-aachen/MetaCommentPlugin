@@ -14,56 +14,67 @@ package Foswiki::Plugins::MetaCommentPlugin;
 
 use strict;
 use Foswiki::Func ();
+use Foswiki::Plugins ();
+use Foswiki::Contrib::JsonRpcContrib ();
 
 our $VERSION = '$Rev$';
-our $RELEASE = '0.92';
+our $RELEASE = '1.00';
 our $SHORTDESCRIPTION = 'An easy to use comment system';
 our $NO_PREFS_IN_TOPIC = 1;
-our $baseWeb;
-our $baseTopic;
-our $isInitialized;
+our $core;
 
 sub initPlugin {
-  ($baseTopic, $baseWeb) = @_;
 
-  Foswiki::Func::registerTagHandler('METACOMMENTS', \&METACOMMENTS);
-  Foswiki::Func::registerRESTHandler('handle', \&restHandle);
-  $isInitialized = 0;
+  $core = undef;
 
-  # SMELL this is not reliable as it depends on plugin order
+  Foswiki::Func::registerTagHandler('METACOMMENTS', sub {
+    return getCore(shift)->METACOMMENTS(@_);
+  });
+
+  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "getComment", sub {
+    return getCore(shift)->jsonRpcGetComment(@_);
+  });
+
+  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "saveComment", sub {
+    return getCore(shift)->jsonRpcSaveComment(@_);
+  });
+
+  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "approveComment", sub {
+    return getCore(shift)->jsonRpcApproveComment(@_);
+  });
+
+  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "updateComment", sub {
+    return getCore(shift)->jsonRpcUpdateComment(@_);
+  });
+
+  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "deleteComment", sub {
+    return getCore(shift)->jsonRpcDeleteComment(@_);
+  });
+
+  # SMELL: this is not reliable as it depends on plugin order
   # if (Foswiki::Func::getContext()->{SolrPluginEnabled}) {
   if ($Foswiki::cfg{Plugins}{SolrPlugin}{Enabled}) {
     require Foswiki::Plugins::SolrPlugin;
-    Foswiki::Plugins::SolrPlugin::registerIndexTopicHandler(\&indexTopicHandler);
+    Foswiki::Plugins::SolrPlugin::registerIndexTopicHandler(sub {
+      return getCore()->indexTopicHandler(@_);
+    });
+  }
+
+  if ($Foswiki::Plugins::VERSION > 2.0) {
+    Foswiki::Meta::registerMETA("COMMENT", many=>1);
   }
 
   return 1;
 }
 
-sub init {
-  return if $isInitialized;
-  require Foswiki::Plugins::MetaCommentPlugin::Core;
-  $isInitialized = 1;
+sub getCore {
+  unless ($core) {
+    my $session = shift || $Foswiki::Plugins::SESSION;
+    require Foswiki::Plugins::MetaCommentPlugin::Core;
+    $core = new Foswiki::Plugins::MetaCommentPlugin::Core($session, @_);
+  }
+  return $core;
 }
 
-sub METACOMMENTS {
-  init();
-  Foswiki::Plugins::MetaCommentPlugin::Core::METACOMMENTS(@_);
-}
-
-sub restHandle {
-  init();
-  Foswiki::Plugins::MetaCommentPlugin::Core::restHandle(@_);
-}
-
-sub restIndex {
-  init();
-  Foswiki::Plugins::MetaCommentPlugin::Core::restIndex(@_);
-}
-
-sub indexTopicHandler {
-  init();
-  Foswiki::Plugins::MetaCommentPlugin::Core::indexTopicHandler(@_);
-}
 
 1;

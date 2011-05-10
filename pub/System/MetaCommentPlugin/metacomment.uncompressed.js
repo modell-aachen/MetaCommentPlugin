@@ -61,17 +61,17 @@ jQuery(function($) {
     // add hover 
     $this.find(".cmtComment").hoverIntent({
       over: function() {
-        var $controls = $(this).find(".cmtControls");
+        var $this = $(this), $controls = $this.find(".cmtControls");
+        $this.addClass("cmtHover");
         $controls.fadeIn(500, function() {
           $controls.css({opacity: 1.0});
-          $(this).addClass("cmtHover");
         });
       },
       out: function() {
-        var $controls = $(this).find(".cmtControls");
+        var $this = $(this), $controls = $this.find(".cmtControls");
         $controls.stop();
         $controls.css({display:'none', opacity: 1.0});
-        $(this).removeClass("cmtHover");
+        $this.removeClass("cmtHover");
       }
     });
 
@@ -119,7 +119,7 @@ jQuery(function($) {
       $form.ajaxForm({
         dataType:"json",
         beforeSubmit: function() {
-          id = $form.find("input[name=id]").val();
+          id = $form.find("input[name=comment_id]").val();
           index = $form.find("input[name=index]").val();
           $errorContainer = $this.find("a[name=comment"+id+"]").parent().parent();
           $this.find(".foswikiErrorMessage").remove();
@@ -161,7 +161,7 @@ jQuery(function($) {
         },
         onShow: function(dialog) { 
           dialog.container.find(".cmtCommentIndex").text(commentOpts.index);
-          dialog.container.find("input[name=ref]").val(commentOpts.id);
+          dialog.container.find("input[name=ref]").val(commentOpts.comment_id);
         }
       });
 
@@ -171,53 +171,37 @@ jQuery(function($) {
     // add edit behaviour
     $this.find(".cmtEdit").click(function() {
       var $comment = $(this).parents(".cmtComment:first"),
-          commentOpts = $.extend({}, $comment.metadata()),
-          getUrl = foswiki.getPreference("SCRIPTURL") +
-            "/rest/MetaCommentPlugin/handle?action=get" +
-            ";topic="+opts.web+"."+opts.topic +
-            ";id="+commentOpts.id,
-          gotError = false,
-          title, text;
+          commentOpts = $.extend({}, $comment.metadata());
 
       $this.find(".foswikiErrorMessage").remove();
-      $.ajax({
-        async: false,
-        url: getUrl,
-        type: "GET",
-        dataType: "json",
-        success: function(data, msg) {
-          $.unblockUI();
-          if(data.error) {
-            $comment.parent().append("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
-            gotError = true;
-          } else {
-            title = unescape(data.result.title);
-            text = unescape(data.result.text);
-          }
+      $.jsonRpc(foswiki.getPreference("SCRIPTURL")+"/jsonrpc", {
+        namespace: "MetaCommentPlugin",
+        method: "getComment",
+        params: {
+          "topic": opts.web+"."+opts.topic,
+          "comment_id": commentOpts.comment_id
         },
-        error: function(xhr, msg, error) {
-          var data = $.parseJSON(xhr.responseText);
+        success: function(json, msg, xhr) {
           $.unblockUI();
-          $comment.parent().append("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
-          gotError = true;
+          foswiki.openDialog('#cmtUpdateComment', {
+            persist:true,
+            containerCss: {
+              width:600
+            },
+            onShow: function(dialog) { 
+              dialog.container.find("input[name=comment_id]").val(commentOpts.comment_id);
+              dialog.container.find("input[name=index]").val(commentOpts.index);
+              dialog.container.find(".cmtCommentIndex").text(commentOpts.index);
+              dialog.container.find("input[name=title]").val(json.result.title);
+              dialog.container.find("textarea[name=text]").val(json.result.text);
+            }
+          });
+        },
+        error: function(json, msg, xhr) {
+          $.unblockUI();
+          $comment.parent().append("<div class='foswikiErrorMessage'>Error: "+json.error.message+"</div>");
         }
       });
-
-      if (!gotError) {
-        foswiki.openDialog('#cmtUpdateComment', {
-          persist:true,
-          containerCss: {
-            width:600
-          },
-          onShow: function(dialog) { 
-            dialog.container.find("input[name=id]").val(commentOpts.id);
-            dialog.container.find("input[name=index]").val(commentOpts.index);
-            dialog.container.find(".cmtCommentIndex").text(commentOpts.index);
-            dialog.container.find("input[name=title]").val(title);
-            dialog.container.find("textarea[name=text]").val(text);
-          }
-        });
-      }
 
       return false;
     });
@@ -225,12 +209,7 @@ jQuery(function($) {
     // add approve behaviour
     $this.find(".cmtApprove").click(function() {
       var $comment = $(this).parents(".cmtComment:first"),
-          commentOpts = $.extend({}, $comment.metadata()),
-          approveUrl = foswiki.getPreference("SCRIPTURL") +
-            "/rest/MetaCommentPlugin/handle?action=approve" +
-            ";topic="+opts.web+"."+opts.topic +
-            ";state=approved" +
-            ";id="+commentOpts.id;
+          commentOpts = $.extend({}, $comment.metadata());
 
       $this.find(".foswikiErrorMessage").remove();
 
@@ -250,16 +229,18 @@ jQuery(function($) {
             fadeIn: 0,
             fadeOut: 0
           });
-          $.ajax({
-            url: approveUrl,
-            type: "GET",
-            dataType: "json",
-            error: function(xhr, msg, error) {
-              var data = $.parseJSON(xhr.responseText);
-              $.unblockUI();
-              $comment.find(".cmtCommentContainer").append("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
+          $.jsonRpc(foswiki.getPreference("SCRIPTURL")+"/jsonrpc", {
+            namespace: "MetaCommentPlugin",
+            method: "approveComment",
+            params: {
+              topic: opts.web+"."+opts.topic,
+              comment_id: commentOpts.comment_id
             },
-            success: function(data, msg) {
+            error: function(json) {
+              $.unblockUI();
+              $comment.find(".cmtCommentContainer").append("<div class='foswikiErrorMessage'>Error: "+json.error.message+"</div>");
+            },
+            success: function(json) {
               $.unblockUI();
               loadComments();
             }
@@ -272,11 +253,7 @@ jQuery(function($) {
     // add delete behaviour 
     $this.find(".cmtDelete").click(function() {
       var $comment = $(this).parents(".cmtComment:first"),
-          commentOpts = $.extend({}, $comment.metadata()),
-          deleteUrl = foswiki.getPreference("SCRIPTURL") +
-            "/rest/MetaCommentPlugin/handle?action=delete" +
-            ";topic="+opts.web+"."+opts.topic +
-            ";id="+commentOpts.id;
+          commentOpts = $.extend({}, $comment.metadata());
 
       $this.find(".foswikiErrorMessage").remove();
 
@@ -296,16 +273,18 @@ jQuery(function($) {
             fadeIn: 0,
             fadeOut: 0
           });
-          $.ajax({
-            url: deleteUrl,
-            type: "GET",
-            dataType: "json",
-            error: function(xhr, msg, error) {
-              var data = $.parseJSON(xhr.responseText);
-              $.unblockUI();
-              $comment.find(".cmtCommentContainer").append("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
+          $.jsonRpc(foswiki.getPreference("SCRIPTURL")+"/jsonrpc", {
+            namespace: "MetaCommentPlugin",
+            method: "deleteComment",
+            params: {
+              "topic": opts.web+"."+opts.topic,
+              "comment_id": commentOpts.comment_id
             },
-            success: function(data, msg) {
+            error: function(json) {
+              $.unblockUI();
+              $comment.find(".cmtCommentContainer").append("<div class='foswikiErrorMessage'>Error: "+json.error.message+"</div>");
+            },
+            success: function(json) {
               $.unblockUI();
               $comment.slideUp(function() {
                 $comment.parent().hide();
