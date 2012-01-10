@@ -52,6 +52,10 @@ First, to enable commenting add the =metacomment= skin overlay to your =SKIN= va
 
 <verbatim>   * Set SKIN = metacomment, pattern</verbatim>
 
+To display the comment interface like shown above you need to set the preference variable:
+
+<verbatim>   * Set DISPLAYCOMMENTS = on</verbatim>
+
 There are a couple of formats how comments are displayed on the topic:
 
 <verbatim>   * Set COMMENTFORMAT = threaded</verbatim>
