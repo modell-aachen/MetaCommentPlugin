@@ -251,7 +251,7 @@ jQuery(function($) {
     });
 
     // add delete behaviour 
-    $this.find(".cmtDelete").click(function() {
+    $this.find(".DIScmtDelete").click(function() {
       var $comment = $(this).parents(".cmtComment:first"),
           commentOpts = $.extend({}, $comment.metadata());
 
@@ -298,6 +298,8 @@ jQuery(function($) {
     });
 
     // work around blinking twisties
-    $this.find(".twistyPlugin").show();
+    setTimeout(function() {
+      $this.find(".twistyPlugin").show();
+    }, 1);
   });
 });
