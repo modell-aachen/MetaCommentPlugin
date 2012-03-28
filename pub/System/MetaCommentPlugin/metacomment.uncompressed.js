@@ -251,7 +251,7 @@ jQuery(function($) {
     });
 
     // add delete behaviour 
-    $this.find(".DIScmtDelete").click(function() {
+    $this.find(".cmtDelete").click(function() {
       var $comment = $(this).parents(".cmtComment:first"),
           commentOpts = $.extend({}, $comment.metadata());
 
