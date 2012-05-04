@@ -13,68 +13,92 @@
 package Foswiki::Plugins::MetaCommentPlugin;
 
 use strict;
-use Foswiki::Func ();
-use Foswiki::Plugins ();
+use Foswiki::Func                    ();
+use Foswiki::Plugins                 ();
 use Foswiki::Contrib::JsonRpcContrib ();
 
-our $VERSION = '$Rev$';
-our $RELEASE = '1.11';
-our $SHORTDESCRIPTION = 'An easy to use comment system';
+our $VERSION           = '$Rev$';
+our $RELEASE           = '1.11';
+our $SHORTDESCRIPTION  = 'An easy to use comment system';
 our $NO_PREFS_IN_TOPIC = 1;
 our $core;
 
 sub initPlugin {
 
-  $core = undef;
+    $core = undef;
 
-  Foswiki::Func::registerTagHandler('METACOMMENTS', sub {
-    return getCore(shift)->METACOMMENTS(@_);
-  });
+    Foswiki::Func::registerTagHandler(
+        'METACOMMENTS',
+        sub {
+            return getCore(shift)->METACOMMENTS(@_);
+        }
+    );
 
-  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "getComment", sub {
-    return getCore(shift)->jsonRpcGetComment(@_);
-  });
+    Foswiki::Contrib::JsonRpcContrib::registerMethod(
+        "MetaCommentPlugin",
+        "getComment",
+        sub {
+            return getCore(shift)->jsonRpcGetComment(@_);
+        }
+    );
 
-  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "saveComment", sub {
-    return getCore(shift)->jsonRpcSaveComment(@_);
-  });
+    Foswiki::Contrib::JsonRpcContrib::registerMethod(
+        "MetaCommentPlugin",
+        "saveComment",
+        sub {
+            return getCore(shift)->jsonRpcSaveComment(@_);
+        }
+    );
 
-  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "approveComment", sub {
-    return getCore(shift)->jsonRpcApproveComment(@_);
-  });
+    Foswiki::Contrib::JsonRpcContrib::registerMethod(
+        "MetaCommentPlugin",
+        "approveComment",
+        sub {
+            return getCore(shift)->jsonRpcApproveComment(@_);
+        }
+    );
 
-  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "updateComment", sub {
-    return getCore(shift)->jsonRpcUpdateComment(@_);
-  });
+    Foswiki::Contrib::JsonRpcContrib::registerMethod(
+        "MetaCommentPlugin",
+        "updateComment",
+        sub {
+            return getCore(shift)->jsonRpcUpdateComment(@_);
+        }
+    );
 
-  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "deleteComment", sub {
-    return getCore(shift)->jsonRpcDeleteComment(@_);
-  });
+    Foswiki::Contrib::JsonRpcContrib::registerMethod(
+        "MetaCommentPlugin",
+        "deleteComment",
+        sub {
+            return getCore(shift)->jsonRpcDeleteComment(@_);
+        }
+    );
 
-  # SMELL: this is not reliable as it depends on plugin order
-  # if (Foswiki::Func::getContext()->{SolrPluginEnabled}) {
-  if ($Foswiki::cfg{Plugins}{SolrPlugin}{Enabled}) {
-    require Foswiki::Plugins::SolrPlugin;
-    Foswiki::Plugins::SolrPlugin::registerIndexTopicHandler(sub {
-      return getCore()->indexTopicHandler(@_);
-    });
-  }
+    # SMELL: this is not reliable as it depends on plugin order
+    # if (Foswiki::Func::getContext()->{SolrPluginEnabled}) {
+    if ( $Foswiki::cfg{Plugins}{SolrPlugin}{Enabled} ) {
+        require Foswiki::Plugins::SolrPlugin;
+        Foswiki::Plugins::SolrPlugin::registerIndexTopicHandler(
+            sub {
+                return getCore()->indexTopicHandler(@_);
+            }
+        );
+    }
 
-  if ($Foswiki::Plugins::VERSION > 2.0) {
-    Foswiki::Meta::registerMETA("COMMENT", many=>1, alias=>"comment");
-  }
+    if ( $Foswiki::Plugins::VERSION > 2.0 ) {
+        Foswiki::Meta::registerMETA( "COMMENT", many => 1, alias => "comment" );
+    }
 
-  return 1;
+    return 1;
 }
 
 sub getCore {
-  unless ($core) {
-    my $session = shift || $Foswiki::Plugins::SESSION;
-    require Foswiki::Plugins::MetaCommentPlugin::Core;
-    $core = new Foswiki::Plugins::MetaCommentPlugin::Core($session, @_);
-  }
-  return $core;
+    unless ($core) {
+        my $session = shift || $Foswiki::Plugins::SESSION;
+        require Foswiki::Plugins::MetaCommentPlugin::Core;
+        $core = new Foswiki::Plugins::MetaCommentPlugin::Core( $session, @_ );
+    }
+    return $core;
 }
-
 
 1;
