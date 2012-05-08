@@ -286,7 +286,6 @@ sub METACOMMENTS {
   }
 
   Foswiki::Func::readTemplate("metacomments");
-  Foswiki::Func::expandTemplate("metacomments::init");
 
   # sanitize params
   $params->{topic} ||= $topic;

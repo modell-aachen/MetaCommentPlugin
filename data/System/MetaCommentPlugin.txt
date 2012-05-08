@@ -1,8 +1,5 @@
 %META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1305044315" format="1.1" reprev="3" version="3"}%
 ---+!! !MetaCommentPlugin
-<!--
-   * Set SHORTDESCRIPTION = %$SHORTDESCRIPTION%
--->
 %SHORTDESCRIPTION%
 
 %TOC%
@@ -179,6 +176,9 @@ When rendering a comment, the following variables can be used in the =format= st
 %$INSTALL_INSTRUCTIONS%
 
 ---++ Info
+<!--
+   * Set SHORTDESCRIPTION = %$SHORTDESCRIPTION%
+-->
 
 |  Author(s): | Foswiki:Main/MichaelDaum |
 |  Copyright &copy;: | 2009-2012, Michael Daum http://michaeldaumconsulting.com |
@@ -186,6 +186,7 @@ When rendering a comment, the following variables can be used in the =format= st
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  08 May 2012: | 1.12 - fixed integration with !PatternSkin |
 |  28 Mar 2012: | 1.11 - added ability to search for all comments in a web; \
                          improved comment rendering features; \
                          added fixes for !PatternSkin |

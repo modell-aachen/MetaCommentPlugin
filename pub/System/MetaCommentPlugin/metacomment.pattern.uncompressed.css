@@ -23,7 +23,7 @@
   border:1px solid #BDBEC5;
 }
 .simplemodal-container .foswikiDialogTitle {
-  margin:-13px -13px 13px;
+  margin:0;
   padding:13px;
   background-color:#ddd;
   color:#b20000;
@@ -31,11 +31,11 @@
   font-weight:bold;
 }
 .simplemodal-container .foswikiFormSteps {
-  padding:13px;
+  padding:0;
 }
 .simplemodal-container .foswikiFormStep {
-  margin:13px 0 0 0;
-  border:0px;
+  margin:0;
+  border:0;
 }
 a.simplemodal-close {
   display:none;
