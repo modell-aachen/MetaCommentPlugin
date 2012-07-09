@@ -673,7 +673,7 @@ sub indexTopicHandler {
     my $commentDoc = $indexer->newDocument();
     $commentDoc->add_fields(
       'id' => $id,
-      'collection' => $collection,
+#      'collection' => $collection,
       'language' => $language,
       'name' => $comment->{name},
       'type' => 'comment',
@@ -690,7 +690,7 @@ sub indexTopicHandler {
       'state' => ($comment->{state}||'null'),
       'container_id' => $web.'.'.$topic,
       'container_url' => Foswiki::Func::getViewUrl($web, $topic),
-      'container_title' => $indexer->getTopicTitle($web, $topic, $meta),
+#     'container_title' => $indexer->getTopicTitle($web, $topic, $meta),
     );
     $doc->add_fields('catchall' => $title);
     $doc->add_fields('catchall' => $comment->{text});
