@@ -150,7 +150,7 @@
 %TMPL:DEF{"comments::controls"}%<!-- -->
 <div class='cmtControls'>
   %IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and $COMMENTSTATE!='closed' and not ('%TMPL:P{"comments::format"}%' =~ 'reverse|insidetab')" 
-    then="<a href='#' class='cmtReply' title='%MAKETEXT{"Reply to comment [_1]" args="$index"}%'>%JQICON{"comment"}%</a>"
+    then="<a href='#' class='cmtReply' title='%MAKETEXT{"Reply on this comment"'>%JQICON{"comment"}%</a>"
   }%<!-- -->
   %IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and $COMMENTSTATE!='closed'" 
     then="<a href='#' class='cmtEdit' title='%MAKETEXT{"Edit this comment"}%'>%JQICON{"pencil"}%</a>"

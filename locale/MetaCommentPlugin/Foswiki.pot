@@ -2,43 +2,45 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: NatEditPlugin $Id\n"
-"POT-Creation-Date: 2011-12-20 12:56+0000\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Michael Daum <daum@michaeldaumconsulting.com>\n"
 "Language-Team: Foswiki German Translation Team <none>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: templates/metacomments.tmpl:32
+#: templates/metacomments.tmpl:52
 msgid "%1 comments"
 msgstr ""
 
-#: templates/metacomments.tmpl:324
+#: templates/metacomments.tmpl:355
 msgid "Add a comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:58
+#: templates/metacomments.tmpl:78
 msgid "Add a comment to this topic"
 msgstr ""
 
-#: templates/metacomments.tmpl:260
-msgid "Approve comment %1?"
+#: templates/metacomments.tmpl:271
+msgid "Approve comment?"
 msgstr ""
 
-#: templates/metacomments.tmpl:152
+#: templates/metacomments.tmpl:159
 msgid "Approve this comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:261
-msgid "Are you sure that you want to approve this comment posted by %1 on %2?"
+#: templates/metacomments.tmpl:278
+msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
 msgstr ""
 
-#: templates/metacomments.tmpl:242
-msgid "Are you sure that you want to delete this comment posted by %1 on %2?"
+#: templates/metacomments.tmpl:257
+msgid "Are you sure that you want to delete comment %1 posted by %2 on %3?"
 msgstr ""
 
-#: templates/metacomments.tmpl:293 templates/metacomments.tmpl:372
+#: templates/metacomments.tmpl:305 templates/metacomments.tmpl:327
+#: templates/metacomments.tmpl:402
 msgid "Cancel"
 msgstr ""
 
@@ -46,54 +48,64 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
-#: templates/metacomments.tmpl:241
-msgid "Delete comment %1?"
+#: templates/metacomments.tmpl:250
+msgid "Delete comment?"
 msgstr ""
 
-#: templates/metacomments.tmpl:155
+#: templates/metacomments.tmpl:162
 msgid "Delete this comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:283
-msgid "Edit comment %1"
+#: templates/metacomments.tmpl:291
+msgid "Edit comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:149
+#: templates/metacomments.tmpl:156
 msgid "Edit this comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:248 templates/metacomments.tmpl:267
+#: templates/metacomments.tmpl:262 templates/metacomments.tmpl:283
 msgid "No, thanks"
 msgstr ""
 
-#: templates/metacomments.tmpl:31
+#: templates/metacomments.tmpl:304 templates/metacomments.tmpl:326
+msgid "OK"
+msgstr ""
+
+#: templates/metacomments.tmpl:51
 msgid "One comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:30
+#: templates/metacomments.tmpl:50
 msgid "RSS feed of the comments on this topic"
 msgstr ""
 
-#: templates/metacomments.tmpl:146 templates/metacomments.tmpl:323
-msgid "Reply to comment %1"
+#: templates/metacomments.tmpl:314
+msgid "Reply on comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:292
-msgid "Save"
+#: templates/metacomments.tmpl:153
+msgid "Reply on this comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:371
+#: templates/metacomments.tmpl:401
 msgid "Submit"
 msgstr ""
 
-#: templates/metacomments.tmpl:266
+#: templates/metacomments.tmpl:282
 msgid "Yes, approve"
 msgstr ""
 
-#: templates/metacomments.tmpl:247
+#: templates/metacomments.tmpl:261
 msgid "Yes, delete"
 msgstr ""
 
-#: templates/metacomments.tmpl:127 templates/metacomments.tmpl:184 templates/metacomments.tmpl:221
+#: templates/metacomments.tmpl:132 templates/metacomments.tmpl:191
+#: templates/metacomments.tmpl:230
 msgid "needs approval"
+msgstr ""
+
+#: templates/metacomments.tmpl:139 templates/metacomments.tmpl:198
+#: templates/metacomments.tmpl:237
+msgid "permlink"
 msgstr ""
