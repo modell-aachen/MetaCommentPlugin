@@ -247,7 +247,7 @@
    comments::confirmdelete - dialog to confirm a delete
 }%
 %TMPL:DEF{"comments::confirmdelete"}%<!-- -->
-<div id="cmtConfirmDelete" style="display:none" class="jqUIDialog foswikiFormSteps {width:300, modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Delete comment?"}%">
+<div id="cmtConfirmDelete" class="jqUIDialog foswikiFormSteps {width:300, modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Delete comment?"}%" style="display:none">
   <form class="cmtConfirmDeleteForm" name="confirm" action="%SCRIPTURLPATH{"jsonrpc"}%/MetaCommentPlugin/deleteComment" method="post">
     <input type="hidden" name="topic" value="%BASEWEB%.%BASETOPIC%" />
     <input type="hidden" name="comment_id" value="" />
@@ -268,19 +268,20 @@
    comments::confirmapprove - dialog to confirm an approval
 }%
 %TMPL:DEF{"comments::confirmapprove"}%<!-- -->
-<div id="cmtConfirmApprove" class="jqUIDialog foswikiFormSteps {width:300, modal:true, draggable:true, resizable:false}" style="display:none" title="%MAKETEXT{"Approve comment?"}%">
+<div id="cmtConfirmApprove" class="jqUIDialog foswikiFormSteps {width:300, modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Approve comment?"}%" style="display:none">
   <form class="cmtConfirmApproveForm" name="approve" action="%SCRIPTURLPATH{"jsonrpc"}%/MetaCommentPlugin/approveComment" method="post">
     <input type="hidden" name="topic" value="%BASEWEB%.%BASETOPIC%" />
     <input type="hidden" name="comment_id" value="" />
     <input type="hidden" name="index" value="" />
     <input type="hidden" name="t" value="%GMTIME{"$epoch"}%" />
-  <div class="foswikiFormStep">
-    %MAKETEXT{"Are you sure that you want to approve comment [_1] posted by [_2] on [_3]?" 
-      args="<span class='cmtCommentNr'></span>, <span class='cmtAuthor'></span>, <span class='cmtDate'></span>"
-    }%
-  </div>
-  <a class="jqUIDialogButton jqUIDialogSubmit {icon:'ui-icon-circle-check'}">%MAKETEXT{"Yes, approve"}%</a> 
-  <a class="jqUIDialogButton jqUIDialogClose {icon:'ui-icon-cancel'}">%MAKETEXT{"No, thanks"}%</a> 
+    <div class="foswikiFormStep">
+      %MAKETEXT{"Are you sure that you want to approve comment [_1] posted by [_2] on [_3]?" 
+        args="<span class='cmtCommentNr'></span>, <span class='cmtAuthor'></span>, <span class='cmtDate'></span>"
+      }%
+    </div>
+    <a class="jqUIDialogButton jqUIDialogSubmit {icon:'ui-icon-circle-check'}">%MAKETEXT{"Yes, approve"}%</a> 
+    <a class="jqUIDialogButton jqUIDialogClose {icon:'ui-icon-cancel'}">%MAKETEXT{"No, thanks"}%</a> 
+  </form>
 </div>
 <!-- -->%TMPL:END%
 
@@ -288,7 +289,7 @@
    comments::updater - ui to edit one comment
 }%
 %TMPL:DEF{"comments::updater"}%<!-- -->
-<div id="cmtUpdateComment" class="jqUIDialog foswikiFormSteps {width:'auto', modal:true, draggable:true, resizable:false}" style="display:none" title="%MAKETEXT{"Edit comment"}%">
+<div id="cmtUpdateComment" class="jqUIDialog foswikiFormSteps {width:'auto', modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Edit comment"}%" style="display:none" >
   <form class="cmtUpdateCommentForm" name="updater" action="%SCRIPTURLPATH{"jsonrpc"}%/MetaCommentPlugin/updateComment" method="post">
     <input type="hidden" name="topic" value="%BASEWEB%.%BASETOPIC%" />
     <input type="hidden" name="comment_id" value="" />
@@ -311,7 +312,7 @@
    comments::replier - ui to reply to a comment
 }%
 %TMPL:DEF{"comments::replier"}%<!-- -->
-<div id="cmtReplyComment" class="jqUIDialog foswikiFormSteps {width:'auto', modal:true, draggable:true, resizable:false}" style="display:none" title="%MAKETEXT{"Reply on comment"}%">
+<div id="cmtReplyComment" class="jqUIDialog foswikiFormSteps {width:'auto', modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Reply on comment"}%" style="display:none">
   <form class="cmtReplyCommentForm" name="replier" action="%SCRIPTURLPATH{"jsonrpc"}%/MetaCommentPlugin/saveComment" method="post">
     <input type="hidden" name="topic" value="%BASEWEB%.%BASETOPIC%" />
     <input type="hidden" name="ref" value="" />
