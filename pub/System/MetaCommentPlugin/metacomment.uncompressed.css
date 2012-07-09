@@ -21,16 +21,6 @@
   margin:1em 0em; /* 18px 0px */
 }
 
-#cmtReplyComment .cmtAddCommentTitle1,
-.cmtAddComment .jqSimpleModalCancel,
-.cmtAddCommentTitle2 {
-  display:none;
-}
-#cmtReplyComment .jqSimpleModalCancel,
-#cmtReplyComment .cmtAddCommentTitle2 {
-  display:block;
-}
-
 .cmtCommentContainer {
   margin:1.3846em 0em;
   padding:1.3076em 1.3846em;
@@ -62,9 +52,9 @@ h3.cmtCommentNr {
   color:#444;
   margin:0em 0em 1em 1em;
 }
-.foswikiDialog .cmtDate,
-.foswikiDialog .cmtAuthor,
-.foswikiDialog .cmtCommentNr {
+.ui-dialog .cmtDate,
+.ui-dialog .cmtAuthor,
+.ui-dialog .cmtCommentNr {
   font-weight:bold;
   white-space:nowrap;
 }
@@ -110,7 +100,7 @@ a.cmtPermLink,
 .cmtComments textarea {
   width:99%;
 }
-.foswikiDialog textarea {
+.ui-dialog textarea {
   width:98%;
 }
 

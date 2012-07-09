@@ -186,6 +186,7 @@ When rendering a comment, the following variables can be used in the =format= st
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  07 Jul 2012: | 2.00 - replaced all simplemodals with jquery-ui dialogs |
 |  08 May 2012: | 1.12 - fixed integration with !PatternSkin |
 |  28 Mar 2012: | 1.11 - added ability to search for all comments in a web; \
                          improved comment rendering features; \
@@ -207,6 +208,5 @@ When rendering a comment, the following variables can be used in the =format= st
 |  Support: | Foswiki:Support/MetaCommentPlugin |
 
 <!-- Do _not_ attempt to edit this topic; it is auto-generated. -->
-
 
 %META:FILEATTACHMENT{name="MetaCommentSnap1.jpeg" attachment="MetaCommentSnap1.jpeg" attr="h" comment="" date="1266001003" path="MetaCommentSnap1.jpeg" size="51144" user="ProjectContributor" version="1"}%

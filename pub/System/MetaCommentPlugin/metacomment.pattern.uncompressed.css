@@ -15,31 +15,11 @@
   border:0px;
 }
 
-.simplemodal-container {
-  font-family: 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif;
-  -moz-box-shadow: 0px 3px 10px #888;
-  -webkit-box-shadow: 0px 3px 10px #888;
-  box-shadow: 0px 3px 10px #888;
-  border:1px solid #BDBEC5;
-}
-.simplemodal-container .foswikiDialogTitle {
-  margin:0;
-  padding:13px;
-  background-color:#ddd;
-  color:#b20000;
-  font-size:115%;
-  font-weight:bold;
-}
-.simplemodal-container .foswikiFormSteps {
+.ui-dialog .foswikiFormSteps {
   padding:0;
 }
-.simplemodal-container .foswikiFormStep {
+
+.ui-dialog .foswikiFormStep {
   margin:0;
   border:0;
-}
-a.simplemodal-close {
-  display:none;
-}
-#simplemodal-overlay {
-  background:#fff;
 }
