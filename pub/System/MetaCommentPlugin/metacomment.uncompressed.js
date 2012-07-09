@@ -62,18 +62,6 @@ jQuery(function($) {
           ";topic="+opts.web+"."+opts.topic +
           ";expand=metacomments";
 
-      if (!message) {
-        message = "Loading ...";
-      }
-      message = "<h1>"+message+"</h1>";
-      $.blockUI({
-        message:message,
-        fadeIn: 0,
-        fadeOut: 0,
-        overlayCSS: {
-          cursor:'progress'
-        }
-      });
       $container.load(url, function() {
         $.unblockUI();
         $container.height('auto');
@@ -115,8 +103,8 @@ jQuery(function($) {
           });
         },
         success: function(data, statusText, xhr) {
-          $.unblockUI();
           if(data.error) {
+            $.unblockUI();
             $errorContainer.after("<p><div class='foswikiErrorMessage'>Error: "+data.error.message+"</div></p>");
           } else {
             loadComments();
@@ -152,8 +140,8 @@ jQuery(function($) {
           });
         },
         success: function(data, statusText, xhr) {
-          $.unblockUI();
           if(data.error) {
+            $.unblockUI();
             $errorContainer.after("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
           } else {
             loadComments();
@@ -188,8 +176,8 @@ jQuery(function($) {
           });
         },
         success: function(data, statusText, xhr) {
-          $.unblockUI();
           if(data.error) {
+            $.unblockUI();
             $errorContainer.after("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
           } else {
             loadComments();
@@ -224,8 +212,8 @@ jQuery(function($) {
           });
         },
         success: function(data, statusText, xhr) {
-          $.unblockUI();
           if(data.error) {
+            $.unblockUI();
             $errorContainer.after("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
           } else {
             loadComments();
