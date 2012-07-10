@@ -247,7 +247,7 @@
    comments::confirmdelete - dialog to confirm a delete
 }%
 %TMPL:DEF{"comments::confirmdelete"}%<!-- -->
-<div id="cmtConfirmDelete" class="jqUIDialog foswikiFormSteps {width:300, modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Delete comment?"}%" style="display:none">
+<div id="cmtConfirmDelete" class="cmtDialog jqUIDialog foswikiFormSteps {width:300, modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Delete comment?"}%" style="display:none">
   <form class="cmtConfirmDeleteForm" name="confirm" action="%SCRIPTURLPATH{"jsonrpc"}%/MetaCommentPlugin/deleteComment" method="post">
     <input type="hidden" name="topic" value="%BASEWEB%.%BASETOPIC%" />
     <input type="hidden" name="comment_id" value="" />
@@ -268,7 +268,7 @@
    comments::confirmapprove - dialog to confirm an approval
 }%
 %TMPL:DEF{"comments::confirmapprove"}%<!-- -->
-<div id="cmtConfirmApprove" class="jqUIDialog foswikiFormSteps {width:300, modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Approve comment?"}%" style="display:none">
+<div id="cmtConfirmApprove" class="cmtDialog jqUIDialog foswikiFormSteps {width:300, modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Approve comment?"}%" style="display:none">
   <form class="cmtConfirmApproveForm" name="approve" action="%SCRIPTURLPATH{"jsonrpc"}%/MetaCommentPlugin/approveComment" method="post">
     <input type="hidden" name="topic" value="%BASEWEB%.%BASETOPIC%" />
     <input type="hidden" name="comment_id" value="" />
@@ -289,7 +289,7 @@
    comments::updater - ui to edit one comment
 }%
 %TMPL:DEF{"comments::updater"}%<!-- -->
-<div id="cmtUpdateComment" class="jqUIDialog foswikiFormSteps {width:'auto', modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Edit comment"}%" style="display:none" >
+<div id="cmtUpdateComment" class="cmtDialog jqUIDialog foswikiFormSteps {width:'auto', modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Edit comment"}%" style="display:none" >
   <form class="cmtUpdateCommentForm" name="updater" action="%SCRIPTURLPATH{"jsonrpc"}%/MetaCommentPlugin/updateComment" method="post">
     <input type="hidden" name="topic" value="%BASEWEB%.%BASETOPIC%" />
     <input type="hidden" name="comment_id" value="" />
@@ -312,7 +312,7 @@
    comments::replier - ui to reply to a comment
 }%
 %TMPL:DEF{"comments::replier"}%<!-- -->
-<div id="cmtReplyComment" class="jqUIDialog foswikiFormSteps {width:'auto', modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Reply on comment"}%" style="display:none">
+<div id="cmtReplyComment" class="cmtDialog jqUIDialog foswikiFormSteps {width:'auto', modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Reply on comment"}%" style="display:none">
   <form class="cmtReplyCommentForm" name="replier" action="%SCRIPTURLPATH{"jsonrpc"}%/MetaCommentPlugin/saveComment" method="post">
     <input type="hidden" name="topic" value="%BASEWEB%.%BASETOPIC%" />
     <input type="hidden" name="ref" value="" />

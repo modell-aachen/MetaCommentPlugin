@@ -22,6 +22,8 @@ As per the GPL, removal of this notice is prohibited.
 */
 
 jQuery(function($) {
+  var doneLoadDialogs = false;
+
   $(".cmtComments:not(.cmtCommentsInited)").livequery(function() {
     var $this = $(this),
         $container = $this.parent(),
@@ -29,7 +31,6 @@ jQuery(function($) {
           topic: foswiki.getPreference("TOPIC"),
           web: foswiki.getPreference("WEB")
         },
-        doneLoadDialogs = false;
         opts = $.extend({}, defaults, $this.metadata());
 
     /* function to reload all dialogs **************************************/
@@ -49,6 +50,7 @@ jQuery(function($) {
           }
         );
       } else {
+        $(".cmtDialog form").resetForm();
         callback.call();
       }
     };
