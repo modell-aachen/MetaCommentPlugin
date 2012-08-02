@@ -42,7 +42,7 @@ msgstr ""
 #: templates/metacomments.tmpl:257
 msgid "Are you sure that you want to delete comment %1 posted by %2 on %3?"
 msgstr ""
-"Sind Sie sicher, dass Sie Kommentar %1 von %2 erstellt am %2 löschen wollen?"
+"Sind Sie sicher, dass Sie Kommentar %1 von %2 erstellt am %3 löschen wollen?"
 
 #: templates/metacomments.tmpl:305 templates/metacomments.tmpl:327
 #: templates/metacomments.tmpl:402

@@ -18,7 +18,7 @@ use Foswiki::Plugins ();
 use Foswiki::Contrib::JsonRpcContrib ();
 
 our $VERSION = '$Rev$';
-our $RELEASE = '2.10';
+our $RELEASE = '2.11';
 our $SHORTDESCRIPTION = 'An easy to use comment system';
 our $NO_PREFS_IN_TOPIC = 1;
 our $core;

@@ -186,6 +186,7 @@ When rendering a comment, the following variables can be used in the =format= st
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|   2 Aug 2012: | 2.11 - fixed german translation (Foswiki:Main/JanKrueger) |
 |  31 Jul 2012: | 2.10 - unapproved anonymous comments are only visible to the same remote address for one hour;\
                          fixed jquery-ui dialogs not popping up properly; \
                          comments by moderators don't need any further approval;\
