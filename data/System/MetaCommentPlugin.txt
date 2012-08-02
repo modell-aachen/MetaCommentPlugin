@@ -186,6 +186,10 @@ When rendering a comment, the following variables can be used in the =format= st
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  31 Jul 2012: | 2.10 - unapproved anonymous comments are only visible to the same remote address for one hour;\
+                         fixed jquery-ui dialogs not popping up properly; \
+                         comments by moderators don't need any further approval;\
+                         fixed controls not showing up sometimes |
 |  10 Jul 2012: | 2.02 - properly reset modal dialogs when reusing them |
 |  07 Jul 2012: | 2.01 - use less progress messages |
 |               | 2.00 - replaced all simplemodals with jquery-ui dialogs |

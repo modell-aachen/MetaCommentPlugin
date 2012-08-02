@@ -21,6 +21,7 @@ use Foswiki::Contrib::JsonRpcContrib::Error ();
 use Foswiki::Time ();
 use Foswiki::Func ();
 use Error qw( :try );
+use Digest::MD5 ();
 
 use constant DEBUG => 1; # toggle me
 use constant DRY => 0; # toggle me
@@ -93,12 +94,17 @@ sub jsonRpcSaveComment {
   my $ref = $request->param('ref') || '';
   my $id = getNewId($meta);
   my $date = time();
+  my $fingerPrint = getFingerPrint($author);
+
+  my $isModerator = isModerator($wikiName, $web, $topic);
+  my $state = "new, " . ($isModerator ? "approved" : " unapproved");
 
   $meta->putKeyed(
     'COMMENT',
     {
       author => $author,
-      state => "new, unapproved",
+      fingerPrint => $fingerPrint,
+      state => $state,
       date => $date,
       modified => $date,
       name => $id,
@@ -109,9 +115,25 @@ sub jsonRpcSaveComment {
   );
 
   Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1}) unless DRY;
-  writeEvent("comment", "state=(new, unapproved) title=".($title||'').' text='.substr($cmtText, 0, 200)); # SMELL: does not objey approval state
+  writeEvent("comment", "state=($state) title=".($title||'').' text='.substr($cmtText, 0, 200)); # SMELL: does not objey approval state
 
   return;
+}
+
+##############################################################################
+sub getFingerPrint {
+  my $author = shift;
+
+  if ($author eq $Foswiki::cfg{DefaultUserWikiName}) {
+
+    # the fingerprint of a guest matches for one hour
+    my $timeStamp = Foswiki::Time::formatTime(time(), '$year-$mo-$day-$hours');
+
+    $author = ($ENV{REMOTE_ADDR}||'???').'::'.$timeStamp;
+  }
+
+  return Digest::MD5::md5_hex($author);
+
 }
 
 ##############################################################################
@@ -183,6 +205,7 @@ sub jsonRpcUpdateComment {
   my $title = $request->param('title') || '';
   my $cmtText = $request->param('text') || '';
   my $author = $comment->{author};
+  my $fingerPrint = getFingerPrint($author);
   my $date = $comment->{date};
   my $state = $comment->{state};
   my $modified = time();
@@ -199,6 +222,7 @@ sub jsonRpcUpdateComment {
     'COMMENT',
     {
       author => $author,
+      fingerPrint => $fingerPrint,
       state => $state,
       date => $date,
       modified => $modified,
@@ -376,6 +400,7 @@ sub getComments {
     push @topics, $topic;
   }
 
+  my $fingerPrint = getFingerPrint($wikiName);
   my %comments = ();
   foreach my $thisTopic (@topics) {
     my ($meta) = Foswiki::Func::readTopic($web, $thisTopic);
@@ -390,7 +415,7 @@ sub getComments {
       next if $params->{id} && $id ne $params->{id};
       next if $params->{ref} && $params->{ref} ne $comment->{ref};
       next if $params->{state} && (!$comment->{state} || $comment->{state} !~ /^($params->{state})$/);
-      next if $params->{moderation} eq 'on' && !($isModerator || $comment->{author} eq $wikiName) && (!$comment->{state} || $comment->{state} !~ /\bapproved\b/);
+      next if $params->{moderation} eq 'on' && !($isModerator || ($comment->{fingerPrint}||'') eq $fingerPrint) && (!$comment->{state} || $comment->{state} !~ /\bapproved\b/);
       next if $params->{moderation} eq 'on' && $params->{isclosed} && (!$comment->{state} || $comment->{state} !~ /\bapproved\b/);
 
       next if $params->{include} && !(
@@ -690,7 +715,7 @@ sub indexTopicHandler {
       'state' => ($comment->{state}||'null'),
       'container_id' => $web.'.'.$topic,
       'container_url' => Foswiki::Func::getViewUrl($web, $topic),
-#     'container_title' => $indexer->getTopicTitle($web, $topic, $meta),
+#      'container_title' => $indexer->getTopicTitle($web, $topic, $meta),
     );
     $doc->add_fields('catchall' => $title);
     $doc->add_fields('catchall' => $comment->{text});
