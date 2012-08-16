@@ -79,7 +79,7 @@ jQuery(function($) {
       },
       function() {
         var $this = $(this), $controls = $this.find(".cmtControls");
-        // $controls.stop(true, true).hide();
+        $controls.stop(true, true).hide();
         $this.removeClass("cmtHover");
       }
     );

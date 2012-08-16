@@ -78,7 +78,7 @@ a.cmtPermLink,
   position:absolute;
   bottom:1px;
   right:1px;
-  display:block;
+  display:none;
 }
 .cmtControls a {
   margin-left:0.6923em;
@@ -87,7 +87,7 @@ a.cmtPermLink,
   visibility:hidden;
 }
 .cmtState_closed .cmtControls {
-  display:block;
+  display:none;
 }
 .cmtCommentText {
   margin:0em 0em 1.3846em ;
@@ -111,7 +111,7 @@ a.cmtPermLink,
 .cmtStyle_insidetab h2.cmtCounter,
 .cmtStyle_insidetab .cmtAddComment h2,
 .cmtStyle_reverse .cmtAddComment h2 {
-  display:block;
+  display:none;
 }
 
 .cmtStyle_insidetab .twistyPlugin {
