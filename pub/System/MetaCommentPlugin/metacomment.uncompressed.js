@@ -79,10 +79,13 @@ jQuery(function($) {
       },
       function() {
         var $this = $(this), $controls = $this.find(".cmtControls");
-        $controls.stop(true, true).hide();
+        // $controls.stop(true, true).hide(); MODAC: don't fade out controls
         $this.removeClass("cmtHover");
       }
     );
+    
+    // MODAC: Show controls after page load
+    $this.find(".cmtControls").stop(true, true).fadeIn(500);
 
     /* ajaxify add and reply forms ******************************************/
     $(".cmtAddCommentForm, .cmtReplyCommentForm").livequery(function() {
