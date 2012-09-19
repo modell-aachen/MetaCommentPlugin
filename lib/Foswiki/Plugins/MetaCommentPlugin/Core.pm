@@ -698,7 +698,7 @@ sub indexTopicHandler {
     my $commentDoc = $indexer->newDocument();
     $commentDoc->add_fields(
       'id' => $id,
-#      'collection' => $collection,
+      'collection' => $collection,
       'language' => $language,
       'name' => $comment->{name},
       'type' => 'comment',
