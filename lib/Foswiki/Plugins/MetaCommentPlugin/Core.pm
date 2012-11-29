@@ -114,7 +114,7 @@ sub jsonRpcSaveComment {
     }
   );
 
-  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1}) unless DRY;
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, forcenewrevision=>1}) unless DRY;
   writeEvent("comment", "state=($state) title=".($title||'').' text='.substr($cmtText, 0, 200)); # SMELL: does not objey approval state
 
   return;
@@ -546,7 +546,7 @@ sub formatComments {
   } elsif ($params->{sort} eq 'date') {
     @sortedComments = sort {$a->{date} <=> $b->{date}} @$comments;
   } elsif ($params->{sort} eq 'modified') {
-    @sortedComments = sort {$a->{modifed} <=> $b->{modified}} @$comments;
+    @sortedComments = sort {$a->{modified} <=> $b->{modified}} @$comments;
   } elsif ($params->{sort} eq 'author') {
     @sortedComments = sort {$a->{author} cmp $b->{author}} @$comments;
   }
@@ -687,7 +687,7 @@ sub indexTopicHandler {
     my $webtopic = "$web.$topic";
     $webtopic =~ s/\//./g;
     my $id = $webtopic.'#'.$comment->{name};
-    my $url = Foswiki::Func::getScriptUrl($web, $topic, 'view', '#'=>'comment'.$comment->{name});
+    my $url = $indexer->getScriptUrlPath($web, $topic, 'view', '#'=>'comment'.$comment->{name});
     my $title = $comment->{title};
     $title = substr $comment->{text}, 0, 20 unless $title;
 
@@ -698,7 +698,7 @@ sub indexTopicHandler {
     my $commentDoc = $indexer->newDocument();
     $commentDoc->add_fields(
       'id' => $id,
-#      'collection' => $collection,
+      'collection' => $collection,
       'language' => $language,
       'name' => $comment->{name},
       'type' => 'comment',
@@ -715,7 +715,7 @@ sub indexTopicHandler {
       'state' => ($comment->{state}||'null'),
       'container_id' => $web.'.'.$topic,
       'container_url' => Foswiki::Func::getViewUrl($web, $topic),
-#      'container_title' => $indexer->getTopicTitle($web, $topic, $meta),
+      'container_title' => $indexer->getTopicTitle($web, $topic, $meta),
     );
     $doc->add_fields('catchall' => $title);
     $doc->add_fields('catchall' => $comment->{text});
