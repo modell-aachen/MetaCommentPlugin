@@ -336,7 +336,8 @@
   then="comment::photo::tip" 
   else="comment::photo::default"
   web="%web%"
-  topic="%topic%"
+  topic="%IF{"'%topic%'!=''" then="%topic%" else="WikiGuest"}%"
+  align="%align%"
 }%%TMPL:END%
 
 %TMPL:DEF{"comment::photo::default"}%<!-- -->

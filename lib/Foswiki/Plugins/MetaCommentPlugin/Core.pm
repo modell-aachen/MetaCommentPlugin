@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2009-2012 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2009-2013 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -669,6 +669,20 @@ sub writeEvent {
 }
 
 ##############################################################################
+sub isModerated {
+  my ($this, $web, $topic, $meta) = @_;
+
+  ($meta) = Foswiki::Func::readTopic($web, $topic) unless defined $meta;
+
+  my $prefs = $this->{session}->{prefs}->loadPreferences($meta);
+  my $isModerated = $prefs->get("COMMENTMODERATION");
+  $isModerated = $prefs->getLocal("COMMENTMODERATION") unless defined $isModerated;
+  $isModerated = Foswiki::Func::getPreferencesValue("COMMENTMODERATION", $web) unless defined $isModerated;
+
+  return Foswiki::Func::isTrue($isModerated, 0);
+}
+
+##############################################################################
 sub indexTopicHandler {
   my ($this, $indexer, $doc, $web, $topic, $meta, $text) = @_;
 
@@ -678,6 +692,8 @@ sub indexTopicHandler {
   my @comments = $meta->find('COMMENT');
   return unless @comments;
 
+  my @aclFields = $indexer->getAclFields($web, $topic, $meta);
+  my $isModerated = $this->isModerated($web, $topic, $meta);
 
   foreach my $comment (@comments) {
 
@@ -692,7 +708,9 @@ sub indexTopicHandler {
     $title = substr $comment->{text}, 0, 20 unless $title;
 
     my $collection = $Foswiki::cfg{SolrPlugin}{DefaultCollection} || "wiki";
-    my $language = Foswiki::Func::getPreferencesValue('CONTENT_LANGUAGE') || "en"; # SMELL: standardize
+    my $language = $indexer->getContentLanguage($web, $topic);
+
+    my $state = $comment->{state}||'null';
 
     # reindex this comment
     my $commentDoc = $indexer->newDocument();
@@ -712,12 +730,21 @@ sub indexTopicHandler {
       'title' => $title,
       'text' => $comment->{text},
       'url' => $url,
-      'state' => ($comment->{state}||'null'),
+      'state' => $state,
       'container_id' => $web.'.'.$topic,
       'container_url' => Foswiki::Func::getViewUrl($web, $topic),
       'container_title' => $indexer->getTopicTitle($web, $topic, $meta),
     );
-    $doc->add_fields('catchall' => $title);
+
+
+    if ($isModerated && $state =~ /\bunapproved\b/) {
+      $commentDoc->add_fields('access_granted' => '');
+    } else {
+      $commentDoc->add_fields(@aclFields) if @aclFields;
+    }
+
+    
+$doc->add_fields('catchall' => $title);
     $doc->add_fields('catchall' => $comment->{text});
     $doc->add_fields('contributor' => $comment->{author});
 
