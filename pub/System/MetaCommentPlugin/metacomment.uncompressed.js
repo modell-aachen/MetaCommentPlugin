@@ -94,7 +94,9 @@ jQuery(function($) {
           rev = $form.find("input[name='ref']").val(),
           $errorContainer = rev?$this.find("a[name='comment"+rev+"']").parent().parent():$form.parent();
           $this.find(".foswikiErrorMessage").remove();
-          $form.parent().dialog("close");
+          if ($form.parent().is(".ui-dialog")) {
+            $form.parent().dialog("close");
+          }
           $.blockUI({
             message:"<h1>Submitting comment ...</h1>",
             fadeIn: 0,
