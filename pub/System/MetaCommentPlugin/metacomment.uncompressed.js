@@ -317,6 +317,13 @@ jQuery(function($) {
       return false;
     });
 
+    // scroll to comments hash
+    var hash = window.location.hash;
+    if (hash.match(/^#comment\d\.\d+$/)) {
+      window.location.hash = "";
+      window.location.hash = hash;
+    }
+
     // work around blinking twisties
     setTimeout(function() {
       $this.find(".twistyPlugin").show();

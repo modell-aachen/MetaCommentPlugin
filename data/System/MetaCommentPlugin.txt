@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1305044315" format="1.1" reprev="3" version="3"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1376400028" format="1.1" reprev="4" version="4"}%
 ---+!! !MetaCommentPlugin
 %SHORTDESCRIPTION%
 
@@ -77,13 +77,39 @@ on all of the web.
 
 !MetaCommentPlugin separaters permission to comment on a topic from plain change access rights of a topic.
 That way you may restrict write access to a topic while still open it up for commenting to a wider audience.
-This is done by using a separate =COMMENT= access control list. Given the current topic is write restricted only
+This is done by using a separate =COMMENT= access control list. 
+
+Given the current topic is write restricted only
 allowing the original author to make changes, the following setting will permit commenting:
 
 <verbatim>   * Set ALLOWTOPICCOMMENT = <comma separated list of users and/or groups></verbatim>
 
+You may also want implement a minimal set of protection using
+
+<verbatim>   * Set ALLOWYWEBCOMMENT = <comma separated list of users and/or groups></verbatim>
+
+and / or
+
+<verbatim>   * Set DENYWEBCOMMENT = <comma separated list of users and/or groups></verbatim>
+
+in the <nop>WebPreferences.
+
+<div class="foswikiWarningMessage">
+Note that by default no permissions for =COMMENT= access are set. So everybody is _allowed_ to comment.
+</div>
+
 See [[System.AccessControl][AccessControl]] for more information on setting up access control lists for various
 use cases.
+
+---++ Anonymous commenting
+
+Anonymous commenting is disabled using the ={MetaCommentPlugin}{AnonymousCommenting}= configuration setting by default.
+This will protect your site from guests spamming your pages. When this flag is disabled, users will at least
+have to log in to be able to comment. Normal access control rules then still apply.
+
+Contrary to the normal Foswiki access control mechanism it does not suffice to set the ALLOW rules for a guest accordingly. 
+It is required to at least enable the ={MetaCommentPlugin}{AnonymousCommenting}= flag in your site configuration.
+Once enabled, you are still able to block anonymous commenting using the normal access control rules per web and/or topic.
 
 ---+++ Moderation
 
@@ -186,6 +212,7 @@ When rendering a comment, the following variables can be used in the =format= st
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  13 Aug 2013: | 2.40 - disable anonymous commenting by default | 
 |  02 Jun 2013: | 2.32 - fixed reply-modal not closing after submit |
 |  23 May 2013: | 2.31 - fixed commenting using latest jquery/jquery-ui combo |
 |  14 Mar 2013: | 2.30 - fixed access rights on unapproved comments being index by solr |

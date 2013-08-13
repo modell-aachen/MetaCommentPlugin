@@ -5,12 +5,18 @@
 %CLEAR%
 <div id='comments' class='cmtComments cmtStyle_%IF{"defined COMMENTFORMAT" then="%COMMENTFORMAT%" else="%TMPL:P{"comments::format::default"}%"}% cmtState_%IF{"defined COMMENTSTATE" then="%COMMENTSTATE%" else="open"}% cmtModeration_%IF{"defined COMMENTMODERATION" then="%COMMENTMODERATION%" else="off"}%'>
 %TMPL:P{"comments::topbar"}%<!-- -->
-%IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
-  then="$percntTMPL:P{\"comments::add::simple\"}$percnt"
+%IF{"$COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
+  then="%IF{"context canComment" 
+    then="$dollarpercntTMPL:P{\\"comments::add::simple\\"}$dollarpercnt"
+    else="$dollarpercntTMPL:P{\\"comments::add::denied\\"}$dollarpercnt"
+  }%"
 }%<!-- -->
 %TMPL:P{"comments::list"}%<!-- -->
-%IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and not $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
-  then="$percntTMPL:P{\"comments::add::default\"}$percnt"
+%IF{"not $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
+  then="%IF{"context canComment and not $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
+    then="$dollarpercntTMPL:P{\\"comments::add::default\\"}$dollarpercnt"
+    else="$dollarpercntTMPL:P{\\"comments::add::denied\\"}$dollarpercnt"
+  }%"
 }%<!-- -->
 </div>
 <!-- -->%TMPL:END%
@@ -56,6 +62,20 @@
   %IF{"'%TMPL:P{"comments::format"}%' = 'threaded'" then="threaded=\"on\"" else="threaded=\"off\""}%
   %IF{"$COMMENTMODERATION='on'" then="moderation=\"on\"" else="moderation=\"off\""}%
 }%<!-- -->%TMPL:END%
+
+%{ ################################################################################ 
+   comments::add::denied - display a message why somebody can't comment
+}%
+%TMPL:DEF{"comments::add::denied"}%<!-- -->
+<div class='cmtDenyMessage'>
+%IF{"context authenticated"
+  then="%MAKETEXT{"Sorry, commenting not allowed."}%"
+  else="%IF{"context registration_enabled"
+    then="%MAKETEXT{"Please [[[_1]][login]] or [[[_2]][register]] to comment." args="%SCRIPTURLPATH{login}%/%BASEWEB%/%BASETOPIC%, %SYSTEMWEB%.UserRegistration"}%"
+    else="%MAKETEXT{"Please [[[_1]][login]] to comment." args="%SCRIPTURLPATH{login}%/%BASEWEB%/%BASETOPIC%"}%"
+  }%"
+}%
+</div>%TMPL:END%
 
 %{ ################################################################################ 
    comments::add::default - constructing the form to add a new comment
@@ -149,16 +169,16 @@
 }%
 %TMPL:DEF{"comments::controls"}%<!-- -->
 <div class='cmtControls'>
-  %IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and $COMMENTSTATE!='closed' and not ('%TMPL:P{"comments::format"}%' =~ 'reverse|insidetab')" 
+  %IF{"context canComment and $COMMENTSTATE!='closed' and not ('%TMPL:P{"comments::format"}%' =~ 'reverse|insidetab')" 
     then="<a href='#' class='cmtReply' title='%MAKETEXT{"Reply on this comment"}%'>%JQICON{"comment"}%</a>"
   }%<!-- -->
-  %IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and $COMMENTSTATE!='closed'" 
+  %IF{"context canComment and $COMMENTSTATE!='closed'" 
     then="<a href='#' class='cmtEdit' title='%MAKETEXT{"Edit this comment"}%'>%JQICON{"pencil"}%</a>"
   }%<!-- --> 
   %IF{"'%BASEWEB%.%BASETOPIC%' allows 'APPROVE' and not('$state'=~'\bapproved\b') and $COMMENTMODERATION='on'"
     then="<a href='#' class='cmtApprove' title='%MAKETEXT{"Approve this comment"}%'>%JQICON{"medal_gold_1"}%</a>"
   }%<!-- -->
-  %IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and $COMMENTSTATE!='closed'" 
+  %IF{"context canComment and $COMMENTSTATE!='closed'" 
     then="<a href='#' class='cmtDelete' title='%MAKETEXT{"Delete this comment"}%'>%JQICON{"bin"}%</a>"
   }%<!-- -->
 </div>

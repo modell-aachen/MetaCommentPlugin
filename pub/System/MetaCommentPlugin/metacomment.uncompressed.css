@@ -114,3 +114,6 @@ a.cmtPermLink,
   display:none; /* switched on by js */
 }
 
+.cmtDenyMessage {
+  margin:1.3846em 0em 0em;
+}
