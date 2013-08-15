@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1376400028" format="1.1" reprev="4" version="4"}%
+%META:TOPICINFO{author="micha" comment="reprev" date="1376560947" format="1.1" reprev="5" version="5"}%
 ---+!! !MetaCommentPlugin
 %SHORTDESCRIPTION%
 
@@ -101,7 +101,7 @@ Note that by default no permissions for =COMMENT= access are set. So everybody i
 See [[System.AccessControl][AccessControl]] for more information on setting up access control lists for various
 use cases.
 
----++ Anonymous commenting
+---+++ Anonymous commenting
 
 Anonymous commenting is disabled using the ={MetaCommentPlugin}{AnonymousCommenting}= configuration setting by default.
 This will protect your site from guests spamming your pages. When this flag is disabled, users will at least
@@ -197,6 +197,46 @@ When rendering a comment, the following variables can be used in the =format= st
    * $topic: the topic this is a comment of
    * $permlink: a link to this comment
 
+Example:
+
+Use this to render a list of all unapproved comments in a web:
+
+<verbatim class="tml">
+%METACOMMENTS{web="Sandbox" 
+  search="1" 
+  header="| *Comment* | *Topic* | *Comment* | *Author* | *Date* | $n"
+  format="| [[$permlink][Comment$id]] | [[$web.$topic]] |$title $summary | <nobr>[[%USERSWEB%.$author]]</nobr> | <nobr>$date</nobr> |$n"
+  footer="<span class='foswikiAlert'>$count</span>"
+  sort="date"
+  reverse="on"
+  state=".*\bunapproved\b.*"
+}%
+</verbatim>
+
+---++ RSS feeds
+
+By default every page has got a separate RSS feed with all comments in it. This allows to monitor individual discussions. To monitor _all_
+discussions in a web use the =metacommmentrss= template. Alternatively the =webcomments= section below renders a link to it with an RSS icon.
+Call it using:
+
+<verbatim class="tml">
+%INCLUDE{"%SYSTEMWEB%.MetaCommentPlugin" section="webcomments"
+  THEWEB="<webName>"
+  WHERE="<query>"
+  LIMIT="<limit>"
+}%
+</verbatim>
+
+The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
+
+   * =THEWEB= specifies the web to search for comments, defaults to the current web
+   * =WHERE= specifies a filter on topics while searching =THEWEB=, defaults to =1= (means: all topics)
+   * =LIMIT= limits the number of recent comments to be listed, defaults to =10= 
+
+<verbatim class="tml">
+%STARTSECTION{"webcomments"}%<a href='%SCRIPTURLPATH{"view"}%/%THEWEB{default="%BASEWEB%"}%/%BASETOPIC%?template=metacommentsrss;contenttype=text/xml;search=%WHERE{default="1"}%;limit=%LIMIT{default="10"}%' class='cmtRssFeed foswikiGrayText foswikiSmallish foswikiHideOnPrint' title='%MAKETEXT{"RSS comments feed for the [_1] web" args="%THEWEB{default="%BASEWEB%"}%"}%'>%JQICON{"feed"}% RSS</a>%ENDSECTION{"webcomments"}%
+</verbatim>
+
 ---++ Installation Instructions
 
 %$INSTALL_INSTRUCTIONS%
@@ -212,6 +252,11 @@ When rendering a comment, the following variables can be used in the =format= st
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  15 Aug 2013: | 2.50 - protect comments from being edited by others; \
+                         fixed error reporting using pnotify now; \
+                         reject commenting when discussion is already closed; \
+                         added example how to display all unapproved comments in a web; \
+                         added docu how to render an rss feed of all comments in a web |
 |  13 Aug 2013: | 2.40 - disable anonymous commenting by default | 
 |  02 Jun 2013: | 2.32 - fixed reply-modal not closing after submit |
 |  23 May 2013: | 2.31 - fixed commenting using latest jquery/jquery-ui combo |

@@ -22,7 +22,7 @@ use Foswiki::Func ();
 use Error qw( :try );
 use Digest::MD5 ();
 
-use constant DEBUG => 1; # toggle me
+use constant DEBUG => 0; # toggle me
 use constant DRY => 0; # toggle me
 
 # Error codes for json-rpc response
@@ -101,6 +101,10 @@ sub jsonRpcSaveComment {
            Foswiki::Func::checkAccessPermission('CHANGE', $this->{wikiName}, undef, $topic, $web);
 
   my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
+  my $isModerator = $this->isModerator($web, $topic, $meta);
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Discussion closed")
+    unless $isModerator || (Foswiki::Func::getPreferencesValue("COMMENTSTATE")||'open') ne 'closed';
 
   my $author = $request->param('author') || $this->{wikiName};
   my $title = $request->param('title') || '';
@@ -110,8 +114,18 @@ sub jsonRpcSaveComment {
   my $date = time();
   my $fingerPrint = getFingerPrint($author);
 
-  my $isModerator = $this->isModerator($web, $topic);
-  my $state = "new, " . ($isModerator ? "approved" : " unapproved");
+  my @state = ();
+  push @state, "new";
+
+  if ($this->isModerated($web, $topic, $meta)) {
+    if ($this->isModerator($web, $topic, $meta)) {
+      push @state, "approved";
+    } else {
+      push @state, "unapproved";
+    }
+  }
+
+  my $state = join(", ", @state);
 
   $meta->putKeyed(
     'COMMENT',
@@ -166,10 +180,11 @@ sub jsonRpcApproveComment {
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     unless Foswiki::Func::checkAccessPermission('CHANGE', $this->{wikiName}, undef, $topic, $web);
 
-  throw Foswiki::Contrib::JsonRpcContrib::Error(1001, "Approval not allowed")
-    unless $this->isModerator($web, $topic);
-
   my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
+  my $isModerator = $this->isModerator($web, $topic, $meta);
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(1001, "Approval not allowed")
+    unless $isModerator;
 
   my $id = $request->param('comment_id') || '';
   my $comment = $meta->get('COMMENT', $id);
@@ -206,6 +221,10 @@ sub jsonRpcUpdateComment {
            Foswiki::Func::checkAccessPermission('CHANGE', $this->{wikiName}, undef, $topic, $web);
 
   my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
+  my $isModerator = $this->isModerator($web, $topic, $meta);
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Discussion closed")
+    unless $isModerator || (Foswiki::Func::getPreferencesValue("COMMENTSTATE")||'open') ne 'closed';
 
   my $id = $request->param('comment_id') || '';
   my $comment = $meta->get('COMMENT', $id);
@@ -213,29 +232,34 @@ sub jsonRpcUpdateComment {
   throw Foswiki::Contrib::JsonRpcContrib::Error(1000, "Comment not found")
     unless $comment;
 
+  my $fingerPrint = getFingerPrint($this->{wikiName});
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Acccess denied")
+    unless $isModerator || $fingerPrint eq ($comment->{fingerPrint}||'');
+
   my $title = $request->param('title') || '';
   my $cmtText = $request->param('text') || '';
-  my $author = $comment->{author};
-  my $fingerPrint = getFingerPrint($author);
-  my $date = $comment->{date};
-  my $state = $comment->{state};
   my $modified = time();
   my $ref = $request->param('ref');
   $ref = $comment->{ref} unless defined $ref;
 
+  my $state = $comment->{state};
   my @new_state = ();
   push (@new_state, "updated") if $state =~ /\b(new|updated)\b/;
-  push (@new_state, "approved") if $state =~ /\bapproved\b/;
-  push (@new_state, "unapproved") if $state =~ /\bunapproved\b/;
+  if ($this->isModerated($web, $topic, $meta)) {
+    push (@new_state, "approved") if $state =~ /\bapproved\b/;
+    push (@new_state, "unapproved") if $state =~ /\bunapproved\b/;
+  }
+
   $state = join(", ", @new_state);
 
   $meta->putKeyed(
     'COMMENT',
     {
-      author => $author,
-      fingerPrint => $fingerPrint,
+      author => $comment->{author},
+      fingerPrint => $comment->{fingerPrint},
+      date => $comment->{date},
       state => $state,
-      date => $date,
       modified => $modified,
       name => $id,
       text => $cmtText,
@@ -268,12 +292,21 @@ sub jsonRpcDeleteComment {
            Foswiki::Func::checkAccessPermission('CHANGE', $this->{wikiName}, undef, $topic, $web);
 
   my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
+  my $isModerator = $this->isModerator($web, $topic, $meta);
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Discussion closed")
+    unless $isModerator || (Foswiki::Func::getPreferencesValue("COMMENTSTATE")||'open') ne 'closed';
 
   my $id = $request->param('comment_id') || '';
   my $comment = $meta->get('COMMENT', $id);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(1000, "Comment not found")
     unless $comment;
+
+  my $fingerPrint = getFingerPrint($this->{wikiName});
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Acccess denied")
+    unless $isModerator || $fingerPrint eq ($comment->{fingerPrint}||'');
 
   # relocate replies by assigning them to the parent
   my $parentId = $comment->{ref} || '';
@@ -301,9 +334,11 @@ sub writeDebug {
 
 ##############################################################################
 sub isModerator {
-  my ($this, $web, $topic) = @_;
+  my ($this, $web, $topic, $meta) = @_;
   
-  return 1 if Foswiki::Func::checkAccessPermission("MODERATE", $this->{wikiName}, undef, $topic, $web);
+  return 1 if Foswiki::Func::isAnAdmin();
+  return 0 unless $this->isModerated($web, $topic, $meta);
+  return 1 if Foswiki::Func::checkAccessPermission("MODERATE", $this->{wikiName}, undef, $topic, $web, $meta);
   return 0;
 }
 
@@ -359,7 +394,8 @@ sub METACOMMENTS {
   $params->{isclosed} = ((Foswiki::Func::getPreferencesValue("COMMENTSTATE")||'open') eq 'closed')?1:0;
 
   # get all comments data
-  my $comments = $this->getComments($theWeb, $theTopic, $params);
+  my ($meta) = Foswiki::Func::readTopic($theWeb, $theTopic);
+  my $comments = $this->getComments($theWeb, $theTopic, $meta, $params);
 
   return '' unless $comments;
   my $count = scalar(keys %$comments);
@@ -392,9 +428,11 @@ sub METACOMMENTS {
 
 ##############################################################################
 sub getComments {
-  my ($this, $web, $topic, $params) = @_;
+  my ($this, $web, $topic, $meta, $params) = @_;
 
-  my $isModerator = $this->isModerator($web, $topic);
+  ($meta) = Foswiki::Func::readTopic($web, $topic) unless defined $meta;
+
+  my $isModerator = $this->isModerator($web, $topic, $meta);
 
   #writeDebug("called getComments");
 
@@ -408,8 +446,10 @@ sub getComments {
 
   my $fingerPrint = getFingerPrint($this->{wikiName});
   my %comments = ();
+
   foreach my $thisTopic (@topics) {
     my ($meta) = Foswiki::Func::readTopic($web, $thisTopic);
+    my $isModerated = $this->isModerated($web, $thisTopic, $meta);
 
     my @comments = $meta->find('COMMENT');
     foreach my $comment (@comments) {
@@ -421,8 +461,10 @@ sub getComments {
       next if $params->{id} && $id ne $params->{id};
       next if $params->{ref} && $params->{ref} ne $comment->{ref};
       next if $params->{state} && (!$comment->{state} || $comment->{state} !~ /^($params->{state})$/);
-      next if $params->{moderation} eq 'on' && !($isModerator || ($comment->{fingerPrint}||'') eq $fingerPrint) && (!$comment->{state} || $comment->{state} !~ /\bapproved\b/);
-      next if $params->{moderation} eq 'on' && $params->{isclosed} && (!$comment->{state} || $comment->{state} !~ /\bapproved\b/);
+      if ($isModerated) {
+        next if $params->{moderation} eq 'on' && !($isModerator || ($comment->{fingerPrint}||'') eq $fingerPrint) && (!$comment->{state} || $comment->{state} =~ /\bunapproved\b/);
+        next if $params->{moderation} eq 'on' && $params->{isclosed} && (!$comment->{state} || $comment->{state} =~ /\bunapproved\b/);
+      }
 
       next if $params->{include} && !(
         $comment->{author} =~ /$params->{include}/ ||

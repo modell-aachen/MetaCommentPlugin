@@ -26,7 +26,7 @@
 }%
 %TMPL:DEF{"metacomments::init"}%<!-- -->
 <!-- %IMAGE% -->
-<!-- %JQREQUIRE{"blockui, ui::dialog, form, jsonrpc, button"}% -->
+<!-- %JQREQUIRE{"blockui, ui::dialog, form, jsonrpc, button, pnotify"}% -->
 %ADDTOZONE{
   "head" 
   id="METACOMMENTPLUGIN::CSS" 
@@ -34,7 +34,7 @@
 }%%ADDTOZONE{
   "script" 
   id="METACOMMENTPLUGIN::JS" 
-  requires="JQUERYPLUGIN::UI, JQUERYPLUGIN::FORM, JQUERYPLUGIN::JSONRPC" 
+  requires="JQUERYPLUGIN::UI, JQUERYPLUGIN::FORM, JQUERYPLUGIN::JSONRPC, JQUERYPLUGIN::PNOTIFY" 
   text="<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/metacomment.js'></script>"
 }%<!-- -->%TMPL:END%
 
@@ -136,7 +136,7 @@
 }%
 %TMPL:DEF{"comments::format::linear"}%<!-- -->
 <div class='cmtCommentContainer cmtComment$evenodd' id='cmtComment$index'>
-  <div id='comment$id' class='cmtComment $percntIF{"not('$state'=~'\bapproved\b')" then="cmtCommentNeedsApproval"}$percnt {comment_id:"$id", index:"$index", author:"$percntSPACEOUT{$author}$percnt", date:"$date"}'>
+  <div id='comment$id' class='cmtComment $percntIF{"$COMMENTMODERATION='on' and '$state'=~'\bunapproved\b'" then="cmtCommentNeedsApproval"}$percnt {comment_id:"$id", index:"$index", author:"$percntSPACEOUT{$author}$percnt", date:"$date"}'>
     <h3 class='foswikiRight cmtCommentNr'>$index</h3>
     %TMPL:P{
       "comment::photo" 
@@ -172,13 +172,13 @@
   %IF{"context canComment and $COMMENTSTATE!='closed' and not ('%TMPL:P{"comments::format"}%' =~ 'reverse|insidetab')" 
     then="<a href='#' class='cmtReply' title='%MAKETEXT{"Reply on this comment"}%'>%JQICON{"comment"}%</a>"
   }%<!-- -->
-  %IF{"context canComment and $COMMENTSTATE!='closed'" 
+  %IF{"($ismoderator or '$author'='%WIKINAME%') and $COMMENTSTATE!='closed'" 
     then="<a href='#' class='cmtEdit' title='%MAKETEXT{"Edit this comment"}%'>%JQICON{"pencil"}%</a>"
   }%<!-- --> 
-  %IF{"'%BASEWEB%.%BASETOPIC%' allows 'APPROVE' and not('$state'=~'\bapproved\b') and $COMMENTMODERATION='on'"
+  %IF{"$COMMENTMODERATION='on' and $ismoderator and '$state'=~'\bunapproved\b'"
     then="<a href='#' class='cmtApprove' title='%MAKETEXT{"Approve this comment"}%'>%JQICON{"medal_gold_1"}%</a>"
   }%<!-- -->
-  %IF{"context canComment and $COMMENTSTATE!='closed'" 
+  %IF{"($ismoderator or '$author'='%WIKINAME%') and $COMMENTSTATE!='closed'" 
     then="<a href='#' class='cmtDelete' title='%MAKETEXT{"Delete this comment"}%'>%JQICON{"bin"}%</a>"
   }%<!-- -->
 </div>
@@ -193,7 +193,7 @@
    comments::format::threaded - format comments in threaded format
 }%
 %TMPL:DEF{"comments::format::threaded"}%<!-- -->
-<div class='cmtCommentContainer cmtComment$evenodd $percntIF{"$COMMENTMODERATION='on' and not('$state'=~'\bapproved\b')" then="cmtCommentNeedsApproval"}$percnt' id='cmtComment$index'>
+<div class='cmtCommentContainer cmtComment$evenodd $percntIF{"$COMMENTMODERATION='on' and '$state'=~'\bunapproved\b'" then="cmtCommentNeedsApproval"}$percnt' id='cmtComment$index'>
   <div id='comment$id' class='cmtComment {comment_id:"$id", index:"$index", author:"$percntSPACEOUT{$author}$percnt", date:"$date"}'>
     <h3 class='foswikiRight cmtCommentNr'>$index</h3>
     %TMPL:P{
@@ -206,7 +206,7 @@
     }%<!-- -->
     <div class='cmtCommentText'>$n$text</div>
     %TMPL:P{"comments::controls"}%<!-- -->
-    $percntIF{"$COMMENTMODERATION='on' and not('$state'=~'\bapproved\b')"
+    $percntIF{"$COMMENTMODERATION='on' and '$state'=~'\bunapproved\b'"
       then="<div class='foswikiRight foswikiAlert cmtAlert'>(%MAKETEXT{"needs approval"}%)</div>"
     }$percnt<!-- -->
     <span class='foswikiSmallish foswikiGrayText'>
@@ -244,7 +244,7 @@
     }%<!-- -->
     <div class='cmtCommentText'>$n$text</div>
     %TMPL:P{"comments::controls"}%<!-- -->
-    $percntIF{"$COMMENTMODERATION='on' and not('$state'=~'\bapproved\b')"
+    $percntIF{"$COMMENTMODERATION='on' and '$state'=~'\bunapproved\b'"
       then="<div class='foswikiRight foswikiAlert cmtAlert'>(%MAKETEXT{"needs approval"}%)</div>"
     }$percnt<!-- -->
     <span class='foswikiSmallish foswikiGrayText'>
