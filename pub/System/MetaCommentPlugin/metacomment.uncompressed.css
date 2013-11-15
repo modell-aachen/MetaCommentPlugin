@@ -1,0 +1,120 @@
+.cmtComments {
+  margin:1.3846em 0em 0em;
+}
+
+.cmtRssFeed {
+  float:right;
+  text-decoration:none;
+  padding:2px 2px 0px 2px;
+}
+.cmtRssFeed:hover {
+  background-color:#eee;
+  color:inherit;
+  text-decoration:none;
+}
+
+.cmtComments h3 {
+  margin:0px;
+}
+
+.foswikiMetaData .cmtAddComment {
+  margin:1em 0em; /* 18px 0px */
+}
+
+.cmtCommentContainer {
+  margin:1.3846em 0em;
+  padding:1.3076em 1.3846em;
+}
+
+.cmtCommentContainer .cmtAddComment {
+  margin-left:-1.3846em;
+  margin-right:-1.3846em;
+  margin-bottom:-1.3846em;
+}
+.cmtCommentContainer.cmtCommentOdd {
+  border-top:1px #ddd solid;
+  border-bottom:1px #ddd solid;
+}
+.cmtSubComments .cmtCommentContainer {
+  margin:0px;
+  padding-right:5px;
+}
+.cmtSubComments {
+  border-left:5px solid #ddd;
+  margin-top:1.3846em;
+}
+
+.cmtComments h3 {
+  margin:0em 0em 1.0588em;
+}
+h3.cmtCommentNr {
+  float:right;
+  color:#444;
+  margin:0em 0em 1em 1em;
+}
+.ui-dialog .cmtDate,
+.ui-dialog .cmtAuthor,
+.ui-dialog .cmtCommentNr {
+  font-weight:bold;
+  white-space:nowrap;
+}
+.cmtControls {
+  background-color:#fff;
+  padding:0em 1.3846em 1.3076em;
+  margin:0em -1.3846em -1.3076em;
+}
+.cmtCommentOdd .cmtControls,
+.cmtCommentOdd {
+  background-color:#f9f9f9;
+}
+.cmtComment {
+  position:relative;
+}
+a.cmtPermLink,
+.cmtAuthor a {
+  text-decoration:none;
+}
+.cmtControls {
+  position:absolute;
+  bottom:1px;
+  right:1px;
+  display:none;
+}
+.cmtControls a {
+  margin-left:0.6923em;
+}
+.cmtHover .cmtAlert {
+  visibility:hidden;
+}
+.cmtState_closed .cmtControls {
+  display:none;
+}
+.cmtCommentText {
+  margin:0em 0em 1.3846em ;
+}
+.cmtComments input,
+.cmtComments textarea {
+  font-family:arial,Helvetica,sans-serif;
+  font-size:inherit;
+}
+.cmtComments textarea {
+  width:99%;
+}
+.ui-dialog textarea {
+  width:98%;
+}
+
+.cmtComment .imagePlain_left,
+.cmtComment .imageSimple_left {
+  margin:0em 0.6923em 0.3077em 0em; /* 0px 9px 4px 0px */
+}
+.cmtStyle_insidetab h2.cmtCounter,
+.cmtStyle_insidetab .cmtAddComment h2,
+.cmtStyle_reverse .cmtAddComment h2 {
+  display:none;
+}
+
+.cmtStyle_insidetab .twistyPlugin {
+  display:none; /* switched on by js */
+}
+

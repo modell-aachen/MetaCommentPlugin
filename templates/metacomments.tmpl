@@ -1,0 +1,406 @@
+%{ ################################################################################ 
+   metacomments - entry point
+}%
+%TMPL:DEF{"metacomments"}%<!-- -->
+<div class='cmtComments cmtStyle_%IF{"defined COMMENTFORMAT" then="%COMMENTFORMAT%" else="%TMPL:P{"comments::format::default"}%"}% cmtState_%IF{"defined COMMENTSTATE" then="%COMMENTSTATE%" else="open"}% cmtModeration_%IF{"defined COMMENTMODERATION" then="%COMMENTMODERATION%" else="off"}%'>
+<a name='comments'></a>
+%TMPL:P{"comments::topbar"}%<!-- -->
+%IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
+  then="$percntTMPL:P{\"comments::add::simple\"}$percnt"
+}%<!-- -->
+%TMPL:P{"comments::list"}%<!-- -->
+%IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and not $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
+  then="$percntTMPL:P{\"comments::add::default\"}$percnt"
+}%<!-- -->
+</div>
+<!-- -->%TMPL:END%
+
+%{ ################################################################################ 
+   metacomments::init - loads all required css and js
+}%
+%TMPL:DEF{"metacomments::init"}%<!-- -->
+%JQREQUIRE{"blockui, ui::dialog, form, jsonrpc"}%<!-- -->
+%ADDTOZONE{
+  "head" 
+  id="METACOMMENTPLUGIN::CSS" 
+  text="<link rel='stylesheet' href='%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/metacomment.css' type='text/css' media='all' />"
+}%%ADDTOZONE{
+  "script" 
+  id="METACOMMENTPLUGIN::JS" 
+  requires="JQUERYPLUGIN::UI, JQUERYPLUGIN::FORM, JQUERYPLUGIN::JSONRPC" 
+  text="<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/metacomment.js'></script>"
+}%%TMPL:END%
+
+%{ ################################################################################ 
+   metacomments::dialog - loads all required dialogs
+}%
+%TMPL:DEF{"comments::dialogs"}%%IF{"$COMMENTSTATE!='closed'"
+  then="$percntTMPL:P{\"comments::confirmdelete\"}$percnt<!-- -->
+        $percntTMPL:P{\"comments::confirmapprove\"}$percnt<!-- -->
+        $percntTMPL:P{\"comments::updater\"}$percnt<!-- -->
+        $percntTMPL:P{\"comments::replier\"}$percnt"
+}%%TMPL:END%
+
+
+%{ ################################################################################ 
+   comments::topbar - renders the number of comments
+}%
+%TMPL:DEF{"comments::topbar"}%<!-- -->
+%METACOMMENTS{
+  header="<a href='%SCRIPTURLPATH{"view"}%/%BASEWEB%/%BASETOPIC%?template=metacommentsrss;contenttype=text/xml' class='cmtRssFeed foswikiGrayText foswikiSmallish foswikiHideOnPrint' title='%MAKETEXT{"RSS feed of the comments on this topic"}%'>%JQICON{"feed"}% RSS</a><h2 class='cmtCounter'>$count </h2>"
+  singular="%MAKETEXT{"One comment"}%"
+  plural="%MAKETEXT{"[_1] comments" args="$count"}%"
+  limit="1"
+  template=""
+  %IF{"'%TMPL:P{"comments::format"}%' = 'threaded'" then="threaded=\"on\"" else="threaded=\"off\""}%
+  %IF{"$COMMENTMODERATION='on'" then="moderation=\"on\"" else="moderation=\"off\""}%
+}%<!-- -->%TMPL:END%
+
+%{ ################################################################################ 
+   comments::add::default - constructing the form to add a new comment
+}%
+%TMPL:DEF{"comments::add::default"}%<!-- -->
+<div class="foswikiFormSteps foswikiHideOnPrint cmtAddComment">
+%TMPL:P{"comments::formstart"}%<!-- -->
+%TMPL:P{"comments::namestep::hidden"}%<!-- -->
+%TMPL:P{"comments::titlestep"}%<!-- -->
+%TMPL:P{"comments::moresteps"}%<!-- -->
+%TMPL:P{"comments::textstep" ROWS="10"}%<!-- -->
+%TMPL:P{"comments::buttonstep"}%<!-- -->
+%TMPL:P{"comments::formend"}%<!-- -->
+</div>
+<!-- -->%TMPL:END%
+
+%{ ################################################################################ 
+   comments::add::simple - constructing the form to add a new comment, simple version
+}%
+%TMPL:DEF{"comments::add::simple"}%<!-- -->
+%TWISTY{link="%BUTTON{"%TMPL:P{"comments::title"}%" title="%MAKETEXT{"Add a comment to this topic"}%" class="simple" icon="comment"}%%CLEAR%"}%
+<div class="foswikiFormSteps foswikiHideOnPrint cmtAddComment">
+%TMPL:P{"comments::formstart"}%<!-- -->
+%TMPL:P{"comments::namestep::hidden"}%<!-- -->
+%TMPL:P{"comments::moresteps"}%<!-- -->
+%TMPL:P{"comments::textstep" ROWS="5"}%<!-- -->
+%TMPL:P{"comments::buttonstep"}%<!-- -->
+%TMPL:P{"comments::formend"}%<!-- -->
+</div>
+%ENDTWISTY%
+<!-- -->%TMPL:END%
+
+%{ ################################################################################ 
+   comments::format - returns the current format style 
+}%
+%TMPL:DEF{"comments::format"}%%IF{ "defined COMMENTFORMAT" then="%COMMENTFORMAT%" else="%TMPL:P{"comments::format::default"}%"}%%TMPL:END%
+%TMPL:DEF{"comments::format::default"}%threaded%TMPL:END%
+
+%{ ################################################################################ 
+   comments::formats - list of available comment formats
+}%
+%TMPL:DEF{"comments::formats"}%linear, threaded, reverse, insidetab%TMPL:END%
+
+%{ ################################################################################ 
+   comments::list - renders a list of available comments
+}%
+%TMPL:DEF{"comments::list"}%<!-- -->
+%METACOMMENTS{
+  template="comments::format::%TMPL:P{"comments::format"}%"
+  subtemplate="comments::format::%TMPL:P{"comments::format"}%::subcomment"
+  %IF{"'%TMPL:P{"comments::format"}%' = 'threaded'" then="threaded=\"on\""}%
+  %IF{"'%TMPL:P{"comments::format"}%' =~ 'reverse|insidetab'" then="reverse=\"on\""}%
+  %IF{"$COMMENTMODERATION='on'" then="moderation=\"on\"" else="moderation=\"off\""}%
+}%%TMPL:END%
+
+%{ ################################################################################ 
+   comments::format::linear - format one comment in linear format
+}%
+%TMPL:DEF{"comments::format::linear"}%<!-- -->
+<div class='cmtCommentContainer cmtComment$evenodd' id='cmtComment$index'>
+  <div class='cmtComment $percntIF{"not('$state'=~'\bapproved\b')" then="cmtCommentNeedsApproval"}$percnt {comment_id:"$id", index:"$index", author:"$percntSPACEOUT{$author}$percnt", date:"$date"}'>
+    <a name='comment$id'></a>
+    <h3 class='foswikiRight cmtCommentNr'>$index</h3>
+    %TMPL:P{
+      "comment::photo" 
+      web="%USERSWEB%" 
+      topic="%USERINFO{"$author" format="$wikiname"}%"
+    }%<!-- -->
+    %IF{"'%ENCODE{"$title" type="entity"}%'!=''" 
+      then="<h3><noautolink>%ENCODE{"$title" type="entity"}%</noautolink></h3>"
+    }%<!-- -->
+    <div class='cmtCommentText'>$n$text</div>
+    %TMPL:P{"comments::controls"}%<!-- -->
+    $percntIF{"$COMMENTMODERATION='on' and not('$state'=~'\bapproved\b')"
+      then="<div class='foswikiRight foswikiAlert cmtAlert'>(%MAKETEXT{"needs approval"}%)</div>"
+    }$percnt<!-- -->
+    <span class='foswikiSmallish foswikiGrayText'>
+      <span class='cmtAuthor'>%IF{"istopic '%USERSWEB%.$author'" then="[[%USERSWEB%.$author]]" else="<nop>$author"}%</span>
+      &#124;
+      <span class='cmtDate'>$date</span>
+      &#124;
+      <a class='cmtPermLink' href='$permlink'>%MAKETEXT{"permlink"}%</a>
+    </span>
+    %CLEAR%
+  </div>
+  <a name='bottomcomment$id'></a>
+</div>
+<!-- -->%TMPL:END%
+
+%{ ################################################################################ 
+   comments::controls - renders the comment tools
+}%
+%TMPL:DEF{"comments::controls"}%<!-- -->
+<div class='cmtControls'>
+  %IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and $COMMENTSTATE!='closed' and not ('%TMPL:P{"comments::format"}%' =~ 'reverse|insidetab')" 
+    then="<a href='#' class='cmtReply' title='%MAKETEXT{"Reply on this comment"}%'>%JQICON{"comment"}%</a>"
+  }%<!-- -->
+  %IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and $COMMENTSTATE!='closed'" 
+    then="<a href='#' class='cmtEdit' title='%MAKETEXT{"Edit this comment"}%'>%JQICON{"pencil"}%</a>"
+  }%<!-- --> 
+  %IF{"'%BASEWEB%.%BASETOPIC%' allows 'APPROVE' and not('$state'=~'\bapproved\b') and $COMMENTMODERATION='on'"
+    then="<a href='#' class='cmtApprove' title='%MAKETEXT{"Approve this comment"}%'>%JQICON{"medal_gold_1"}%</a>"
+  }%<!-- -->
+  %IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and $COMMENTSTATE!='closed'" 
+    then="<a href='#' class='cmtDelete' title='%MAKETEXT{"Delete this comment"}%'>%JQICON{"bin"}%</a>"
+  }%<!-- -->
+</div>
+<!-- -->%TMPL:END%
+
+%{ ################################################################################ 
+   comments::format::linear::subcomment - sub-comments for linear mode
+}%
+%TMPL:DEF{"comments::format::linear::subcomment"}%%TMPL:P{"comments::format::linear"}%%TMPL:END%
+
+%{ ################################################################################ 
+   comments::format::threaded - format comments in threaded format
+}%
+%TMPL:DEF{"comments::format::threaded"}%<!-- -->
+<div class='cmtCommentContainer cmtComment$evenodd $percntIF{"$COMMENTMODERATION='on' and not('$state'=~'\bapproved\b')" then="cmtCommentNeedsApproval"}$percnt' id='cmtComment$index'>
+  <div class='cmtComment {comment_id:"$id", index:"$index", author:"$percntSPACEOUT{$author}$percnt", date:"$date"}'>
+    <a name='comment$id'></a>
+    <h3 class='foswikiRight cmtCommentNr'>$index</h3>
+    %TMPL:P{
+      "comment::photo" 
+      web="%USERSWEB%" 
+      topic="%USERINFO{"$author" format="$wikiname"}%"
+    }%<!-- -->
+    %IF{"'%ENCODE{"$title" type="entity"}%'!=''" 
+      then="<h3><noautolink>%ENCODE{"$title" type="entity"}%</noautolink></h3>"
+    }%<!-- -->
+    <div class='cmtCommentText'>$n$text</div>
+    %TMPL:P{"comments::controls"}%<!-- -->
+    $percntIF{"$COMMENTMODERATION='on' and not('$state'=~'\bapproved\b')"
+      then="<div class='foswikiRight foswikiAlert cmtAlert'>(%MAKETEXT{"needs approval"}%)</div>"
+    }$percnt<!-- -->
+    <span class='foswikiSmallish foswikiGrayText'>
+      <span class='cmtAuthor'>%IF{"istopic '%USERSWEB%.$author'" then="[[%USERSWEB%.$author]]" else="<nop>$author"}%</span>
+      &#124;
+      <span class='cmtDate'>$date</span>
+      &#124;
+      <a class='cmtPermLink' href='$permlink'>%MAKETEXT{"permlink"}%</a>
+    </span>
+    %CLEAR%
+  </div> $subcomments
+  <a name='bottomcomment$id'></a>
+</div>
+<!-- -->%TMPL:END%
+
+%{ ################################################################################ 
+   comments::format::threaded::subcomment - sub-comments for linear mode
+}%
+%TMPL:DEF{"comments::format::threaded::subcomment"}%%TMPL:P{"comments::format::threaded"}%%TMPL:END%
+
+%{ ################################################################################ 
+   comments::format::reverse - format comments in reverse mode
+}%
+%TMPL:DEF{"comments::format::reverse"}%<!-- -->
+<div class='cmtCommentContainer cmtComment$evenodd' id='cmtComment$index'>
+  <div class='cmtComment {comment_id:"$id", index:"$index", author:"$percntSPACEOUT{$author}$percnt", date:"$date"}'>
+    <a name='comment$id'></a>
+    <h3 class='foswikiRight cmtCommentNr'>$index</h3>
+    %TMPL:P{
+      "comment::photo" 
+      web="%USERSWEB%" 
+      topic="%USERINFO{"$author" format="$wikiname"}%"
+    }%<!-- -->
+    %IF{"'%ENCODE{"$title" type="entity"}%'!=''" 
+      then="<h3><noautolink>%ENCODE{"$title" type="entity"}%</noautolink></h3>"
+    }%<!-- -->
+    <div class='cmtCommentText'>$n$text</div>
+    %TMPL:P{"comments::controls"}%<!-- -->
+    $percntIF{"$COMMENTMODERATION='on' and not('$state'=~'\bapproved\b')"
+      then="<div class='foswikiRight foswikiAlert cmtAlert'>(%MAKETEXT{"needs approval"}%)</div>"
+    }$percnt<!-- -->
+    <span class='foswikiSmallish foswikiGrayText'>
+      <span class='cmtAuthor'>%IF{"istopic '%USERSWEB%.$author'" then="[[%USERSWEB%.$author]]" else="<nop>$author"}%</span>
+      &#124;
+      <span class='cmtDate'>$date</span>
+      &#124;
+      <a class='cmtPermLink' href='$permlink'>%MAKETEXT{"permlink"}%</a>
+    </span>
+    %CLEAR% 
+    <a name='bottomcomment$id'></a>
+  </div>
+</div>
+<!-- -->%TMPL:END%
+%TMPL:DEF{"comments::format::insidetab"}%%TMPL:P{"comments::format::reverse"}%%TMPL:END%
+
+%{ ################################################################################ 
+   comments::confirmdelete - dialog to confirm a delete
+}%
+%TMPL:DEF{"comments::confirmdelete"}%<!-- -->
+<div id="cmtConfirmDelete" class="cmtDialog jqUIDialog foswikiFormSteps {width:300, modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Delete comment?"}%" style="display:none">
+  <form class="cmtConfirmDeleteForm" name="confirm" action="%SCRIPTURLPATH{"jsonrpc"}%/MetaCommentPlugin/deleteComment" method="post">
+    <input type="hidden" name="topic" value="%BASEWEB%.%BASETOPIC%" />
+    <input type="hidden" name="comment_id" value="" />
+    <input type="hidden" name="index" value="" />
+    <input type="hidden" name="t" value="%GMTIME{"$epoch"}%" />
+    <div class="foswikiFormStep">
+      %MAKETEXT{"Are you sure that you want to delete comment [_1] posted by [_2] on [_3]?" 
+        args="<span class='cmtCommentNr'></span>, <span class='cmtAuthor'></span>, <span class='cmtDate'></span>"
+      }%
+    </div>
+    <a class="jqUIDialogButton jqUIDialogSubmit {icon:'ui-icon-trash'}">%MAKETEXT{"Yes, delete"}%</a> 
+    <a class="jqUIDialogButton jqUIDialogClose {icon:'ui-icon-cancel'}">%MAKETEXT{"No, thanks"}%</a> 
+  </form>
+</div>
+<!-- -->%TMPL:END%
+
+%{ ################################################################################ 
+   comments::confirmapprove - dialog to confirm an approval
+}%
+%TMPL:DEF{"comments::confirmapprove"}%<!-- -->
+<div id="cmtConfirmApprove" class="cmtDialog jqUIDialog foswikiFormSteps {width:300, modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Approve comment?"}%" style="display:none">
+  <form class="cmtConfirmApproveForm" name="approve" action="%SCRIPTURLPATH{"jsonrpc"}%/MetaCommentPlugin/approveComment" method="post">
+    <input type="hidden" name="topic" value="%BASEWEB%.%BASETOPIC%" />
+    <input type="hidden" name="comment_id" value="" />
+    <input type="hidden" name="index" value="" />
+    <input type="hidden" name="t" value="%GMTIME{"$epoch"}%" />
+    <div class="foswikiFormStep">
+      %MAKETEXT{"Are you sure that you want to approve comment [_1] posted by [_2] on [_3]?" 
+        args="<span class='cmtCommentNr'></span>, <span class='cmtAuthor'></span>, <span class='cmtDate'></span>"
+      }%
+    </div>
+    <a class="jqUIDialogButton jqUIDialogSubmit {icon:'ui-icon-circle-check'}">%MAKETEXT{"Yes, approve"}%</a> 
+    <a class="jqUIDialogButton jqUIDialogClose {icon:'ui-icon-cancel'}">%MAKETEXT{"No, thanks"}%</a> 
+  </form>
+</div>
+<!-- -->%TMPL:END%
+
+%{ ################################################################################ 
+   comments::updater - ui to edit one comment
+}%
+%TMPL:DEF{"comments::updater"}%<!-- -->
+<div id="cmtUpdateComment" class="cmtDialog jqUIDialog foswikiFormSteps {width:'auto', modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Edit comment"}%" style="display:none" >
+  <form class="cmtUpdateCommentForm" name="updater" action="%SCRIPTURLPATH{"jsonrpc"}%/MetaCommentPlugin/updateComment" method="post">
+    <input type="hidden" name="topic" value="%BASEWEB%.%BASETOPIC%" />
+    <input type="hidden" name="comment_id" value="" />
+    <input type="hidden" name="index" value="" />
+    <input type="hidden" name="t" value="%GMTIME{"$epoch"}%" />
+    <div class="foswikiFormStep">
+      <input type="text" size="60" name="title" class="foswikiInputField" value="" />
+      <label for="title"><strong>Title</strong></label>
+    </div>
+    <div class="foswikiFormStep">
+      <textarea class="foswikiTextarea" wrap="virtual" name="text" rows="10" cols="80"></textarea>
+    </div>
+    <a class="jqUIDialogButton jqUIDialogSubmit {icon:'ui-icon-circle-check'}">%MAKETEXT{"OK"}%</a> 
+    <a class="jqUIDialogButton jqUIDialogClose {icon:'ui-icon-cancel'}">%MAKETEXT{"Cancel"}%</a> 
+  </form>
+</div>
+<!-- -->%TMPL:END%
+
+%{ ################################################################################ 
+   comments::replier - ui to reply to a comment
+}%
+%TMPL:DEF{"comments::replier"}%<!-- -->
+<div id="cmtReplyComment" class="cmtDialog jqUIDialog foswikiFormSteps {width:'auto', modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Reply on comment"}%" style="display:none">
+  <form class="cmtReplyCommentForm" name="replier" action="%SCRIPTURLPATH{"jsonrpc"}%/MetaCommentPlugin/saveComment" method="post">
+    <input type="hidden" name="topic" value="%BASEWEB%.%BASETOPIC%" />
+    <input type="hidden" name="ref" value="" />
+    <input type="hidden" name="t" value="%GMTIME{"$epoch"}%" />
+    <div class="foswikiFormStep">
+      <input type="text" size="60" name="title" class="foswikiInputField" value="" />
+      <label for="title"><strong>Title</strong></label>
+    </div>
+    <div class="foswikiFormStep">
+      <textarea class="foswikiTextarea" wrap="virtual" name="text" rows="10" cols="80"></textarea>
+    </div>
+    <a class="jqUIDialogButton jqUIDialogSubmit {icon:'ui-icon-comment'}">%MAKETEXT{"OK"}%</a> 
+    <a class="jqUIDialogButton jqUIDialogClose {icon:'ui-icon-cancel'}">%MAKETEXT{"Cancel"}%</a> 
+  </form>
+</div>
+<!-- -->%TMPL:END%
+
+%{ ################################################################################ 
+   comment::photo - renders an image of the commenter
+}%
+%TMPL:DEF{"comment::photo"}%<!-- -->
+  %IMAGE{
+    "%IF{"'%web%.%topic%'/Photo"
+      then="$percntFORMFIELD{\"Photo\" topic=\"%web%.%topic%\"}$percnt" 
+      else="%IF{"'%web%.%topic%'/attachments[name=~'\.(gif|png|jpe?g)$']"
+        then="%QUERY{"'%web%.%topic%'/attachments[name=~'\.(gif|png|jpe?g)'][0].name"}%"
+        else="%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/nobody.gif"
+      }%"
+    }%"
+    topic="%web%.%topic%"
+    type="plain"
+    align="%IF{"'%align%'=~'^(left|right)$'" then="%align%" else="left"}%"
+    href="%SCRIPTURLPATH{"view"}%/%web%/%topic%"
+    size="48"
+    crop="northwest"
+    title="%SPACEOUT{"%topic%"}%"
+  }%
+<!-- -->%TMPL:END%
+
+%{ ################################################################################ }%
+%TMPL:DEF{"comments::title"}%%IF{"defined ADDCOMMENTTITLE" then="%ADDCOMMENTTITLE%" else="%MAKETEXT{"Add a comment"}%"}%%TMPL:END%
+
+%{ ################################################################################ }%
+%TMPL:DEF{"comments::formstart"}%<!-- -->
+<a name="addcomment"></a>
+<h2 class='cmtAddCommentTitle'>%TMPL:P{"comments::title"}%</h2>
+<form class="cmtAddCommentForm" name="addCommentForm" action="%SCRIPTURLPATH{"jsonrpc"}%/MetaCommentPlugin/saveComment" method="post">
+<input type="hidden" name="topic" value="%BASEWEB%.%BASETOPIC%" />
+<input type="hidden" name="ref" value="" />
+<input type="hidden" name="t" value="%GMTIME{"$epoch"}%" />
+<!-- -->%TMPL:END%
+
+%{ ################################################################################ }%
+%TMPL:DEF{"comments::formend"}%</form>%TMPL:END%
+
+%{ ################################################################################ }%
+%TMPL:DEF{"comments::namestep"}%<!-- -->
+<div class="foswikiFormStep">
+  <input class="foswikiInputField" type="text" size="60" name="author" value="%IF{"$WIKINAME!='%USERINFO{"guest" format="wikiname"}%'" then="%WIKINAME%"}%" />
+  <label for="author"><strong>Name</strong></label>
+</div>
+<!-- -->%TMPL:END%
+
+%{ ################################################################################ }%
+%TMPL:DEF{"comments::namestep::hidden"}%<!-- -->
+<input type="hidden" name="author" value="%IF{"$WIKINAME!='%USERINFO{"guest" format="wikiname"}%'" then="%WIKINAME%"}%" />
+<!-- -->%TMPL:END%
+
+%{ ################################################################################ }%
+%TMPL:DEF{"comments::titlestep"}%<!-- -->
+<div class="foswikiFormStep">
+  <input class="foswikiInputField" type="text" name="title" size="60" />
+  <label for="title"><strong>Title</strong></label>
+</div>
+<!-- -->%TMPL:END%
+
+%{ ################################################################################ }%
+%TMPL:DEF{"comments::textstep"}%<!-- -->
+<div class="foswikiFormStep">
+  <textarea class="foswikiTextarea" wrap="virtual" name="text"  rows="%ROWS%" cols="80"></textarea>
+</div>
+<!-- -->%TMPL:END%
+
+%{ ################################################################################ }%
+%TMPL:DEF{"comments::buttonstep"}%<!-- -->
+<div class="foswikiFormStep foswikiFormLast foswikiFormButtons">
+  %BUTTON{"%MAKETEXT{"Submit"}%" icon="tick" type="save"}%
+  %BUTTON{"%MAKETEXT{"Cancel"}%" icon="cross"}%
+  %CLEAR%
+</div>
+<!-- -->%TMPL:END%

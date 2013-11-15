@@ -1,0 +1,25 @@
+.cmtComments h2,
+.cmtComments h3 {
+  padding:0px;
+}
+.cmtComments .foswikiFormSteps {
+  margin-top:1.3846em; /* 18px */
+  border-left:0px;
+  border-right:0px;
+}
+.cmtStyle_threaded .foswikiFormSteps {
+  border-bottom:0px;
+  margin-bottom:0px;
+}
+.cmtComments .foswikiFormStep {
+  border:0px;
+}
+
+.ui-dialog .foswikiFormSteps {
+  padding:0;
+}
+
+.ui-dialog .foswikiFormStep {
+  margin:0;
+  border:0;
+}
