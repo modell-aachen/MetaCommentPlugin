@@ -782,7 +782,7 @@ sub indexTopicHandler {
       'state' => $state,
       'container_id' => $web.'.'.$topic,
       'container_url' => Foswiki::Func::getViewUrl($web, $topic),
-      'container_title' => $indexer->getTopicTitle($web, $topic, $meta),
+#      'container_title' => $indexer->getTopicTitle($web, $topic, $meta),
     );
 
 
