@@ -2,15 +2,21 @@
    metacomments - entry point
 }%
 %TMPL:DEF{"metacomments"}%<!-- -->
-<div class='cmtComments cmtStyle_%IF{"defined COMMENTFORMAT" then="%COMMENTFORMAT%" else="%TMPL:P{"comments::format::default"}%"}% cmtState_%IF{"defined COMMENTSTATE" then="%COMMENTSTATE%" else="open"}% cmtModeration_%IF{"defined COMMENTMODERATION" then="%COMMENTMODERATION%" else="off"}%'>
-<a name='comments'></a>
+%CLEAR%
+<div id='comments' class='cmtComments cmtStyle_%IF{"defined COMMENTFORMAT" then="%COMMENTFORMAT%" else="%TMPL:P{"comments::format::default"}%"}% cmtState_%IF{"defined COMMENTSTATE" then="%COMMENTSTATE%" else="open"}% cmtModeration_%IF{"defined COMMENTMODERATION" then="%COMMENTMODERATION%" else="off"}%'>
 %TMPL:P{"comments::topbar"}%<!-- -->
-%IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
-  then="$percntTMPL:P{\"comments::add::simple\"}$percnt"
+%IF{"$COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
+  then="%IF{"context canComment" 
+    then="$dollarpercntTMPL:P{\\"comments::add::simple\\"}$dollarpercnt"
+    else="$dollarpercntTMPL:P{\\"comments::add::denied\\"}$dollarpercnt"
+  }%"
 }%<!-- -->
 %TMPL:P{"comments::list"}%<!-- -->
-%IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and not $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
-  then="$percntTMPL:P{\"comments::add::default\"}$percnt"
+%IF{"not $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
+  then="%IF{"context canComment and not $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
+    then="$dollarpercntTMPL:P{\\"comments::add::default\\"}$dollarpercnt"
+    else="$dollarpercntTMPL:P{\\"comments::add::denied\\"}$dollarpercnt"
+  }%"
 }%<!-- -->
 </div>
 <!-- -->%TMPL:END%
@@ -19,7 +25,8 @@
    metacomments::init - loads all required css and js
 }%
 %TMPL:DEF{"metacomments::init"}%<!-- -->
-%JQREQUIRE{"blockui, ui::dialog, form, jsonrpc"}%<!-- -->
+<!-- %IMAGE% -->
+<!-- %JQREQUIRE{"blockui, ui::dialog, form, jsonrpc, button, pnotify"}% -->
 %ADDTOZONE{
   "head" 
   id="METACOMMENTPLUGIN::CSS" 
@@ -27,9 +34,9 @@
 }%%ADDTOZONE{
   "script" 
   id="METACOMMENTPLUGIN::JS" 
-  requires="JQUERYPLUGIN::UI, JQUERYPLUGIN::FORM, JQUERYPLUGIN::JSONRPC" 
+  requires="JQUERYPLUGIN::UI, JQUERYPLUGIN::FORM, JQUERYPLUGIN::JSONRPC, JQUERYPLUGIN::PNOTIFY" 
   text="<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/metacomment.js'></script>"
-}%%TMPL:END%
+}%<!-- -->%TMPL:END%
 
 %{ ################################################################################ 
    metacomments::dialog - loads all required dialogs
@@ -55,6 +62,20 @@
   %IF{"'%TMPL:P{"comments::format"}%' = 'threaded'" then="threaded=\"on\"" else="threaded=\"off\""}%
   %IF{"$COMMENTMODERATION='on'" then="moderation=\"on\"" else="moderation=\"off\""}%
 }%<!-- -->%TMPL:END%
+
+%{ ################################################################################ 
+   comments::add::denied - display a message why somebody can't comment
+}%
+%TMPL:DEF{"comments::add::denied"}%<!-- -->
+<div class='cmtDenyMessage'>
+%IF{"context authenticated"
+  then="%MAKETEXT{"Sorry, commenting not allowed."}%"
+  else="%IF{"context registration_enabled"
+    then="%MAKETEXT{"Please [[[_1]][login]] or [[[_2]][register]] to comment." args="%SCRIPTURLPATH{login}%/%BASEWEB%/%BASETOPIC%, %SYSTEMWEB%.UserRegistration"}%"
+    else="%MAKETEXT{"Please [[[_1]][login]] to comment." args="%SCRIPTURLPATH{login}%/%BASEWEB%/%BASETOPIC%"}%"
+  }%"
+}%
+</div>%TMPL:END%
 
 %{ ################################################################################ 
    comments::add::default - constructing the form to add a new comment
@@ -115,8 +136,7 @@
 }%
 %TMPL:DEF{"comments::format::linear"}%<!-- -->
 <div class='cmtCommentContainer cmtComment$evenodd' id='cmtComment$index'>
-  <div class='cmtComment $percntIF{"not('$state'=~'\bapproved\b')" then="cmtCommentNeedsApproval"}$percnt {comment_id:"$id", index:"$index", author:"$percntSPACEOUT{$author}$percnt", date:"$date"}'>
-    <a name='comment$id'></a>
+  <div id='comment$id' class='cmtComment $percntIF{"$COMMENTMODERATION='on' and '$state'=~'\bunapproved\b'" then="cmtCommentNeedsApproval"}$percnt {comment_id:"$id", index:"$index", author:"$percntSPACEOUT{$author}$percnt", date:"$date"}'>
     <h3 class='foswikiRight cmtCommentNr'>$index</h3>
     %TMPL:P{
       "comment::photo" 
@@ -140,7 +160,7 @@
     </span>
     %CLEAR%
   </div>
-  <a name='bottomcomment$id'></a>
+  <span id='bottomcomment$id'></span>
 </div>
 <!-- -->%TMPL:END%
 
@@ -149,16 +169,16 @@
 }%
 %TMPL:DEF{"comments::controls"}%<!-- -->
 <div class='cmtControls'>
-  %IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and $COMMENTSTATE!='closed' and not ('%TMPL:P{"comments::format"}%' =~ 'reverse|insidetab')" 
+  %IF{"context canComment and $COMMENTSTATE!='closed' and not ('%TMPL:P{"comments::format"}%' =~ 'reverse|insidetab')" 
     then="<a href='#' class='cmtReply' title='%MAKETEXT{"Reply on this comment"}%'>%JQICON{"comment"}%</a>"
   }%<!-- -->
-  %IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and $COMMENTSTATE!='closed'" 
+  %IF{"($ismoderator or '$author'='%WIKINAME%') and $COMMENTSTATE!='closed'" 
     then="<a href='#' class='cmtEdit' title='%MAKETEXT{"Edit this comment"}%'>%JQICON{"pencil"}%</a>"
   }%<!-- --> 
-  %IF{"'%BASEWEB%.%BASETOPIC%' allows 'APPROVE' and not('$state'=~'\bapproved\b') and $COMMENTMODERATION='on'"
+  %IF{"$COMMENTMODERATION='on' and $ismoderator and '$state'=~'\bunapproved\b'"
     then="<a href='#' class='cmtApprove' title='%MAKETEXT{"Approve this comment"}%'>%JQICON{"medal_gold_1"}%</a>"
   }%<!-- -->
-  %IF{"'%BASEWEB%.%BASETOPIC%' allows 'COMMENT' and $COMMENTSTATE!='closed'" 
+  %IF{"($ismoderator or '$author'='%WIKINAME%') and $COMMENTSTATE!='closed'" 
     then="<a href='#' class='cmtDelete' title='%MAKETEXT{"Delete this comment"}%'>%JQICON{"bin"}%</a>"
   }%<!-- -->
 </div>
@@ -173,9 +193,8 @@
    comments::format::threaded - format comments in threaded format
 }%
 %TMPL:DEF{"comments::format::threaded"}%<!-- -->
-<div class='cmtCommentContainer cmtComment$evenodd $percntIF{"$COMMENTMODERATION='on' and not('$state'=~'\bapproved\b')" then="cmtCommentNeedsApproval"}$percnt' id='cmtComment$index'>
-  <div class='cmtComment {comment_id:"$id", index:"$index", author:"$percntSPACEOUT{$author}$percnt", date:"$date"}'>
-    <a name='comment$id'></a>
+<div class='cmtCommentContainer cmtComment$evenodd $percntIF{"$COMMENTMODERATION='on' and '$state'=~'\bunapproved\b'" then="cmtCommentNeedsApproval"}$percnt' id='cmtComment$index'>
+  <div id='comment$id' class='cmtComment {comment_id:"$id", index:"$index", author:"$percntSPACEOUT{$author}$percnt", date:"$date"}'>
     <h3 class='foswikiRight cmtCommentNr'>$index</h3>
     %TMPL:P{
       "comment::photo" 
@@ -187,7 +206,7 @@
     }%<!-- -->
     <div class='cmtCommentText'>$n$text</div>
     %TMPL:P{"comments::controls"}%<!-- -->
-    $percntIF{"$COMMENTMODERATION='on' and not('$state'=~'\bapproved\b')"
+    $percntIF{"$COMMENTMODERATION='on' and '$state'=~'\bunapproved\b'"
       then="<div class='foswikiRight foswikiAlert cmtAlert'>(%MAKETEXT{"needs approval"}%)</div>"
     }$percnt<!-- -->
     <span class='foswikiSmallish foswikiGrayText'>
@@ -199,7 +218,7 @@
     </span>
     %CLEAR%
   </div> $subcomments
-  <a name='bottomcomment$id'></a>
+  <span id='bottomcomment$id'></span>
 </div>
 <!-- -->%TMPL:END%
 
@@ -213,8 +232,7 @@
 }%
 %TMPL:DEF{"comments::format::reverse"}%<!-- -->
 <div class='cmtCommentContainer cmtComment$evenodd' id='cmtComment$index'>
-  <div class='cmtComment {comment_id:"$id", index:"$index", author:"$percntSPACEOUT{$author}$percnt", date:"$date"}'>
-    <a name='comment$id'></a>
+  <div id='comment$id' class='cmtComment {comment_id:"$id", index:"$index", author:"$percntSPACEOUT{$author}$percnt", date:"$date"}'>
     <h3 class='foswikiRight cmtCommentNr'>$index</h3>
     %TMPL:P{
       "comment::photo" 
@@ -226,7 +244,7 @@
     }%<!-- -->
     <div class='cmtCommentText'>$n$text</div>
     %TMPL:P{"comments::controls"}%<!-- -->
-    $percntIF{"$COMMENTMODERATION='on' and not('$state'=~'\bapproved\b')"
+    $percntIF{"$COMMENTMODERATION='on' and '$state'=~'\bunapproved\b'"
       then="<div class='foswikiRight foswikiAlert cmtAlert'>(%MAKETEXT{"needs approval"}%)</div>"
     }$percnt<!-- -->
     <span class='foswikiSmallish foswikiGrayText'>
@@ -237,7 +255,7 @@
       <a class='cmtPermLink' href='$permlink'>%MAKETEXT{"permlink"}%</a>
     </span>
     %CLEAR% 
-    <a name='bottomcomment$id'></a>
+    <span id='bottomcomment$id'></span>
   </div>
 </div>
 <!-- -->%TMPL:END%
@@ -333,7 +351,16 @@
 %{ ################################################################################ 
    comment::photo - renders an image of the commenter
 }%
-%TMPL:DEF{"comment::photo"}%<!-- -->
+%TMPL:DEF{"comment::photo"}%%TMPL:P{
+  context="TopicInteractionPluginEnabled" 
+  then="comment::photo::tip" 
+  else="comment::photo::default"
+  web="%web%"
+  topic="%IF{"'%topic%'!=''" then="%topic%" else="WikiGuest"}%"
+  align="%align%"
+}%%TMPL:END%
+
+%TMPL:DEF{"comment::photo::default"}%<!-- -->
   %IMAGE{
     "%IF{"'%web%.%topic%'/Photo"
       then="$percntFORMFIELD{\"Photo\" topic=\"%web%.%topic%\"}$percnt" 
@@ -352,13 +379,34 @@
   }%
 <!-- -->%TMPL:END%
 
+%TMPL:DEF{"comment::photo::tip"}%<!-- -->
+  %IMAGE{
+    "%IF{"'%web%.%topic%'/Photo"
+      then="$percntFORMFIELD{\"Photo\" topic=\"%web%.%topic%\"}$percnt" 
+      else="$percntATTACHMENTS{
+        topic=\"%web%.%topic%\"
+        sort=\"comment:name\"
+        nullformat=\"%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/nobody.gif\"
+        format=\"$dollarname\"
+        limit=\"1\"
+      }$percnt"
+    }%"
+    topic="%web%.%topic%"
+    type="plain"
+    align="%IF{"'%align%'=~'^(left|right)$'" then="%align%" else="left"}%"
+    href="%SCRIPTURLPATH{"view"}%/%web%/%topic%"
+    size="48"
+    crop="northwest"
+    title="%SPACEOUT{"%topic%"}%"
+  }%
+<!-- -->%TMPL:END%
+
 %{ ################################################################################ }%
 %TMPL:DEF{"comments::title"}%%IF{"defined ADDCOMMENTTITLE" then="%ADDCOMMENTTITLE%" else="%MAKETEXT{"Add a comment"}%"}%%TMPL:END%
 
 %{ ################################################################################ }%
 %TMPL:DEF{"comments::formstart"}%<!-- -->
-<a name="addcomment"></a>
-<h2 class='cmtAddCommentTitle'>%TMPL:P{"comments::title"}%</h2>
+<h2 id='addcomment' class='cmtAddCommentTitle'>%TMPL:P{"comments::title"}%</h2>
 <form class="cmtAddCommentForm" name="addCommentForm" action="%SCRIPTURLPATH{"jsonrpc"}%/MetaCommentPlugin/saveComment" method="post">
 <input type="hidden" name="topic" value="%BASEWEB%.%BASETOPIC%" />
 <input type="hidden" name="ref" value="" />
