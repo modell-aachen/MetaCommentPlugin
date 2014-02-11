@@ -752,7 +752,7 @@ sub indexTopicHandler {
     my $webtopic = "$web.$topic";
     $webtopic =~ s/\//./g;
     my $id = $webtopic.'#'.$comment->{name};
-    my $url = $indexer->getScriptUrlPath($web, $topic, 'view', '#'=>'comment'.$comment->{name});
+    my $url = Foswiki::Func::getScriptUrlPath($web, $topic, 'view', '#'=>'comment'.$comment->{name});
     my $title = $comment->{title};
     $title = substr $comment->{text}, 0, 20 unless $title;
 
