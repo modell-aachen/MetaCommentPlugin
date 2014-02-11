@@ -1,4 +1,5 @@
 data/System/MetaCommentPlugin.txt 0644
+lib/Foswiki/Plugins/MetaCommentPlugin/Config.spec 0644
 lib/Foswiki/Plugins/MetaCommentPlugin/Core.pm 0644
 lib/Foswiki/Plugins/MetaCommentPlugin.pm 0644
 locale/MetaCommentPlugin/de.po 0644

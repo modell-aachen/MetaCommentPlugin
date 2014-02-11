@@ -2,7 +2,7 @@
 
 Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 
-(c)opyright 2010-2012 Michael Daum http://michaeldaumconsulting.com
+(c)opyright 2010-2013 Michael Daum http://michaeldaumconsulting.com
 
 are listed in the AUTHORS file in the root of this distribution.
 NOTE: Please extend that file, not this notice.
@@ -71,33 +71,28 @@ jQuery(function($) {
     }
 
     /* add hover ***********************************************************/
-    $this.find(".cmtCommentContainer").hover(
+    $this.find(".cmtComment").hover(
       function() {
-        var $this = $(this), $controls = $this.find(".cmtControls");
+        var $this = $(this), $controls = $this.children(".cmtControls");
         $this.addClass("cmtHover");
         $controls.stop(true, true).fadeIn(500);
       },
       function() {
-        var $this = $(this), $controls = $this.find(".cmtControls");
-        // $controls.stop(true, true).hide(); MODAC: don't fade out controls
+        var $this = $(this), $controls = $this.children(".cmtControls");
+        $controls.stop(true, true).hide();
         $this.removeClass("cmtHover");
       }
     );
-    
-    // MODAC: Show controls after page load
-    $this.find(".cmtControls").stop(true, true).fadeIn(500);
 
     /* ajaxify add and reply forms ******************************************/
     $(".cmtAddCommentForm, .cmtReplyCommentForm").livequery(function() {
-      var $form = $(this), rev, $errorContainer;
+      var $form = $(this), rev;
 
       $form.ajaxForm({
         dataType:"json",
         beforeSubmit: function() {
           rev = $form.find("input[name='ref']").val(),
-          $errorContainer = rev?$this.find("a[name='comment"+rev+"']").parent().parent():$form.parent();
-          $this.find(".foswikiErrorMessage").remove();
-          $form.parent().dialog("close");
+          $("#cmtReplyComment").dialog("close");
           $.blockUI({
             message:"<h1>Submitting comment ...</h1>",
             fadeIn: 0,
@@ -107,7 +102,10 @@ jQuery(function($) {
         success: function(data, statusText, xhr) {
           if(data.error) {
             $.unblockUI();
-            $errorContainer.after("<p><div class='foswikiErrorMessage'>Error: "+data.error.message+"</div></p>");
+            $.pnotify({
+              text: "Error: "+data.error.message,
+              type:"error"
+            });
           } else {
             loadComments();
           }
@@ -115,7 +113,10 @@ jQuery(function($) {
         error: function(xhr, msg) {
           var data = $.parseJSON(xhr.responseText);
           $.unblockUI();
-          $errorContainer.after("<p><div class='foswikiErrorMessage'>Error: "+data.error.message+"</div></p>");
+          $.pnotify({
+            text: "Error: "+data.error.message,
+            type:"error"
+          });
         }
       });
     });
@@ -131,8 +132,7 @@ jQuery(function($) {
         beforeSubmit: function() {
           id = $form.find("input[name='comment_id']").val();
           index = $form.find("input[name='index']").val();
-          $errorContainer = $this.find("a[name='comment"+id+"']").parent().parent();
-          $this.find(".foswikiErrorMessage").remove();
+          $errorContainer = $this.find("#comment"+id.replace(/\./g, '\\\\.')).parent();
           $("#cmtUpdateComment").dialog("close");
           $.blockUI({
             message:"<h1>Updating comment "+index+" ...</h1>",
@@ -143,7 +143,10 @@ jQuery(function($) {
         success: function(data, statusText, xhr) {
           if(data.error) {
             $.unblockUI();
-            $errorContainer.after("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
+            $.pnotify({
+              text: "Error: "+data.error.message,
+              type:"error"
+            });
           } else {
             loadComments();
           }
@@ -151,7 +154,10 @@ jQuery(function($) {
         error: function(xhr, msg) {
           var data = $.parseJSON(xhr.responseText);
           $.unblockUI();
-          $errorContainer.after("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
+          $.pnotify({
+            text: "Error: "+data.error.message,
+            type:"error"
+          });
         }
       });
     });
@@ -164,10 +170,9 @@ jQuery(function($) {
 
       $form.ajaxForm({
         beforeSubmit: function() {
-          id = $form.find("input[name='comment_id']").val();
+          id = $form.find("input[name='comment_id']").val().replace(/\./g, '\\\\.');
           index = $form.find("input[name='index']").val();
-          $errorContainer = $this.find("a[name='comment"+id+"']").parent().parent();
-          $this.find(".foswikiErrorMessage").remove();
+          $errorContainer = $this.find("#comment"+id).parent();
           $("#cmtConfirmDelete").dialog("close");
           $.blockUI({
             message:"<h1>Deleting comment "+index+" ...</h1>",
@@ -178,7 +183,10 @@ jQuery(function($) {
         success: function(data, statusText, xhr) {
           if(data.error) {
             $.unblockUI();
-            $errorContainer.after("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
+            $.pnotify({
+              text: "Error: "+data.error.message,
+              type:"error"
+            });
           } else {
             loadComments();
           }
@@ -186,7 +194,10 @@ jQuery(function($) {
         error: function(xhr, msg) {
           var data = $.parseJSON(xhr.responseText);
           $.unblockUI();
-          $errorContainer.after("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
+          $.pnotify({
+            text: "Error: "+data.error.message,
+            type:"error"
+          });
         }
       });
     });
@@ -201,8 +212,7 @@ jQuery(function($) {
         beforeSubmit: function() {
           id = $form.find("input[name='comment_id']").val();
           index = $form.find("input[name='index']").val();
-          $errorContainer = $this.find("a[name='comment"+id+"']").parent().parent();
-          $this.find(".foswikiErrorMessage").remove();
+          $errorContainer = $this.find("#comment"+id.replace(/\./g, '\\\\.')).parent();
           $("#cmtConfirmApprove").dialog("close");
           $.blockUI({
             message:"<h1>Approving comment "+index+" ...</h1>",
@@ -213,7 +223,10 @@ jQuery(function($) {
         success: function(data, statusText, xhr) {
           if(data.error) {
             $.unblockUI();
-            $errorContainer.after("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
+            $.pnotify({
+              text: "Error: "+data.error.message,
+              type:"error"
+            });
           } else {
             loadComments();
           }
@@ -221,7 +234,10 @@ jQuery(function($) {
         error: function(xhr, msg) {
           var data = $.parseJSON(xhr.responseText);
           $.unblockUI();
-          $errorContainer.after("<div class='foswikiErrorMessage'>Error: "+data.error.message+"</div>");
+          $.pnotify({
+            text: "Error: "+data.error.message,
+            type:"error"
+          });
         }
       });
     });
@@ -230,8 +246,6 @@ jQuery(function($) {
     $this.find(".cmtReply").click(function() {
       var $comment = $(this).parents(".cmtComment:first"),
           commentOpts = $.extend({}, $comment.metadata());
-
-      $this.find(".foswikiErrorMessage").remove();
 
       loadDialogs(function() {
         $("#cmtReplyComment").dialog("option", "open", function() {
@@ -248,8 +262,6 @@ jQuery(function($) {
     $this.find(".cmtEdit").click(function() {
       var $comment = $(this).parents(".cmtComment:first"),
           commentOpts = $.extend({}, $comment.metadata());
-
-      $this.find(".foswikiErrorMessage").remove();
 
       loadDialogs(function() {
         $.jsonRpc(foswiki.getPreference("SCRIPTURL")+"/jsonrpc", {
@@ -270,9 +282,12 @@ jQuery(function($) {
               $this.find("textarea[name='text']").val(json.result.text);
             }).dialog("open");
           },
-          error: function(json, msg, xhr) {
+          error: function(data, msg, xhr) {
             $.unblockUI();
-            $comment.parent().append("<div class='foswikiErrorMessage'>Error: "+json.error.message+"</div>");
+            $.pnotify({
+              text: "Error: "+data.error.message,
+              type:"error"
+            });
           }
         });
       });
@@ -283,8 +298,6 @@ jQuery(function($) {
     $this.find(".cmtDelete").click(function() {
       var $comment = $(this).parents(".cmtComment:first"),
           commentOpts = $.extend({}, $comment.metadata());
-
-      $this.find(".foswikiErrorMessage").remove();
 
       loadDialogs(function() {
         $("#cmtConfirmDelete").dialog("option", "open", function() {
@@ -305,8 +318,6 @@ jQuery(function($) {
       var $comment = $(this).parents(".cmtComment:first"),
           commentOpts = $.extend({}, $comment.metadata());
 
-      $this.find(".foswikiErrorMessage").remove();
-
       loadDialogs(function() {
         $("#cmtConfirmApprove").dialog("option", "open", function() {
           var $this = $(this);
@@ -319,6 +330,13 @@ jQuery(function($) {
       });
       return false;
     });
+
+    // scroll to comments hash
+    var hash = window.location.hash;
+    if (hash.match(/^#comment\d\.\d+$/)) {
+      window.location.hash = "";
+      window.location.hash = hash;
+    }
 
     // work around blinking twisties
     setTimeout(function() {
