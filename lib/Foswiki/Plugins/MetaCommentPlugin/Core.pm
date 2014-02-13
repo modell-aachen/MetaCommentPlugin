@@ -761,6 +761,11 @@ sub indexTopicHandler {
 
     my $state = $comment->{state}||'null';
 
+    # escape html
+    my $text = $comment->{text};
+    $text =~ s#<#&lt;#g;
+    $text =~ s#>#&gt;#g;
+
     # reindex this comment
     my $commentDoc = $indexer->newDocument();
     $commentDoc->add_fields(
@@ -777,7 +782,7 @@ sub indexTopicHandler {
       'date' => $date,
       'createdate' => $createDate,
       'title' => $title,
-      'text' => $comment->{text},
+      'text' => $text,
       'url' => $url,
       'state' => $state,
       'container_id' => $web.'.'.$topic,
