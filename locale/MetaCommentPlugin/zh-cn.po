@@ -1,0 +1,130 @@
+# KVPPlugin translation for Traditional Chinese
+msgid   ""
+msgstr  "Project-Id-Version: Foswiki $Id\n"
+        "Report-Msgid-Bugs-To: osthold@modell-aachen.de\n"
+        "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+        "PO-Revision-Date: 2010-11-09 08:01+0200\n"
+        "Language-Team: Modell Aachen\n"
+        "Language: zh_CN\n"
+        "MIME-Version: 1.0\n"
+        "Content-Type: text/plain; charset=UTF-8\n"
+        "Content-Transfer-Encoding: 8bit\n"
+        "Plural-Forms: nplurals=1; plural=0;\n"
+        "X-Generator: Pootle 2.0.5\n"
+        "X-Poedit-Country: Taiwan\n"
+        "X-Poedit-SourceCharset: utf-8\n"
+
+#: templates/metacomments.tmpl:59
+msgid   "%1 comments"
+msgstr  "%1评论"
+
+#: templates/metacomments.tmpl:405
+msgid   "Add a comment"
+msgstr  "增加评论"
+
+#: templates/metacomments.tmpl:99
+msgid   "Add a comment to this topic"
+msgstr  "增加此主题评论"
+
+#: templates/metacomments.tmpl:289
+msgid   "Approve comment?"
+msgstr  "核准评论？"
+
+#: templates/metacomments.tmpl:179
+msgid   "Approve this comment"
+msgstr  "核准这条评论"
+
+#: templates/metacomments.tmpl:296
+msgid   "Are you sure that you want to approve comment %1 posted by %2 on %3?"
+msgstr  "你是否确认核准2%在3%上的评论1%?"
+
+#: templates/metacomments.tmpl:275
+msgid   "Are you sure that you want to delete comment %1 posted by %2 on %3?"
+msgstr  "你是否确认删除2%在3%上的评论1%?"
+
+#: templates/metacomments.tmpl:324 templates/metacomments.tmpl:346
+#: templates/metacomments.tmpl:451
+msgid   "Cancel"
+msgstr  "取消"
+
+#: templates/metacommentsrss.tmpl:7
+msgid   "Comments"
+msgstr  "评论"
+
+#: templates/metacomments.tmpl:268
+msgid   "Delete comment?"
+msgstr  "删除评论？"
+
+#: templates/metacomments.tmpl:182
+msgid   "Delete this comment"
+msgstr  "删除此条评论"
+
+#: templates/metacomments.tmpl:310
+msgid   "Edit comment"
+msgstr  "编辑评论"
+
+#: templates/metacomments.tmpl:176
+msgid   "Edit this comment"
+msgstr  "编辑此条评论"
+
+#: templates/metacomments.tmpl:280 templates/metacomments.tmpl:301
+msgid   "No, thanks"
+msgstr  "不，谢谢"
+
+#: templates/metacomments.tmpl:323 templates/metacomments.tmpl:345
+msgid   "OK"
+msgstr  "OK"
+
+#: templates/metacomments.tmpl:58
+msgid   "One comment"
+msgstr  "一条评论"
+
+#: templates/metacomments.tmpl:74
+msgid   "Please [[%1][login]] or [[%2][register]] to comment."
+msgstr  "请 [[%1][登陆]] 或 [[%2][注册]]置评。"
+
+#: templates/metacomments.tmpl:75
+msgid   "Please [[%1][login]] to comment."
+msgstr  "请 [[%1][登陆]置评。"
+
+#: data/System/MetaCommentPlugin.txt:237
+msgid   "RSS comments feed for the %1 web"
+msgstr  "RSS为 %1页面评论"
+
+#: templates/metacomments.tmpl:57
+msgid   "RSS feed of the comments on this topic"
+msgstr  "RSS关于此主题的评论"
+
+#: templates/metacomments.tmpl:333
+msgid   "Reply on comment"
+msgstr  "回复评论"
+
+#: templates/metacomments.tmpl:173
+msgid   "Reply on this comment"
+msgstr  "回复此评论"
+
+#: templates/metacomments.tmpl:72
+msgid   "Sorry, commenting not allowed."
+msgstr  "对不起，不允许置评。"
+
+#: templates/metacomments.tmpl:450
+msgid   "Submit"
+msgstr  "提交"
+
+#: templates/metacomments.tmpl:300
+msgid   "Yes, approve"
+msgstr  "是的，同意"
+
+#: templates/metacomments.tmpl:279
+msgid   "Yes, delete"
+msgstr  "是的，删除"
+
+#: templates/metacomments.tmpl:152 templates/metacomments.tmpl:210
+#: templates/metacomments.tmpl:248
+msgid   "needs approval"
+msgstr  "需要核准"
+
+#: templates/metacomments.tmpl:159 templates/metacomments.tmpl:217
+#: templates/metacomments.tmpl:255
+msgid   "permlink"
+msgstr  "静态链接"
