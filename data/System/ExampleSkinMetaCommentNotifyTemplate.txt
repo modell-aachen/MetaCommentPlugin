@@ -1,0 +1,9 @@
+%TMPL:INCLUDE{"MetaCommentNotify"}%
+
+%{
+This template sends out a notification when the "notify" button was used.
+
+Also see [[%SYSTEMWEB%.MetaCommentNotifyTemplate]] for subject/body customization.
+
+Usually this template does not need customization.
+}%

@@ -1,0 +1,10 @@
+%TMPL:INCLUDE{"MetaCommentSave"}%
+
+%{
+This template sends out a notification when a new comment is being made.
+
+Also see [[%SYSTEMWEB%.MetaCommentSaveTemplate]] for subject/body customization.
+}%
+
+%{ Enter receipient here: }%
+%TMPL:DEF{"ModacMailTo"}%%QUERY{"PageOwner"}%%TMPL:END%

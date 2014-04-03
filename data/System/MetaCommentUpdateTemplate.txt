@@ -1,0 +1,15 @@
+%TMPL:INCLUDE{"mailtemplatescontrib"}%
+
+%TMPL:DEF{"ModacMailTo"}%%MetaComment_notified%%TMPL:END%
+
+%TMPL:DEF{"ModacMailSubject"}%%MAKETEXT{"[_1] updated a comment in [_2]" args="%MetaComment_author%,%WEB%.%TOPIC%"}%%TMPL:END%
+
+%TMPL:DEF{"ModacMailContents"}%
+%MAKETEXT{"[_1] updated a comment in [_2]:" args="%MetaComment_author%,%SCRIPTURL{view}%/%WEB%/%TOPIC%"}%
+
+%MetaComment_title{default="%MAKETEXT{"(no title)"}%"}%
+
+%MetaComment_text{default="%MAKETEXT{"(no text)"}%"}%
+%TMPL:END%
+
+%TMPL:DEF{"ModacMailFrom"}%%WIKIWEBMASTERNAME% <%WIKIWEBMASTER%>%TMPL:END%

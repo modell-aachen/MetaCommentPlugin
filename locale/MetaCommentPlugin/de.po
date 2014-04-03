@@ -115,5 +115,71 @@ msgstr "benötigt Freigabe"
 msgid "permlink"
 msgstr ""
 
+#: templates/metacomments.tmpl
+msgid "Please note, that people who have already been notified will not be notified again."
+msgstr "Bitte beachten Sie, dass bereits benachrichtigte Personen nicht noch einmal benachrichtigt werden."
+
+#: templates/metacomments.tmpl
+msgid "Who do you want to notify about this comment?"
+msgstr "Wem wollen Sie diesen Kommentar mitteilen?"
+
+#: templates/metacomments.tmpl
+msgid "Are you sure that you want to notify comment %1 posted by %2 on %3?"
+msgstr "Sind Sie sicher, dass Sie den Kommentar %1 von %2 in %3 mitteilen wollen?"
+
+#: templates/metacomments.tmpl
+msgid "Notify these people"
+msgstr "Diese Leute benachrichtigen"
+
+#: templates/metacomments.tmpl
+msgid "Mark as read"
+msgstr "Als gelesen markieren"
+
+#: templates/metacomments.tmpl
+msgid "Notify this comment"
+msgstr "Diesen Kommentar mitteilen"
+
+#: data/System/MetaCommentDeleteTemplate.txt
+#: data/System/MetaCommentNotifyTemplate.txt
+#: data/System/MetaCommentSaveTemplate.txt
+#: data/System/MetaCommentUpdateTemplate.txt
+msgid "(no title)"
+msgstr "(kein Titel)"
+
+#: data/System/MetaCommentDeleteTemplate.txt
+#: data/System/MetaCommentNotifyTemplate.txt
+#: data/System/MetaCommentSaveTemplate.txt
+#: data/System/MetaCommentUpdateTemplate.txt
+msgid "(no text)"
+msgstr "(kein Text)"
+
+#: data/System/MetaCommentUpdateTemplate.txt
+msgid "[_1] updated a comment in [_2]:"
+msgstr "%1 hat einen Kommentar in %2 aktuallisiert:"
+
+#: data/System/MetaCommentUpdateTemplate.txt
+msgid "[_1] updated a comment in [_2]"
+msgstr "%1 hat einen Kommentar in %2 aktuallisiert"
+
+#: data/System/MetaCommentSaveTemplate.txt
+msgid "[_1] saved a comment in [_2]:"
+msgstr "%1 hat einen Kommentar in %2 gespeichert:"
+
+#: data/System/MetaCommentSaveTemplate.txt
+msgid "[_1] saved a comment in [_2]"
+msgstr "%1 hat einen Kommentar in %2 gespeichert"
+
+#: data/System/MetaCommentNotifyTemplate.txt
+msgid "%1 wants to notify you about a comment in %2:"
+msgstr "%1 möchte Ihnen einen Kommentar in %2 mitteilen:"
+
+#: data/System/MetaCommentNotifyTemplate.txt
+msgid "%1 wants to notify you about a comment in %2"
+msgstr "%1 möchte Ihnen einen Kommentar in %2 mitteilen"
+
+#: data/System/MetaCommentDeleteTemplate.txt
+msgid "%1 deleted a comment in %2"
+msgstr "%1 hat einen Kommentar in %2 gelöscht"
+
 #~ msgid "Reply to comment %1"
 #~ msgstr "Auf Kommentar %1 antworten"

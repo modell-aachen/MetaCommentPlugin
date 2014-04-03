@@ -51,6 +51,14 @@ sub initPlugin {
     return getCore(shift)->jsonRpcDeleteComment(@_);
   });
 
+  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "notifyComment", sub {
+    return getCore(shift)->jsonRpcNotifyComment(@_);
+  });
+
+  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "markRead", sub {
+    return getCore(shift)->jsonRpcReadComment(@_);
+  });
+
   # SMELL: this is not reliable as it depends on plugin order
   # if (Foswiki::Func::getContext()->{SolrPluginEnabled}) {
   if ($Foswiki::cfg{Plugins}{SolrPlugin}{Enabled}) {

@@ -1,0 +1,11 @@
+%TMPL:INCLUDE{"MetaCommentUpdate"}%
+
+%{
+This template sends out a notification when an existing comment is being updated.
+
+Also see [[%SYSTEMWEB%.MetaCommentUpdateTemplate]] for subject/body customization.
+
+By default all already notified people will get a notification.
+
+This template rarely needs customization.
+}%

@@ -1,4 +1,12 @@
 data/System/MetaCommentPlugin.txt 0644
+data/System/ExampleSkinMetaCommentDeleteTemplate.txt 0644
+data/System/ExampleSkinMetaCommentNotifyTemplate.txt 0644
+data/System/ExampleSkinMetaCommentSaveTemplate.txt 0644
+data/System/ExampleSkinMetaCommentUpdateTemplate.txt 0644
+data/System/MetaCommentDeleteTemplate.txt 0644
+data/System/MetaCommentNotifyTemplate.txt 0644
+data/System/MetaCommentSaveTemplate.txt 0644
+data/System/MetaCommentUpdateTemplate.txt 0644
 lib/Foswiki/Plugins/MetaCommentPlugin/Config.spec 0644
 lib/Foswiki/Plugins/MetaCommentPlugin/Core.pm 0644
 lib/Foswiki/Plugins/MetaCommentPlugin.pm 0644

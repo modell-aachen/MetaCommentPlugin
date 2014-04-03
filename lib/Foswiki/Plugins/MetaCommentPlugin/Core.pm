@@ -17,6 +17,7 @@ use strict;
 use warnings;
 use Foswiki::Plugins ();
 use Foswiki::Contrib::JsonRpcContrib::Error ();
+use Foswiki::Contrib::MailTemplatesContrib;
 use Foswiki::Time ();
 use Foswiki::Func ();
 use Error qw( :try );
@@ -54,6 +55,96 @@ sub new {
     
 
   return bless($this, $class);
+}
+
+##############################################################################
+sub jsonRpcReadComment {
+  my ($this, $request) = @_;
+
+  my $web = $this->{baseWeb};
+  my $topic = $this->{baseTopic};
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(404, "Topic $web.$topic does not exist") 
+    unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $web, $topic);
+
+  my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
+
+  my $id = $request->param('comment_id') || '';
+  my $comment = $meta->get('COMMENT', $id);
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(1000, "Comment not found")
+    unless $comment;
+
+  my $skipUsers = {};
+  if($comment->{notified}) {
+      foreach my $user (split(',', $comment->{notified})) {
+        $skipUsers->{$user} = 1;
+    }
+  }
+  $skipUsers->{$this->{wikiName}} = 1;
+  $comment->{notified} = join(',', keys $skipUsers);
+
+  my $readUsers = {};
+  if($comment->{read}) {
+      foreach my $user (split(',', $comment->{read})) {
+        $readUsers->{$user} = 1;
+    }
+  }
+  $readUsers->{$this->{wikiName}} = 1;
+  $comment->{read} = join(',', keys $readUsers);
+
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, forcenewrevision=>1}) unless DRY;
+
+  writeEvent("commentnotify", "state=(What state?) title=".('')." text=".substr('Schnittlauch', 0, 200));
+  return;
+}
+
+##############################################################################
+sub jsonRpcNotifyComment {
+  my ($this, $request) = @_;
+
+  my $web = $this->{baseWeb};
+  my $topic = $this->{baseTopic};
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(404, "Topic $web.$topic does not exist") 
+    unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $web, $topic);
+
+  my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
+
+  my $id = $request->param('comment_id') || '';
+  my $comment = $meta->get('COMMENT', $id);
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(1000, "Comment not found")
+    unless $comment;
+
+  my $skipUsers = {};
+  if($comment->{notified}) {
+    foreach my $user (split(',', $comment->{notified})) {
+      $skipUsers->{$user} = 1;
+    }
+  }
+
+  _setPreferences($comment);
+
+  Foswiki::Func::setPreferencesValue('MetaComment_TO_NOTIFY', $request->param('who'));
+
+  Foswiki::Contrib::MailTemplatesContrib::sendMail('MetaCommentNotify', {SkipUsers => $skipUsers} );
+
+  $comment->{notified} = join(',', keys $skipUsers);
+  $meta->putKeyed(
+    'COMMENT',
+    $comment
+  );
+
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, forcenewrevision=>1}) unless DRY;
+
+  return;
 }
 
 ##############################################################################
@@ -127,25 +218,44 @@ sub jsonRpcSaveComment {
 
   my $state = join(", ", @state);
 
+  my $comment = {
+    author => $author,
+    fingerPrint => $fingerPrint,
+    state => $state,
+    date => $date,
+    modified => $date,
+    name => $id,
+    ref => $ref,
+    text => $cmtText,
+    title => $title,
+    read => $this->{wikiName},
+  };
+
   $meta->putKeyed(
     'COMMENT',
-    {
-      author => $author,
-      fingerPrint => $fingerPrint,
-      state => $state,
-      date => $date,
-      modified => $date,
-      name => $id,
-      ref => $ref,
-      text => $cmtText,
-      title => $title,
-    }
+    $comment
   );
+
+  _notify($meta, $comment, 'MetaCommentSave');
 
   Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, forcenewrevision=>1}) unless DRY;
   writeEvent("comment", "state=($state) title=".($title||'').' text='.substr($cmtText, 0, 200)); # SMELL: does not objey approval state
 
   return;
+}
+
+sub _notify {
+  my ($meta, $comment, $template) = @_;
+
+  _setPreferences($comment);
+  my $notifiedUsers = {};
+  Foswiki::Contrib::MailTemplatesContrib::sendMail($template, {SkipUsers => $notifiedUsers} );
+
+  $comment->{notified} = join(',', keys $notifiedUsers);
+  $meta->putKeyed(
+    'COMMENT',
+    $comment
+  );
 }
 
 ##############################################################################
@@ -253,25 +363,42 @@ sub jsonRpcUpdateComment {
 
   $state = join(", ", @new_state);
 
+  my $newComment = {
+    author => $comment->{author},
+    fingerPrint => $comment->{fingerPrint},
+    date => $comment->{date},
+    state => $state,
+    modified => $modified,
+    name => $id,
+    text => $cmtText,
+    title => $title,
+    ref => $ref,
+    read => $this->{wikiName}
+  };
+
   $meta->putKeyed(
     'COMMENT',
-    {
-      author => $comment->{author},
-      fingerPrint => $comment->{fingerPrint},
-      date => $comment->{date},
-      state => $state,
-      modified => $modified,
-      name => $id,
-      text => $cmtText,
-      title => $title,
-      ref => $ref,
-    }
+    $newComment
   );
+
+  # This has to come from the old one
+  Foswiki::Func::setPreferencesValue('MetaComment_notified', $comment->{notified} || '');
+  Foswiki::Func::setPreferencesValue('MetaComment_read', $comment->{read} || '');
+
+  _notify($meta, $newComment, 'MetaCommentUpdate');
 
   Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1}) unless DRY;
   writeEvent("commentupdate", "state=($state) title=".($title||'')." text=".substr($cmtText, 0, 200)); 
 
   return;
+}
+
+sub _setPreferences {
+    my ($comment) = @_;
+
+    foreach my $key ( keys %$comment ) {
+        Foswiki::Func::setPreferencesValue("MetaComment_$key", $comment->{$key}) if $comment->{$key} ne '';
+    }
 }
 
 ##############################################################################
@@ -323,6 +450,8 @@ sub jsonRpcDeleteComment {
 
   Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1}) unless DRY;
   writeEvent("commentdelete", "state=($comment->{state}) title=".($comment->{title}||'')." text=".substr($comment->{text}, 0, 200)); 
+  _setPreferences($comment);
+  Foswiki::Contrib::MailTemplatesContrib::sendMail('MetaCommentDelete');
 
   return;
 }
@@ -645,6 +774,9 @@ sub formatComments {
     my $permlink = Foswiki::Func::getScriptUrl($comment->{web},
       $comment->{topic}, "view", "#"=>"comment".($comment->{name}||0));
 
+    my $username = Foswiki::Func::getWikiName();
+    my $read = ($comment->{read} && $comment->{read} =~ m/(?:^|,)\Q$username\E(?:,|$)/)?1:0;
+
     my $line = expandVariables($params->{format},
       author=>$comment->{author},
       state=>$comment->{state},
@@ -665,6 +797,7 @@ sub formatComments {
       web=>$comment->{web},
       summary=>$summary,
       permlink=>$permlink,
+      read=>$read
     );
 
     next unless $line;
@@ -790,6 +923,21 @@ sub indexTopicHandler {
       'container_title' => $indexer->getTopicTitle($web, $topic, $meta),
     );
 
+    if($comment->{notified}) {
+      foreach my $notified ( split(',', $comment->{notified}) ) {
+        $commentDoc->add_fields(
+                'notified_lst' => $notified
+        );
+      }
+    }
+
+    if($comment->{read}) {
+      foreach my $read ( split(',', $comment->{read}) ) {
+        $commentDoc->add_fields(
+                'read_lst' => $read
+        );
+      }
+    }
 
     if ($isModerated && $state =~ /\bunapproved\b/) {
       $commentDoc->add_fields('access_granted' => '');

@@ -1,0 +1,11 @@
+%TMPL:INCLUDE{"MetaCommentDelete"}%
+
+%{
+This template sends out a notification when a comment is being delted.
+
+Also see [[%SYSTEMWEB%.MetaCommentDeleteTemplate]] for subject/body customization.
+
+By default all already notified people will get a notification.
+
+This template rarely needs customization.
+}%

@@ -237,6 +237,16 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 %STARTSECTION{"webcomments"}%<a href='%SCRIPTURLPATH{"view"}%/%THEWEB{default="%BASEWEB%"}%/%BASETOPIC%?template=metacommentsrss;contenttype=text/xml;search=%WHERE{default="1"}%;limit=%LIMIT{default="10"}%' class='cmtRssFeed foswikiGrayText foswikiSmallish foswikiHideOnPrint' title='%MAKETEXT{"RSS comments feed for the [_1] web" args="%THEWEB{default="%BASEWEB%"}%"}%'>%JQICON{"feed"}% RSS</a>%ENDSECTION{"webcomments"}%
 </verbatim>
 
+---++ Email notifications
+
+In order to send notification mails create a corresponding template for your skin. In most cases it is sufficient to create =YourSkinMetaCommentSaveTemplate=.
+
+| *Example template* | *Function* |
+| =ExampleSkinMetaCommentDeleteTemplate= | Send out a notification when a comment was deleted.%BR%By default notifies everyone who has been notified before.%BR%Usually there is no need to create this template. |
+| =ExampleSkinMetaCommentNotifyTemplate= | The template used when the _notification_ button was used.%BR%Usually there is no need to create this template. |
+| =ExampleSkinMetaCommentSaveTemplate= | Send out a notification when a new commend was made.%BR%Customize the default receipients here. |
+| =ExampleSkinMetaCommentUpdateTemplate= | Send out a notification when a comment was updated.%BR%By default notifies everyone who has been notified before.%BR%Usually there is no need to create this template, but it may be wise to add the default receipients from =YourSkinMetaCommentSaveTemplate= here in case the value changed. |
+
 ---++ Installation Instructions
 
 %$INSTALL_INSTRUCTIONS%

@@ -11,7 +11,7 @@
     else="$dollarpercntTMPL:P{\\"comments::add::denied\\"}$dollarpercnt"
   }%"
 }%<!-- -->
-%TMPL:P{"comments::list"}%<!-- -->
+%TMPL:P{"comments::list"}%<!-- -->%JQREQUIRE{"textboxlist"}%
 %IF{"not $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
   then="%IF{"context canComment and not $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
     then="$dollarpercntTMPL:P{\\"comments::add::default\\"}$dollarpercnt"
@@ -43,6 +43,7 @@
 }%
 %TMPL:DEF{"comments::dialogs"}%%IF{"$COMMENTSTATE!='closed'"
   then="$percntTMPL:P{\"comments::confirmdelete\"}$percnt<!-- -->
+        $percntTMPL:P{\"comments::confirmnotify\"}$percnt<!-- -->
         $percntTMPL:P{\"comments::confirmapprove\"}$percnt<!-- -->
         $percntTMPL:P{\"comments::updater\"}$percnt<!-- -->
         $percntTMPL:P{\"comments::replier\"}$percnt"
@@ -169,12 +170,18 @@
 }%
 %TMPL:DEF{"comments::controls"}%<!-- -->
 <div class='cmtControls'>
+  %IF{"context authenticated and not $read"
+    then="<a href='#' class='cmtRead' title='%MAKETEXT{"Mark as read"}%'>%JQICON{"tick"}%</a>"
+  }%<!-- -->
   %IF{"context canComment and $COMMENTSTATE!='closed' and not ('%TMPL:P{"comments::format"}%' =~ 'reverse|insidetab')" 
     then="<a href='#' class='cmtReply' title='%MAKETEXT{"Reply on this comment"}%'>%JQICON{"comment"}%</a>"
   }%<!-- -->
   %IF{"($ismoderator or '$author'='%WIKINAME%') and $COMMENTSTATE!='closed'" 
     then="<a href='#' class='cmtEdit' title='%MAKETEXT{"Edit this comment"}%'>%JQICON{"pencil"}%</a>"
   }%<!-- --> 
+  %IF{"$COMMENTSTATE!='closed' and context authenticated"
+    then="<a href='#' class='cmtNotify' title='%MAKETEXT{"Notify this comment"}%'>%JQICON{"email"}%</a>"
+  }%<!-- -->
   %IF{"$COMMENTMODERATION='on' and $ismoderator and '$state'=~'\bunapproved\b'"
     then="<a href='#' class='cmtApprove' title='%MAKETEXT{"Approve this comment"}%'>%JQICON{"medal_gold_1"}%</a>"
   }%<!-- -->
@@ -260,6 +267,32 @@
 </div>
 <!-- -->%TMPL:END%
 %TMPL:DEF{"comments::format::insidetab"}%%TMPL:P{"comments::format::reverse"}%%TMPL:END%
+
+%{ ################################################################################ 
+   comments::confirmdelete - dialog to confirm a notification
+}%
+%TMPL:DEF{"comments::confirmnotify"}%<!-- -->
+<div id="cmtConfirmNotify" class="cmtDialog jqUIDialog foswikiFormSteps {width:500, modal:true, draggable:true, resizable:false}" title="%MAKETEXT{"Notify comment?"}%" style="display:none">
+  <form class="cmtConfirmNotifyForm" name="notify" action="%SCRIPTURLPATH{"jsonrpc"}%/MetaCommentPlugin/notifyComment" method="post">
+    <input type="hidden" name="topic" value="%BASEWEB%.%BASETOPIC%" />
+    <input type="hidden" name="comment_id" value="" />
+    <input type="hidden" name="index" value="" />
+    <input type="hidden" name="t" value="%GMTIME{"$epoch"}%" />
+    <div class="foswikiFormStep">
+      %MAKETEXT{"Who do you want to notify about this comment?"}%
+      <input type="text" class="jqTextboxList%IF{"defined USERAUTOCOMPLETE" then=" {autocomplete:'$percentUSERAUTOCOMPLETE$percent'}"}%" name="who" value="" />%BR%
+      <span class="foswikiSallish foswikiGrayText">%MAKETEXT{"Please note, that people who have already been notified will not be notified again."}%</span>
+    </div>
+    <div class="foswikiFormStep foswikiLast">
+      %MAKETEXT{"Are you sure that you want to notify comment [_1] posted by [_2] on [_3]?" 
+        args="<span class='cmtCommentNr'></span>, <span class='cmtAuthor'></span>, <span class='cmtDate'></span>"
+      }%
+    </div>
+    <a class="jqUIDialogButton jqUIDialogSubmit {icon:'ui-icon-mail-closed'}">%MAKETEXT{"Notify these people"}%</a> 
+    <a class="jqUIDialogButton jqUIDialogClose {icon:'ui-icon-cancel'}">%MAKETEXT{"Don't notify anyone"}%</a> 
+  </form>
+</div>
+<!-- -->%TMPL:END%
 
 %{ ################################################################################ 
    comments::confirmdelete - dialog to confirm a delete

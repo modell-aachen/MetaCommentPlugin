@@ -124,6 +124,38 @@ jQuery(function($) {
       });
     });
 
+    /* ajaxify notify form ******************************************/
+    $(".cmtConfirmNotifyForm").livequery(function() {
+      var $form = $(this),
+          $errorContainer,
+          id, index;
+
+      $form.ajaxForm({
+        beforeSubmit: function() {
+          id = $form.find("input[name='comment_id']").val().replace(/\./g, '\\\\.');
+          index = $form.find("input[name='index']").val();
+          $errorContainer = $this.find("#comment"+id).parent();
+          $("#cmtConfirmNotify").dialog("close");
+        },
+        success: function(data, statusText, xhr) {
+          if(data.error) {
+            $.pnotify({
+              text: "Error: "+data.error.message,
+              type:"error"
+            });
+          } else {
+          }
+        },
+        error: function(xhr, msg) {
+          var data = $.parseJSON(xhr.responseText);
+          $.pnotify({
+            text: "Error: "+data.error.message,
+            type:"error"
+          });
+        }
+      });
+    });
+
     /* ajaxify update form **************************************************/
     $(".cmtUpdateCommentForm").livequery(function() {
       var $form = $(this), 
@@ -306,6 +338,68 @@ jQuery(function($) {
         $("#cmtConfirmDelete").dialog("option", "open", function() {
           var $this = $(this);
           $this.find("input[name='comment_id']").val(commentOpts.comment_id);
+          $this.find("input[name='index']").val(commentOpts.index);
+          $this.find(".cmtCommentNr").text(commentOpts.index);
+          $this.find(".cmtAuthor").text(commentOpts.author);
+          $this.find(".cmtDate").text(commentOpts.date);
+        }).dialog("open");
+      });
+
+      return false;
+    });
+
+    /* add "mark as read" behaviour *************************************************/
+    $this.find(".cmtRead").click(function() {
+      var $comment = $(this).parents(".cmtComment:first"),
+          commentOpts = $.extend({}, $comment.metadata());
+
+      var action = foswiki.getPreference('SCRIPTURLPATH')+'/jsonrpc'+foswiki.getPreference('SCRIPTSUFFIX')+'/MetaCommentPlugin/markRead';
+      var web = foswiki.getPreference('WEB');
+      var topic = foswiki.getPreference('TOPIC');
+      var $form=$(
+        '<form class="cmtMarkReadForm" name="read" action="'+action+'" method="post">' +
+          '<input type="hidden" name="topic" value="'+web+'.'+topic+'" />' +
+          '<input type="hidden" name="comment_id" value="'+commentOpts.comment_id+'" />' +
+          '<input type="hidden" name="index" value="'+commentOpts.index+'" />' +
+         '</form>'
+      );
+
+      $form.ajaxForm({
+        dataType: "json",
+        cache: false,
+        success: function(data, statusText, xhr) {
+          if(data.error) {
+            $.pnotify({
+              text: "Error: "+data.error.message,
+              type:"error"
+            });
+          } else {
+              alert('success');
+          }
+        },
+        error: function(xhr, msg) {
+          var data = $.parseJSON(xhr.responseText);
+          $.pnotify({
+            text: "Error: "+data.error.message,
+            type:"error"
+          });
+        }
+      }).ajaxSubmit();
+
+      $(this).remove();
+      return false;
+    });
+
+    /* add notify behaviour *************************************************/
+    $this.find(".cmtNotify").click(function() {
+      var $comment = $(this).parents(".cmtComment:first"),
+          commentOpts = $.extend({}, $comment.metadata());
+
+      loadDialogs(function() {
+        $("#cmtConfirmNotify").dialog("option", "open", function() {
+          var $this = $(this);
+          $this.find("input[name='comment_id']").val(commentOpts.comment_id);
+          $this.find("input[name='who']").val(commentOpts.who);
           $this.find("input[name='index']").val(commentOpts.index);
           $this.find(".cmtCommentNr").text(commentOpts.index);
           $this.find(".cmtAuthor").text(commentOpts.author);
