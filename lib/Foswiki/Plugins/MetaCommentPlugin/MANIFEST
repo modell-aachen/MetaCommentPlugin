@@ -3,6 +3,7 @@ lib/Foswiki/Plugins/MetaCommentPlugin/Config.spec 0644
 lib/Foswiki/Plugins/MetaCommentPlugin/Core.pm 0644
 lib/Foswiki/Plugins/MetaCommentPlugin.pm 0644
 locale/MetaCommentPlugin/de.po 0644
+locale/MetaCommentPlugin/fr.po 0644
 locale/MetaCommentPlugin/Foswiki.pot 0644
 pub/System/MetaCommentPlugin/Makefile 0644
 pub/System/MetaCommentPlugin/metacomment.css 0644

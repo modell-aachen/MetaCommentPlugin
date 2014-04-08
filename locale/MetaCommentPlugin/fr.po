@@ -1,0 +1,133 @@
+# Foswiki translation for French (français)
+# Translators:
+#   Islem Haddar 2014.
+msgid   ""
+msgstr  "Project-Id-Version: fr\n"
+        "Report-Msgid-Bugs-To: \n"
+        "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+        "PO-Revision-Date: 2014-04-08 11:19+0200\n"
+        "Last-Translator: Islem Haddar <haddar@modell-aachen.de>\n"
+        "Language-Team: <support@modell-aachen.de>\n"
+        "Language: fr\n"
+        "MIME-Version: 1.0\n"
+        "Content-Type: text/plain; charset=UTF-8\n"
+        "Content-Transfer-Encoding: 8bit\n"
+        "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+        "X-Generator: Pootle 2.1.6\n"
+
+#: templates/metacomments.tmpl:59
+msgid   "%1 comments"
+msgstr  "%1 Commentaires"
+
+#: templates/metacomments.tmpl:405
+msgid   "Add a comment"
+msgstr  "Ajouter un commentaire"
+
+#: templates/metacomments.tmpl:99
+msgid   "Add a comment to this topic"
+msgstr  "Ajouter un commentaire à ce sujet"
+
+#: templates/metacomments.tmpl:289
+msgid   "Approve comment?"
+msgstr  "Approuver commentaire?"
+
+#: templates/metacomments.tmpl:179
+msgid   "Approve this comment"
+msgstr  "Approuver ce commentaire"
+
+#: templates/metacomments.tmpl:296
+msgid   "Are you sure that you want to approve comment %1 posted by %2 on %3?"
+msgstr  "Etes-vous sûr que vous voulez approuver commentaire% 1 posté par% 2 "
+        "sur% 3?"
+
+#: templates/metacomments.tmpl:275
+msgid   "Are you sure that you want to delete comment %1 posted by %2 on %3?"
+msgstr  "Etes-vous sûr que vous voulez effacer le commentaire% 1 posté par% 2 "
+        "sur% 3?"
+
+#: templates/metacomments.tmpl:324 templates/metacomments.tmpl:346
+#: templates/metacomments.tmpl:451
+msgid   "Cancel"
+msgstr  "Annuler"
+
+#: templates/metacommentsrss.tmpl:7
+msgid   "Comments"
+msgstr  "Commentaires :"
+
+#: templates/metacomments.tmpl:268
+msgid   "Delete comment?"
+msgstr  "Effacer commentaire?"
+
+#: templates/metacomments.tmpl:182
+msgid   "Delete this comment"
+msgstr  "Effacer ce commentaie"
+
+#: templates/metacomments.tmpl:310
+msgid   "Edit comment"
+msgstr  "Modifier le Commentaire"
+
+#: templates/metacomments.tmpl:176
+msgid   "Edit this comment"
+msgstr  "Editer ce commentaire"
+
+#: templates/metacomments.tmpl:280 templates/metacomments.tmpl:301
+msgid   "No, thanks"
+msgstr  "non, merci"
+
+#: templates/metacomments.tmpl:323 templates/metacomments.tmpl:345
+msgid   "OK"
+msgstr  "OK"
+
+#: templates/metacomments.tmpl:58
+msgid   "One comment"
+msgstr  "un Commentaire"
+
+#: templates/metacomments.tmpl:74
+msgid   "Please [[%1][login]] or [[%2][register]] to comment."
+msgstr  "S'il vous plait [[%1][login]] ou bien [[%2][register]] pour commenter"
+
+#: templates/metacomments.tmpl:75
+msgid   "Please [[%1][login]] to comment."
+msgstr  "S'il vous plait [[%1][login]] pour commenter."
+
+#: data/System/MetaCommentPlugin.txt:237
+msgid   "RSS comments feed for the %1 web"
+msgstr  "Flux RSS des commentaires de l'% 1 Web"
+
+#: templates/metacomments.tmpl:57
+msgid   "RSS feed of the comments on this topic"
+msgstr  "Flux RSS des commentaires sur ce sujet"
+
+#: templates/metacomments.tmpl:333
+msgid   "Reply on comment"
+msgstr  "Répondre au commentaire"
+
+#: templates/metacomments.tmpl:173
+msgid   "Reply on this comment"
+msgstr  "Répondre à ce commentaire"
+
+#: templates/metacomments.tmpl:72
+msgid   "Sorry, commenting not allowed."
+msgstr  "Désolé, commenter n'est pas permis"
+
+#: templates/metacomments.tmpl:450
+msgid   "Submit"
+msgstr  "Envoyer"
+
+#: templates/metacomments.tmpl:300
+msgid   "Yes, approve"
+msgstr  "oui, approuver"
+
+#: templates/metacomments.tmpl:279
+msgid   "Yes, delete"
+msgstr  "oui, effacer"
+
+#: templates/metacomments.tmpl:152 templates/metacomments.tmpl:210
+#: templates/metacomments.tmpl:248
+msgid   "needs approval"
+msgstr  "besoin d´approbation"
+
+#: templates/metacomments.tmpl:159 templates/metacomments.tmpl:217
+#: templates/metacomments.tmpl:255
+msgid   "permlink"
+msgstr  "lien perma"
