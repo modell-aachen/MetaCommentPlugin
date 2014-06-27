@@ -96,7 +96,7 @@ sub jsonRpcReadComment {
   $readUsers->{$this->{wikiName}} = 1;
   $comment->{read} = join(',', keys $readUsers);
 
-  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, forcenewrevision=>1}) unless DRY;
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, forcenewrevision=>1, minor=>1}) unless DRY;
 
   writeEvent("commentnotify", "state=(What state?) title=".('')." text=".substr('Schnittlauch', 0, 200));
   return;
