@@ -85,7 +85,7 @@ sub jsonRpcReadComment {
     }
   }
   $skipUsers->{$this->{wikiName}} = 1;
-  $comment->{notified} = join(',', keys $skipUsers);
+  $comment->{notified} = join(',', keys %$skipUsers);
 
   my $readUsers = {};
   if($comment->{read}) {
@@ -94,7 +94,7 @@ sub jsonRpcReadComment {
     }
   }
   $readUsers->{$this->{wikiName}} = 1;
-  $comment->{read} = join(',', keys $readUsers);
+  $comment->{read} = join(',', keys %$readUsers);
 
   Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, forcenewrevision=>1, minor=>1}) unless DRY;
 
@@ -136,7 +136,7 @@ sub jsonRpcNotifyComment {
 
   Foswiki::Contrib::MailTemplatesContrib::sendMail('MetaCommentNotify', {SkipUsers => $skipUsers} );
 
-  $comment->{notified} = join(',', keys $skipUsers);
+  $comment->{notified} = join(',', keys %$skipUsers);
   $meta->putKeyed(
     'COMMENT',
     $comment
@@ -251,7 +251,7 @@ sub _notify {
   my $notifiedUsers = {};
   Foswiki::Contrib::MailTemplatesContrib::sendMail($template, {SkipUsers => $notifiedUsers} );
 
-  $comment->{notified} = join(',', keys $notifiedUsers);
+  $comment->{notified} = join(',', keys %$notifiedUsers);
   $meta->putKeyed(
     'COMMENT',
     $comment
