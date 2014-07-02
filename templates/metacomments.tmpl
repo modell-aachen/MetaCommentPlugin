@@ -280,7 +280,7 @@
     <input type="hidden" name="t" value="%GMTIME{"$epoch"}%" />
     <div class="foswikiFormStep">
       %MAKETEXT{"Who do you want to notify about this comment?"}%
-      <input type="text" class="jqTextboxList%IF{"defined USERAUTOCOMPLETE" then=" {autocomplete:'$percentUSERAUTOCOMPLETE$percent'}"}%" name="who" value="" />%BR%
+      <input type="text" class="%IF{"defined USERAUTOCOMPLETE" then=" {autocomplete:'$percentUSERAUTOCOMPLETE$percent'}"}%" name="who" value="" />%BR%
       <span class="foswikiSallish foswikiGrayText">%MAKETEXT{"Please note, that people who have already been notified will not be notified again."}%</span>
     </div>
     <div class="foswikiFormStep foswikiLast">
