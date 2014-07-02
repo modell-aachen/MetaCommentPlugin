@@ -142,7 +142,7 @@ sub jsonRpcNotifyComment {
     $comment
   );
 
-  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, forcenewrevision=>1}) unless DRY;
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, forcenewrevision=>1, minor=>1}) unless DRY;
 
   return;
 }
