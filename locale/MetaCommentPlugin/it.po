@@ -1,23 +1,6 @@
-# KVPPlugin translation for Traditional Chinese
-msgid ""
-msgstr ""
-"Project-Id-Version: Foswiki $Id\n"
-"Report-Msgid-Bugs-To: osthold@modell-aachen.de\n"
-"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2010-11-09 08:01+0200\n"
-"Language-Team: Modell Aachen\n"
-"Language: zh_CN\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.0.5\n"
-"X-Poedit-Country: Taiwan\n"
-"X-Poedit-SourceCharset: utf-8\n"
-
 #: templates/metacomments.tmpl
 msgid "%1 comments"
-msgstr "%1评论"
+msgstr ""
 
 #: data/System/MetaCommentDeleteTemplate.txt
 msgid "%1 deleted a comment in %2"
@@ -69,27 +52,27 @@ msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Add a comment"
-msgstr "增加评论"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Add a comment to this topic"
-msgstr "增加此主题评论"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Approve comment?"
-msgstr "核准评论？"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Approve this comment"
-msgstr "核准这条评论"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
-msgstr "你是否确认核准2%在3%上的评论1%?"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Are you sure that you want to delete comment %1 posted by %2 on %3?"
-msgstr "你是否确认删除2%在3%上的评论1%?"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Are you sure that you want to notify comment %1 posted by %2 on %3?"
@@ -97,19 +80,19 @@ msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Cancel"
-msgstr "取消"
+msgstr ""
 
 #: templates/metacommentsrss.tmpl
 msgid "Comments"
-msgstr "评论"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Delete comment?"
-msgstr "删除评论？"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Delete this comment"
-msgstr "删除此条评论"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Don't notify anyone"
@@ -117,11 +100,11 @@ msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Edit comment"
-msgstr "编辑评论"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Edit this comment"
-msgstr "编辑此条评论"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Mark as read"
@@ -129,7 +112,7 @@ msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "No, thanks"
-msgstr "不，谢谢"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Notify comment?"
@@ -145,19 +128,19 @@ msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "One comment"
-msgstr "一条评论"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Please [[%1][login]] or [[%2][register]] to comment."
-msgstr "请 [[%1][登陆]] 或 [[%2][注册]]置评。"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Please [[%1][login]] to comment."
-msgstr "请 [[%1][登陆]置评。"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Please note, that people who have already been notified will not be notified again."
@@ -165,27 +148,27 @@ msgstr ""
 
 #: data/System/MetaCommentPlugin.txt
 msgid "RSS comments feed for the %1 web"
-msgstr "RSS为 %1页面评论"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "RSS feed of the comments on this topic"
-msgstr "RSS关于此主题的评论"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Reply on comment"
-msgstr "回复评论"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Reply on this comment"
-msgstr "回复此评论"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Sorry, commenting not allowed."
-msgstr "对不起，不允许置评。"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Submit"
-msgstr "提交"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Who do you want to notify about this comment?"
@@ -193,16 +176,16 @@ msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Yes, approve"
-msgstr "是的，同意"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Yes, delete"
-msgstr "是的，删除"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "needs approval"
-msgstr "需要核准"
+msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "permlink"
-msgstr "静态链接"
+msgstr ""

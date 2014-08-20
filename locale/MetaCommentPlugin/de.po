@@ -13,173 +13,209 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: templates/metacomments.tmpl:52
+#: templates/metacomments.tmpl
 msgid "%1 comments"
 msgstr "%1 Kommentare"
 
-#: templates/metacomments.tmpl:355
-msgid "Add a comment"
-msgstr "Kommentar hinzufügen"
-
-#: templates/metacomments.tmpl:78
-msgid "Add a comment to this topic"
-msgstr "Dieses Topic kommentieren"
-
-#: templates/metacomments.tmpl:271
-msgid "Approve comment?"
-msgstr "Kommentar freigeben?"
-
-#: templates/metacomments.tmpl:159
-msgid "Approve this comment"
-msgstr "Diesen Kommentar freigeben"
-
-#: templates/metacomments.tmpl:278
-msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
-msgstr ""
-"Sind Sie sicher, dass Sie Kommentar %1 von %2 erstellt am %3 freigeben "
-"wollen?"
-
-#: templates/metacomments.tmpl:257
-msgid "Are you sure that you want to delete comment %1 posted by %2 on %3?"
-msgstr ""
-"Sind Sie sicher, dass Sie Kommentar %1 von %2 erstellt am %3 löschen wollen?"
-
-#: templates/metacomments.tmpl:305 templates/metacomments.tmpl:327
-#: templates/metacomments.tmpl:402
-msgid "Cancel"
-msgstr "Abbrechen"
-
-#: templates/metacommentsrss.tmpl:7
-msgid "Comments"
-msgstr "Kommentare"
-
-#: templates/metacomments.tmpl:250
-msgid "Delete comment?"
-msgstr "Kommentar löschen?"
-
-#: templates/metacomments.tmpl:162
-msgid "Delete this comment"
-msgstr "Diesen Kommentar löschen"
-
-#: templates/metacomments.tmpl:291
-msgid "Edit comment"
-msgstr "Kommentar bearbeiten"
-
-#: templates/metacomments.tmpl:156
-msgid "Edit this comment"
-msgstr "Diesen Kommentar bearbeiten"
-
-#: templates/metacomments.tmpl:262 templates/metacomments.tmpl:283
-msgid "No, thanks"
-msgstr "Nein, danke"
-
-#: templates/metacomments.tmpl:304 templates/metacomments.tmpl:326
-msgid "OK"
-msgstr ""
-
-#: templates/metacomments.tmpl:51
-msgid "One comment"
-msgstr "Ein Kommentar"
-
-#: templates/metacomments.tmpl:50
-msgid "RSS feed of the comments on this topic"
-msgstr "RSS Feed für Kommentar zu diesem Topic"
-
-#: templates/metacomments.tmpl:314
-msgid "Reply on comment"
-msgstr "Kommentar beantworten"
-
-#: templates/metacomments.tmpl:153
-msgid "Reply on this comment"
-msgstr "Diesen Kommentar beantworten"
-
-#: templates/metacomments.tmpl:401
-msgid "Submit"
-msgstr "Übermitteln"
-
-#: templates/metacomments.tmpl:282
-msgid "Yes, approve"
-msgstr "Ja, freigeben"
-
-#: templates/metacomments.tmpl:261
-msgid "Yes, delete"
-msgstr "Ja, löschen"
-
-#: templates/metacomments.tmpl:132 templates/metacomments.tmpl:191
-#: templates/metacomments.tmpl:230
-msgid "needs approval"
-msgstr "benötigt Freigabe"
-
-#: templates/metacomments.tmpl:139 templates/metacomments.tmpl:198
-#: templates/metacomments.tmpl:237
-msgid "permlink"
-msgstr ""
-
-#: templates/metacomments.tmpl
-msgid "Please note, that people who have already been notified will not be notified again."
-msgstr "Bitte beachten Sie, dass bereits benachrichtigte Personen nicht noch einmal benachrichtigt werden."
-
-#: templates/metacomments.tmpl
-msgid "Who do you want to notify about this comment?"
-msgstr "Wem wollen Sie diesen Kommentar mitteilen?"
-
-#: templates/metacomments.tmpl
-msgid "Are you sure that you want to notify comment %1 posted by %2 on %3?"
-msgstr "Sind Sie sicher, dass Sie den Kommentar %1 von %2 in %3 mitteilen wollen?"
-
-#: templates/metacomments.tmpl
-msgid "Notify these people"
-msgstr "Diese Leute benachrichtigen"
-
-#: templates/metacomments.tmpl
-msgid "Mark as read"
-msgstr "Als gelesen markieren"
-
-#: templates/metacomments.tmpl
-msgid "Notify this comment"
-msgstr "Diesen Kommentar mitteilen"
-
 #: data/System/MetaCommentDeleteTemplate.txt
-#: data/System/MetaCommentNotifyTemplate.txt
+msgid "%1 deleted a comment in %2"
+msgstr "%1 hat einen Kommentar in %2 gelöscht"
+
 #: data/System/MetaCommentSaveTemplate.txt
+msgid "%1 saved a comment in %2"
+msgstr ""
+
+#: data/System/MetaCommentSaveTemplate.txt
+msgid "%1 saved a comment in %2:"
+msgstr ""
+
 #: data/System/MetaCommentUpdateTemplate.txt
-msgid "(no title)"
-msgstr "(kein Titel)"
+msgid "%1 updated a comment in %2"
+msgstr ""
+
+#: data/System/MetaCommentUpdateTemplate.txt
+msgid "%1 updated a comment in %2:"
+msgstr ""
+
+#: data/System/MetaCommentNotifyTemplate.txt
+msgid "%1 wants to notify you about a comment in %2"
+msgstr "%1 möchte Ihnen einen Kommentar in %2 mitteilen"
+
+#: data/System/MetaCommentNotifyTemplate.txt
+msgid "%1 wants to notify you about a comment in %2:"
+msgstr "%1 möchte Ihnen einen Kommentar in %2 mitteilen:"
 
 #: data/System/MetaCommentDeleteTemplate.txt
+msgid "(No text)"
+msgstr ""
+
+#: data/System/MetaCommentDeleteTemplate.txt
+msgid "(No title)"
+msgstr ""
+
 #: data/System/MetaCommentNotifyTemplate.txt
 #: data/System/MetaCommentSaveTemplate.txt
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "(no text)"
 msgstr "(kein Text)"
 
-#: data/System/MetaCommentUpdateTemplate.txt
-msgid "[_1] updated a comment in [_2]:"
-msgstr "%1 hat einen Kommentar in %2 aktuallisiert:"
-
-#: data/System/MetaCommentUpdateTemplate.txt
-msgid "[_1] updated a comment in [_2]"
-msgstr "%1 hat einen Kommentar in %2 aktuallisiert"
-
-#: data/System/MetaCommentSaveTemplate.txt
-msgid "[_1] saved a comment in [_2]:"
-msgstr "%1 hat einen Kommentar in %2 gespeichert:"
-
-#: data/System/MetaCommentSaveTemplate.txt
-msgid "[_1] saved a comment in [_2]"
-msgstr "%1 hat einen Kommentar in %2 gespeichert"
-
 #: data/System/MetaCommentNotifyTemplate.txt
-msgid "%1 wants to notify you about a comment in %2:"
-msgstr "%1 möchte Ihnen einen Kommentar in %2 mitteilen:"
+#: data/System/MetaCommentSaveTemplate.txt
+#: data/System/MetaCommentUpdateTemplate.txt
+msgid "(no title)"
+msgstr "(kein Titel)"
 
-#: data/System/MetaCommentNotifyTemplate.txt
-msgid "%1 wants to notify you about a comment in %2"
-msgstr "%1 möchte Ihnen einen Kommentar in %2 mitteilen"
+#: templates/metacomments.tmpl
+msgid "Add a comment"
+msgstr "Kommentar hinzufügen"
 
-#: data/System/MetaCommentDeleteTemplate.txt
-msgid "%1 deleted a comment in %2"
-msgstr "%1 hat einen Kommentar in %2 gelöscht"
+#: templates/metacomments.tmpl
+msgid "Add a comment to this topic"
+msgstr "Dieses Topic kommentieren"
+
+#: templates/metacomments.tmpl
+msgid "Approve comment?"
+msgstr "Kommentar freigeben?"
+
+#: templates/metacomments.tmpl
+msgid "Approve this comment"
+msgstr "Diesen Kommentar freigeben"
+
+#: templates/metacomments.tmpl
+msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
+msgstr "Sind Sie sicher, dass Sie Kommentar %1 von %2 erstellt am %3 freigeben wollen?"
+
+#: templates/metacomments.tmpl
+msgid "Are you sure that you want to delete comment %1 posted by %2 on %3?"
+msgstr "Sind Sie sicher, dass Sie Kommentar %1 von %2 erstellt am %3 löschen wollen?"
+
+#: templates/metacomments.tmpl
+msgid "Are you sure that you want to notify comment %1 posted by %2 on %3?"
+msgstr "Sind Sie sicher, dass Sie den Kommentar %1 von %2 in %3 mitteilen wollen?"
+
+#: templates/metacomments.tmpl
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: templates/metacommentsrss.tmpl
+msgid "Comments"
+msgstr "Kommentare"
+
+#: templates/metacomments.tmpl
+msgid "Delete comment?"
+msgstr "Kommentar löschen?"
+
+#: templates/metacomments.tmpl
+msgid "Delete this comment"
+msgstr "Diesen Kommentar löschen"
+
+#: templates/metacomments.tmpl
+msgid "Don't notify anyone"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Edit comment"
+msgstr "Kommentar bearbeiten"
+
+#: templates/metacomments.tmpl
+msgid "Edit this comment"
+msgstr "Diesen Kommentar bearbeiten"
+
+#: templates/metacomments.tmpl
+msgid "Mark as read"
+msgstr "Als gelesen markieren"
+
+#: templates/metacomments.tmpl
+msgid "No, thanks"
+msgstr "Nein, danke"
+
+#: templates/metacomments.tmpl
+msgid "Notify comment?"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Notify these people"
+msgstr "Diese Leute benachrichtigen"
+
+#: templates/metacomments.tmpl
+msgid "Notify this comment"
+msgstr "Diesen Kommentar mitteilen"
+
+#: templates/metacomments.tmpl
+msgid "OK"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "One comment"
+msgstr "Ein Kommentar"
+
+#: templates/metacomments.tmpl
+msgid "Please [[%1][login]] or [[%2][register]] to comment."
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Please [[%1][login]] to comment."
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Please note, that people who have already been notified will not be notified again."
+msgstr "Bitte beachten Sie, dass bereits benachrichtigte Personen nicht noch einmal benachrichtigt werden."
+
+#: data/System/MetaCommentPlugin.txt
+msgid "RSS comments feed for the %1 web"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "RSS feed of the comments on this topic"
+msgstr "RSS Feed für Kommentar zu diesem Topic"
+
+#: templates/metacomments.tmpl
+msgid "Reply on comment"
+msgstr "Kommentar beantworten"
+
+#: templates/metacomments.tmpl
+msgid "Reply on this comment"
+msgstr "Diesen Kommentar beantworten"
+
+#: templates/metacomments.tmpl
+msgid "Sorry, commenting not allowed."
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Submit"
+msgstr "Übermitteln"
+
+#: templates/metacomments.tmpl
+msgid "Who do you want to notify about this comment?"
+msgstr "Wem wollen Sie diesen Kommentar mitteilen?"
+
+#: templates/metacomments.tmpl
+msgid "Yes, approve"
+msgstr "Ja, freigeben"
+
+#: templates/metacomments.tmpl
+msgid "Yes, delete"
+msgstr "Ja, löschen"
+
+#: templates/metacomments.tmpl
+msgid "needs approval"
+msgstr "benötigt Freigabe"
+
+#: templates/metacomments.tmpl
+msgid "permlink"
+msgstr ""
 
 #~ msgid "Reply to comment %1"
 #~ msgstr "Auf Kommentar %1 antworten"
+
+#~ msgid "[_1] saved a comment in [_2]"
+#~ msgstr "%1 hat einen Kommentar in %2 gespeichert"
+
+#~ msgid "[_1] saved a comment in [_2]:"
+#~ msgstr "%1 hat einen Kommentar in %2 gespeichert:"
+
+#~ msgid "[_1] updated a comment in [_2]"
+#~ msgstr "%1 hat einen Kommentar in %2 aktuallisiert"
+
+#~ msgid "[_1] updated a comment in [_2]:"
+#~ msgstr "%1 hat einen Kommentar in %2 aktuallisiert:"
