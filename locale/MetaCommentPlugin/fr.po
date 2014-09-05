@@ -6,15 +6,16 @@ msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2014-04-08 11:19+0200\n"
-"Last-Translator: Islem Haddar <haddar@modell-aachen.de>\n"
-"Language-Team: <support@modell-aachen.de>\n"
+"PO-Revision-Date: 2014-09-05 14:34+0200\n"
+"Last-Translator: Modell Aachen <access@modell-aachen.de>\n"
+"Language-Team: French <http://translate.modell-"
+"aachen.de/projects/metacommentplugin/releasenew-york/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Pootle 2.1.6\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 1.9\n"
 
 #: templates/metacomments.tmpl
 msgid "%1 comments"
@@ -22,51 +23,51 @@ msgstr "%1 Commentaires"
 
 #: data/System/MetaCommentDeleteTemplate.txt
 msgid "%1 deleted a comment in %2"
-msgstr ""
+msgstr "%1 supprime un commentaire dans %2"
 
 #: data/System/MetaCommentSaveTemplate.txt
 msgid "%1 saved a comment in %2"
-msgstr ""
+msgstr "%1 enregistre un commentaire dans %2"
 
 #: data/System/MetaCommentSaveTemplate.txt
 msgid "%1 saved a comment in %2:"
-msgstr ""
+msgstr "%1 enregistre un commentaire dans %2 :"
 
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "%1 updated a comment in %2"
-msgstr ""
+msgstr "%1 mis a jour un commentaire dans %2"
 
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "%1 updated a comment in %2:"
-msgstr ""
+msgstr "%1 supprime un commentaire dans %2 :"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 msgid "%1 wants to notify you about a comment in %2"
-msgstr ""
+msgstr "%1 veut te notifier a propos d'un commentaire dans %2"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 msgid "%1 wants to notify you about a comment in %2:"
-msgstr ""
+msgstr "%1 veut te notifier a propos d'un commentaire dans %2 :"
 
 #: data/System/MetaCommentDeleteTemplate.txt
 msgid "(No text)"
-msgstr ""
+msgstr "(aucun texte)"
 
 #: data/System/MetaCommentDeleteTemplate.txt
 msgid "(No title)"
-msgstr ""
+msgstr "(aucun titre)"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 #: data/System/MetaCommentSaveTemplate.txt
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "(no text)"
-msgstr ""
+msgstr "(aucun texte)"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 #: data/System/MetaCommentSaveTemplate.txt
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "(no title)"
-msgstr ""
+msgstr "(aucun titre)"
 
 #: templates/metacomments.tmpl
 msgid "Add a comment"
@@ -78,7 +79,7 @@ msgstr "Ajouter un commentaire à ce sujet"
 
 #: templates/metacomments.tmpl
 msgid "Approve comment?"
-msgstr "Approuver commentaire?"
+msgstr "Approuver commentaire ?"
 
 #: templates/metacomments.tmpl
 msgid "Approve this comment"
@@ -86,15 +87,19 @@ msgstr "Approuver ce commentaire"
 
 #: templates/metacomments.tmpl
 msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
-msgstr "Etes-vous sûr que vous voulez approuver commentaire% 1 posté par% 2 sur% 3?"
+msgstr ""
+"Etes-vous sûr que vous voulez approuver commentaire %1 posté par %2 sur %3 ?"
 
 #: templates/metacomments.tmpl
 msgid "Are you sure that you want to delete comment %1 posted by %2 on %3?"
-msgstr "Etes-vous sûr que vous voulez effacer le commentaire% 1 posté par% 2 sur% 3?"
+msgstr ""
+"Etes-vous sûr que vous voulez effacer le commentaire %1 posté par %2 sur %3 "
+"?"
 
 #: templates/metacomments.tmpl
 msgid "Are you sure that you want to notify comment %1 posted by %2 on %3?"
 msgstr ""
+"Etes vous sure de vouloir notifier le commentaire %1 publié par %2 dans %3 ?"
 
 #: templates/metacomments.tmpl
 msgid "Cancel"
@@ -106,7 +111,7 @@ msgstr "Commentaires :"
 
 #: templates/metacomments.tmpl
 msgid "Delete comment?"
-msgstr "Effacer commentaire?"
+msgstr "Effacer commentaire ?"
 
 #: templates/metacomments.tmpl
 msgid "Delete this comment"
@@ -114,7 +119,7 @@ msgstr "Effacer ce commentaie"
 
 #: templates/metacomments.tmpl
 msgid "Don't notify anyone"
-msgstr ""
+msgstr "Ne notifiez personne"
 
 #: templates/metacomments.tmpl
 msgid "Edit comment"
@@ -126,7 +131,7 @@ msgstr "Editer ce commentaire"
 
 #: templates/metacomments.tmpl
 msgid "Mark as read"
-msgstr ""
+msgstr "marquer comme lu"
 
 #: templates/metacomments.tmpl
 msgid "No, thanks"
@@ -134,15 +139,15 @@ msgstr "non, merci"
 
 #: templates/metacomments.tmpl
 msgid "Notify comment?"
-msgstr ""
+msgstr "Comment notifier ?"
 
 #: templates/metacomments.tmpl
 msgid "Notify these people"
-msgstr ""
+msgstr "Notifier ces gens"
 
 #: templates/metacomments.tmpl
 msgid "Notify this comment"
-msgstr ""
+msgstr "Notifier ce commentaire"
 
 #: templates/metacomments.tmpl
 msgid "OK"
@@ -154,7 +159,7 @@ msgstr "un Commentaire"
 
 #: templates/metacomments.tmpl
 msgid "Please [[%1][login]] or [[%2][register]] to comment."
-msgstr "S'il vous plait [[%1][login]] ou bien [[%2][register]] pour commenter"
+msgstr "S'il vous plait [[%1][login]] ou bien [[%2][register]] pour commenter."
 
 #: templates/metacomments.tmpl
 msgid "Please [[%1][login]] to comment."
@@ -163,6 +168,8 @@ msgstr "S'il vous plait [[%1][login]] pour commenter."
 #: templates/metacomments.tmpl
 msgid "Please note, that people who have already been notified will not be notified again."
 msgstr ""
+"Notez SVP, les personnes déjà notifiés ne seront pas notifié encore une "
+"fois."
 
 #: data/System/MetaCommentPlugin.txt
 msgid "RSS comments feed for the %1 web"
@@ -182,7 +189,7 @@ msgstr "Répondre à ce commentaire"
 
 #: templates/metacomments.tmpl
 msgid "Sorry, commenting not allowed."
-msgstr "Désolé, commenter n'est pas permis"
+msgstr "Désolé, commenter n'est pas permis."
 
 #: templates/metacomments.tmpl
 msgid "Submit"
@@ -190,7 +197,7 @@ msgstr "Envoyer"
 
 #: templates/metacomments.tmpl
 msgid "Who do you want to notify about this comment?"
-msgstr ""
+msgstr "Vous voulez notifier qui a propos ce commentaire ?"
 
 #: templates/metacomments.tmpl
 msgid "Yes, approve"
