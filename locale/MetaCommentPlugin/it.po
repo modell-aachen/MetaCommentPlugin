@@ -32,39 +32,39 @@ msgstr ""
 
 #: data/System/MetaCommentDeleteTemplate.txt
 msgid "(No text)"
-msgstr ""
+msgstr "(Testo non inserito)"
 
 #: data/System/MetaCommentDeleteTemplate.txt
 msgid "(No title)"
-msgstr ""
+msgstr "(Titolo non inserito)"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 #: data/System/MetaCommentSaveTemplate.txt
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "(no text)"
-msgstr ""
+msgstr "(testo non inserito)"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 #: data/System/MetaCommentSaveTemplate.txt
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "(no title)"
-msgstr ""
+msgstr "(titolo non inserito)"
 
 #: templates/metacomments.tmpl
 msgid "Add a comment"
-msgstr ""
+msgstr "Aggiungere un commento"
 
 #: templates/metacomments.tmpl
 msgid "Add a comment to this topic"
-msgstr ""
+msgstr "Aggiungere un commento a questo argomento"
 
 #: templates/metacomments.tmpl
 msgid "Approve comment?"
-msgstr ""
+msgstr "Approvare commento?"
 
 #: templates/metacomments.tmpl
 msgid "Approve this comment"
-msgstr ""
+msgstr "Approvare questo commento"
 
 #: templates/metacomments.tmpl
 msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
@@ -80,51 +80,51 @@ msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Cancel"
-msgstr ""
+msgstr "Cancellare"
 
 #: templates/metacommentsrss.tmpl
 msgid "Comments"
-msgstr ""
+msgstr "Commenti"
 
 #: templates/metacomments.tmpl
 msgid "Delete comment?"
-msgstr ""
+msgstr "Cancellare il commento?"
 
 #: templates/metacomments.tmpl
 msgid "Delete this comment"
-msgstr ""
+msgstr "Cancellare questo commento"
 
 #: templates/metacomments.tmpl
 msgid "Don't notify anyone"
-msgstr ""
+msgstr "Non notificare"
 
 #: templates/metacomments.tmpl
 msgid "Edit comment"
-msgstr ""
+msgstr "Modificare commento"
 
 #: templates/metacomments.tmpl
 msgid "Edit this comment"
-msgstr ""
+msgstr "Modificare questo commento"
 
 #: templates/metacomments.tmpl
 msgid "Mark as read"
-msgstr ""
+msgstr "Contrassegnare come letto"
 
 #: templates/metacomments.tmpl
 msgid "No, thanks"
-msgstr ""
+msgstr "No, grazie"
 
 #: templates/metacomments.tmpl
 msgid "Notify comment?"
-msgstr ""
+msgstr "Notificare commento?"
 
 #: templates/metacomments.tmpl
 msgid "Notify these people"
-msgstr ""
+msgstr "Notificare a queste persone"
 
 #: templates/metacomments.tmpl
 msgid "Notify this comment"
-msgstr ""
+msgstr "Notifica questo commento"
 
 #: templates/metacomments.tmpl
 msgid "OK"
@@ -132,7 +132,7 @@ msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "One comment"
-msgstr ""
+msgstr "Un commento"
 
 #: templates/metacomments.tmpl
 msgid "Please [[%1][login]] or [[%2][register]] to comment."
@@ -145,6 +145,8 @@ msgstr ""
 #: templates/metacomments.tmpl
 msgid "Please note, that people who have already been notified will not be notified again."
 msgstr ""
+"Si prega di notare, che le persone che sono già state notificate non lo "
+"saranno di nuovo."
 
 #: data/System/MetaCommentPlugin.txt
 msgid "RSS comments feed for the %1 web"
@@ -152,40 +154,40 @@ msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "RSS feed of the comments on this topic"
-msgstr ""
+msgstr "RSS feed dei commenti su quest'argomento"
 
 #: templates/metacomments.tmpl
 msgid "Reply on comment"
-msgstr ""
+msgstr "Rispondere al commento"
 
 #: templates/metacomments.tmpl
 msgid "Reply on this comment"
-msgstr ""
+msgstr "Rispondere a questo commento"
 
 #: templates/metacomments.tmpl
 msgid "Sorry, commenting not allowed."
-msgstr ""
+msgstr "Non è possibile inserire commenti"
 
 #: templates/metacomments.tmpl
 msgid "Submit"
-msgstr ""
+msgstr "Sottoporre"
 
 #: templates/metacomments.tmpl
 msgid "Who do you want to notify about this comment?"
-msgstr ""
+msgstr "Chi vuoi notificare per questo commento?"
 
 #: templates/metacomments.tmpl
 msgid "Yes, approve"
-msgstr ""
+msgstr "Sì, approvare"
 
 #: templates/metacomments.tmpl
 msgid "Yes, delete"
-msgstr ""
+msgstr "Sì, cancellare"
 
 #: templates/metacomments.tmpl
 msgid "needs approval"
-msgstr ""
+msgstr "necessita approvazione"
 
 #: templates/metacomments.tmpl
 msgid "permlink"
-msgstr ""
+msgstr "permalink"
