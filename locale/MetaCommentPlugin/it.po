@@ -1,3 +1,19 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-11-05 17:01+0200\n"
+"PO-Revision-Date: 2014-11-05 17:01+0200\n"
+"Last-Translator: Modell Aachen <access@modell-aachen.de>\n"
+"Language-Team: Italian <http://translate.modell-"
+"aachen.de/projects/metacommentplugin/releasenew-york/it/>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: ENCODING\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 1.9\n"
+
 #: templates/metacomments.tmpl
 msgid "%1 comments"
 msgstr ""
@@ -166,7 +182,7 @@ msgstr "Rispondere a questo commento"
 
 #: templates/metacomments.tmpl
 msgid "Sorry, commenting not allowed."
-msgstr "Non è possibile inserire commenti"
+msgstr "Non è possibile inserire commenti."
 
 #: templates/metacomments.tmpl
 msgid "Submit"
