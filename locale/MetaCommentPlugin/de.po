@@ -4,14 +4,16 @@ msgstr ""
 "Project-Id-Version: MetaCommentPlugin $Id\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2012-07-09 00:00+0000\n"
-"Last-Translator: Michael Daum <daum@michaeldaumconsulting.com>\n"
-"Language-Team: Foswiki German Translation Team <none>\n"
+"PO-Revision-Date: 2014-12-19 10:54+0200\n"
+"Last-Translator: Modell Aachen <access@modell-aachen.de>\n"
+"Language-Team: German <http://translate.modell-"
+"aachen.de/projects/metacommentplugin/releasenew-york/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 1.9\n"
 
 #: templates/metacomments.tmpl
 msgid "%1 comments"
@@ -23,19 +25,19 @@ msgstr "%1 hat einen Kommentar in %2 gelöscht"
 
 #: data/System/MetaCommentSaveTemplate.txt
 msgid "%1 saved a comment in %2"
-msgstr ""
+msgstr "%1 hat einen Kommentar in %2 gespeichert"
 
 #: data/System/MetaCommentSaveTemplate.txt
 msgid "%1 saved a comment in %2:"
-msgstr ""
+msgstr "%1 hat einen Kommentar in %2 gespeichert:"
 
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "%1 updated a comment in %2"
-msgstr ""
+msgstr "%1 hat einen Kommentar in %2 geändert"
 
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "%1 updated a comment in %2:"
-msgstr ""
+msgstr "%1 hat einen Kommentar in %2 geändert:"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 msgid "%1 wants to notify you about a comment in %2"
@@ -47,11 +49,11 @@ msgstr "%1 möchte Ihnen einen Kommentar in %2 mitteilen:"
 
 #: data/System/MetaCommentDeleteTemplate.txt
 msgid "(No text)"
-msgstr ""
+msgstr "(Kein Text)"
 
 #: data/System/MetaCommentDeleteTemplate.txt
 msgid "(No title)"
-msgstr ""
+msgstr "(Kein Titel)"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 #: data/System/MetaCommentSaveTemplate.txt
@@ -111,7 +113,7 @@ msgstr "Diesen Kommentar löschen"
 
 #: templates/metacomments.tmpl
 msgid "Don't notify anyone"
-msgstr ""
+msgstr "Niemanden benachrichtigen"
 
 #: templates/metacomments.tmpl
 msgid "Edit comment"
@@ -131,7 +133,7 @@ msgstr "Nein, danke"
 
 #: templates/metacomments.tmpl
 msgid "Notify comment?"
-msgstr ""
+msgstr "Kommentar mitteilen?"
 
 #: templates/metacomments.tmpl
 msgid "Notify these people"
