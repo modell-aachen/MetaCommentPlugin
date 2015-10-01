@@ -39,7 +39,7 @@ sub new {
     baseWeb => $session->{webName},
     baseTopic => $session->{topicName},
     anonCommenting => $Foswiki::cfg{MetaCommentPlugin}{AnonymousCommenting},
-    loginName => Foswiki::Func::getDefaultUserName(),
+    loginName => Foswiki::Func::getCanonicalUserID(),
   };
 
   $this->{anonCommenting} = 0 unless defined $this->{anonCommenting};
@@ -774,7 +774,7 @@ sub formatComments {
     my $permlink = Foswiki::Func::getScriptUrl($comment->{web},
       $comment->{topic}, "view", "#"=>"comment".($comment->{name}||0));
 
-    my $username = Foswiki::Func::getDefaultUserName();
+    my $username = Foswiki::Func::getCanonicalUserID();
     my $read = ($comment->{read} && $comment->{read} =~ m/(?:^|,)\Q$username\E(?:,|$)/)?1:0;
 
     my $line = expandVariables($params->{format},

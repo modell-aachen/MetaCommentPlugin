@@ -1,0 +1,1 @@
+/opt/repos/MetaCommentPlugin/pub/System/MetaCommentPlugin/metacomment.uncompressed.js
