@@ -39,7 +39,7 @@ sub new {
     baseWeb => $session->{webName},
     baseTopic => $session->{topicName},
     anonCommenting => $Foswiki::cfg{MetaCommentPlugin}{AnonymousCommenting},
-    wikiName => Foswiki::Func::getWikiName(),
+    loginName => Foswiki::Func::getDefaultUserName(),
   };
 
   $this->{anonCommenting} = 0 unless defined $this->{anonCommenting};
@@ -47,8 +47,8 @@ sub new {
   my $context = Foswiki::Func::getContext();
   my $canComment = 0;
   $canComment = 1 if
-    Foswiki::Func::checkAccessPermission('COMMENT', $this->{wikiName}, undef, $this->{baseTopic}, $this->{baseWeb}) ||
-    Foswiki::Func::checkAccessPermission('CHANGE', $this->{wikiName}, undef, $this->{baseTopic}, $this->{baseWeb});
+    Foswiki::Func::checkAccessPermission('COMMENT', $this->{loginName}, undef, $this->{baseTopic}, $this->{baseWeb}) ||
+    Foswiki::Func::checkAccessPermission('CHANGE', $this->{loginName}, undef, $this->{baseTopic}, $this->{baseWeb});
 
   $canComment = 0 if Foswiki::Func::isGuest() && !$this->{anonCommenting};
   $context->{canComment} = 1 if $canComment; # set a context flag
@@ -68,7 +68,7 @@ sub jsonRpcReadComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{loginName}, undef, $topic, $web);
 
   my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
 
@@ -84,7 +84,7 @@ sub jsonRpcReadComment {
         $skipUsers->{$user} = 1;
     }
   }
-  $skipUsers->{$this->{wikiName}} = 1;
+  $skipUsers->{$this->{loginName}} = 1;
   $comment->{notified} = join(',', keys %$skipUsers);
 
   my $readUsers = {};
@@ -93,7 +93,7 @@ sub jsonRpcReadComment {
         $readUsers->{$user} = 1;
     }
   }
-  $readUsers->{$this->{wikiName}} = 1;
+  $readUsers->{$this->{loginName}} = 1;
   $comment->{read} = join(',', keys %$readUsers);
 
   Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, forcenewrevision=>1, minor=>1}) unless DRY;
@@ -113,7 +113,7 @@ sub jsonRpcNotifyComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{loginName}, undef, $topic, $web);
 
   my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
 
@@ -158,7 +158,7 @@ sub jsonRpcGetComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{loginName}, undef, $topic, $web);
 
   my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
 
@@ -185,11 +185,11 @@ sub jsonRpcSaveComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{loginName}, undef, $topic, $web);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission('COMMENT', $this->{wikiName}, undef, $topic, $web) ||
-           Foswiki::Func::checkAccessPermission('CHANGE', $this->{wikiName}, undef, $topic, $web);
+    unless Foswiki::Func::checkAccessPermission('COMMENT', $this->{loginName}, undef, $topic, $web) ||
+           Foswiki::Func::checkAccessPermission('CHANGE', $this->{loginName}, undef, $topic, $web);
 
   my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
   my $isModerator = $this->isModerator($web, $topic, $meta);
@@ -197,7 +197,7 @@ sub jsonRpcSaveComment {
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Discussion closed")
     unless $isModerator || (Foswiki::Func::getPreferencesValue("COMMENTSTATE")||'open') ne 'closed';
 
-  my $author = $request->param('author') || $this->{wikiName};
+  my $author = $request->param('author') || $this->{loginName};
   my $title = $request->param('title') || '';
   my $cmtText = $request->param('text') || '';
   my $ref = $request->param('ref') || '';
@@ -228,7 +228,7 @@ sub jsonRpcSaveComment {
     ref => $ref,
     text => $cmtText,
     title => $title,
-    read => $this->{wikiName},
+    read => $this->{loginName},
   };
 
   $meta->putKeyed(
@@ -285,10 +285,10 @@ sub jsonRpcApproveComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{loginName}, undef, $topic, $web);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission('CHANGE', $this->{wikiName}, undef, $topic, $web);
+    unless Foswiki::Func::checkAccessPermission('CHANGE', $this->{loginName}, undef, $topic, $web);
 
   my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
   my $isModerator = $this->isModerator($web, $topic, $meta);
@@ -324,11 +324,11 @@ sub jsonRpcUpdateComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{loginName}, undef, $topic, $web);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission('COMMENT', $this->{wikiName}, undef, $topic, $web) ||
-           Foswiki::Func::checkAccessPermission('CHANGE', $this->{wikiName}, undef, $topic, $web);
+    unless Foswiki::Func::checkAccessPermission('COMMENT', $this->{loginName}, undef, $topic, $web) ||
+           Foswiki::Func::checkAccessPermission('CHANGE', $this->{loginName}, undef, $topic, $web);
 
   my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
   my $isModerator = $this->isModerator($web, $topic, $meta);
@@ -342,7 +342,7 @@ sub jsonRpcUpdateComment {
   throw Foswiki::Contrib::JsonRpcContrib::Error(1000, "Comment not found")
     unless $comment;
 
-  my $fingerPrint = getFingerPrint($this->{wikiName});
+  my $fingerPrint = getFingerPrint($this->{loginName});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Acccess denied")
     unless $isModerator || $fingerPrint eq ($comment->{fingerPrint}||'');
@@ -373,7 +373,7 @@ sub jsonRpcUpdateComment {
     text => $cmtText,
     title => $title,
     ref => $ref,
-    read => $this->{wikiName}
+    read => $this->{loginName}
   };
 
   $meta->putKeyed(
@@ -412,11 +412,11 @@ sub jsonRpcDeleteComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{loginName}, undef, $topic, $web);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission('COMMENT', $this->{wikiName}, undef, $topic, $web) ||
-           Foswiki::Func::checkAccessPermission('CHANGE', $this->{wikiName}, undef, $topic, $web);
+    unless Foswiki::Func::checkAccessPermission('COMMENT', $this->{loginName}, undef, $topic, $web) ||
+           Foswiki::Func::checkAccessPermission('CHANGE', $this->{loginName}, undef, $topic, $web);
 
   my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
   my $isModerator = $this->isModerator($web, $topic, $meta);
@@ -430,7 +430,7 @@ sub jsonRpcDeleteComment {
   throw Foswiki::Contrib::JsonRpcContrib::Error(1000, "Comment not found")
     unless $comment;
 
-  my $fingerPrint = getFingerPrint($this->{wikiName});
+  my $fingerPrint = getFingerPrint($this->{loginName});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Acccess denied")
     unless $isModerator || $fingerPrint eq ($comment->{fingerPrint}||'');
@@ -467,7 +467,7 @@ sub isModerator {
   
   return 1 if Foswiki::Func::isAnAdmin();
   return 0 unless $this->isModerated($web, $topic, $meta);
-  return 1 if Foswiki::Func::checkAccessPermission("MODERATE", $this->{wikiName}, undef, $topic, $web, $meta);
+  return 1 if Foswiki::Func::checkAccessPermission("MODERATE", $this->{loginName}, undef, $topic, $web, $meta);
   return 0;
 }
 
@@ -569,11 +569,11 @@ sub getComments {
   if (defined $params->{search}) {
     @topics = $this->getTopics($web, $params->{search}, $params);
   } else {
-    return undef unless Foswiki::Func::checkAccessPermission('VIEW', $this->{wikiName}, undef, $topic, $web);
+    return undef unless Foswiki::Func::checkAccessPermission('VIEW', $this->{loginName}, undef, $topic, $web);
     push @topics, $topic;
   }
 
-  my $fingerPrint = getFingerPrint($this->{wikiName});
+  my $fingerPrint = getFingerPrint($this->{loginName});
   my %comments = ();
 
   foreach my $thisTopic (@topics) {
@@ -583,7 +583,7 @@ sub getComments {
     my @comments = $meta->find('COMMENT');
     foreach my $comment (@comments) {
       my $id = $comment->{name};
-      #writeDebug("id=$id, moderation=$params->{moderation}, isModerator=$isModerator, author=$comment->{author}, wikiName=$this->{wikiName}, state=$comment->{state}, isclosed=$params->{isclosed}");
+      #writeDebug("id=$id, moderation=$params->{moderation}, isModerator=$isModerator, author=$comment->{author}, loginName=$this->{loginName}, state=$comment->{state}, isclosed=$params->{isclosed}");
       next if $params->{author} && $comment->{author} !~ /$params->{author}/;
       next if $params->{mindate} && $comment->{date} < $params->{mindate};
       next if $params->{maxdate} && $comment->{date} > $params->{maxdate};
@@ -673,7 +673,7 @@ sub getTopics_DBQUERY {
     my $topicObj = $db->fastget($topic);
     next unless $search->matches($topicObj); # that match the query
     next unless Foswiki::Func::checkAccessPermission('VIEW', 
-      $this->{wikiName}, undef, $topic, $web);
+      $this->{loginName}, undef, $topic, $web);
     my $commentDate = $topicObj->fastget("commentdate");
     next unless $commentDate;
     push @selectedTopics, $topic;
@@ -774,7 +774,7 @@ sub formatComments {
     my $permlink = Foswiki::Func::getScriptUrl($comment->{web},
       $comment->{topic}, "view", "#"=>"comment".($comment->{name}||0));
 
-    my $username = Foswiki::Func::getWikiName();
+    my $username = Foswiki::Func::getDefaultUserName();
     my $read = ($comment->{read} && $comment->{read} =~ m/(?:^|,)\Q$username\E(?:,|$)/)?1:0;
 
     my $line = expandVariables($params->{format},
