@@ -452,14 +452,14 @@
 %{ ################################################################################ }%
 %TMPL:DEF{"comments::namestep"}%<!-- -->
 <div class="foswikiFormStep">
-  <input class="foswikiInputField" type="text" size="60" name="author" value="%IF{"$WIKINAME!='%USERINFO{"guest" format="wikiname"}%'" then="%WIKINAME%"}%" />
+  <input class="foswikiInputField" type="text" size="60" name="author" value="%USERNAME%" />
   <label for="author"><strong>Name</strong></label>
 </div>
 <!-- -->%TMPL:END%
 
 %{ ################################################################################ }%
 %TMPL:DEF{"comments::namestep::hidden"}%<!-- -->
-<input type="hidden" name="author" value="%IF{"$WIKINAME!='%USERINFO{"guest" format="wikiname"}%'" then="%WIKINAME%"}%" />
+<input type="hidden" name="author" value="%USERNAME%" />
 <!-- -->%TMPL:END%
 
 %{ ################################################################################ }%
