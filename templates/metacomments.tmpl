@@ -26,7 +26,7 @@
 }%
 %TMPL:DEF{"metacomments::init"}%<!-- -->
 <!-- %IMAGE% -->
-<!-- %JQREQUIRE{"blockui, ui::dialog, form, jsonrpc, button, pnotify, ui::autocomplete"}% -->
+<!-- %JQREQUIRE{"blockui, ui::dialog, form, jsonrpc, button, pnotify, ui::autocomplete, select2"}% -->
 %ADDTOZONE{
   "head" 
   id="METACOMMENTPLUGIN::CSS" 
@@ -34,8 +34,14 @@
 }%%ADDTOZONE{
   "script" 
   id="METACOMMENTPLUGIN::JS" 
-  requires="JQUERYPLUGIN::UI, JQUERYPLUGIN::FORM, JQUERYPLUGIN::JSONRPC, JQUERYPLUGIN::PNOTIFY" 
-  text="<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/metacomment.js'></script>"
+  requires="JQUERYPLUGIN::UI, JQUERYPLUGIN::FORM, JQUERYPLUGIN::JSONRPC, JQUERYPLUGIN::PNOTIFY, JQUERYPLUGIN::SELECT2"
+  text="<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/metacomment.js'></script><script type='text/javascript' src='%PUBURLPATH%/System/MoreFormfieldsPlugin/select2field.js'></script><script type='text/javascript'>
+	var prevAllowInteraction = $.ui.dialog.prototype._allowInteraction;
+	$.ui.dialog.prototype._allowInteraction = function(event) {
+		if ($(event.target).closest('.select2-container--open').length) { return true; }
+		return prevAllowInteraction.apply(this, arguments);
+	};
+  </script>"
 }%<!-- -->%TMPL:END%
 
 %{ ################################################################################ 
@@ -280,7 +286,7 @@
     <input type="hidden" name="t" value="%GMTIME{"$epoch"}%" />
     <div class="foswikiFormStep">
       %MAKETEXT{"Who do you want to notify about this comment?"}%
-      <input type="text" class="%IF{"defined USERAUTOCOMPLETE" then="jqUIAutocomplete {source:'$percentUSERAUTOCOMPLETE$percent'}"}%" name="who" value="" />%BR%
+      %RENDERFOREDIT{fields="User" form="System.MetaCommentDummyForm" User_value="" User_size="50" User_type="user+multi" User_name="who"}%%BR%
       <span class="foswikiSallish foswikiGrayText">%MAKETEXT{"Please note, that people who have already been notified will not be notified again."}%</span>
     </div>
     <div class="foswikiFormStep foswikiLast">
