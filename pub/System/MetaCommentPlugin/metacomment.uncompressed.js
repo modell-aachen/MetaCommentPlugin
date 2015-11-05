@@ -97,7 +97,7 @@ jQuery(function($) {
           rev = $form.find("input[name='ref']").val(),
           $("#cmtReplyComment").dialog("close");
           $.blockUI({
-            message:"<h1>Submitting comment ...</h1>",
+            message:"<h1>" + jsi18n.get('MetaCommentPlugin', 'Submitting comment ...') + "</h1>",
             fadeIn: 0,
             fadeOut: 0
           });
@@ -170,7 +170,7 @@ jQuery(function($) {
           $errorContainer = $this.find("#comment"+id.replace(/\./g, '\\\\.')).parent();
           $("#cmtUpdateComment").dialog("close");
           $.blockUI({
-            message:"<h1>Updating comment "+index+" ...</h1>",
+            message:"<h1>" + jsi18n.get('MetaCommentPlugin', "Updating comment [_1] ...", index) + "</h1>",
             fadeIn: 0,
             fadeOut: 0
           });
@@ -210,7 +210,7 @@ jQuery(function($) {
           $errorContainer = $this.find("#comment"+id).parent();
           $("#cmtConfirmDelete").dialog("close");
           $.blockUI({
-            message:"<h1>Deleting comment "+index+" ...</h1>",
+            message:"<h1>" + jsi18n.get('MetaCommentPlugin', 'Deleting comment [_1] ...', index) + "</h1>",
             fadeIn: 0,
             fadeOut: 0
           });
@@ -250,7 +250,7 @@ jQuery(function($) {
           $errorContainer = $this.find("#comment"+id.replace(/\./g, '\\\\.')).parent();
           $("#cmtConfirmApprove").dialog("close");
           $.blockUI({
-            message:"<h1>Approving comment "+index+" ...</h1>",
+            message:"<h1>" + jsi18n.get('MetaCommentPlugin', 'Approving comment [_1] ...', index) + "</h1>",
             fadeIn: 0,
             fadeOut: 0
           });
