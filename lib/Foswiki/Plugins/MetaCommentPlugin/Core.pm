@@ -197,7 +197,7 @@ sub jsonRpcSaveComment {
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Discussion closed")
     unless $isModerator || (Foswiki::Func::getPreferencesValue("COMMENTSTATE")||'open') ne 'closed';
 
-  my $author = $request->param('author') || $this->{loginName};
+  my $author = $this->{loginName};
   my $title = $request->param('title') || '';
   my $cmtText = $request->param('text') || '';
   my $ref = $request->param('ref') || '';
