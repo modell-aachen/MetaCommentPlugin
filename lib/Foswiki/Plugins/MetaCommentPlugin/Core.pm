@@ -777,6 +777,12 @@ sub formatComments {
     my $username = Foswiki::Func::getCanonicalUserID();
     my $read = ($comment->{read} && $comment->{read} =~ m/(?:^|,)\Q$username\E(?:,|$)/)?1:0;
 
+    # Substitute newline characters with %BR% on display.
+    my $displayNewLines = $Foswiki::cfg{MetaCommentPlugin}{DisplayNewLines} || 0;
+    if ( $displayNewLines ) {
+        $comment->{text} =~ s/(\r\n|\n|\r)/%BR%/g;
+    }
+
     my $line = expandVariables($params->{format},
       author=>$comment->{author},
       state=>$comment->{state},
