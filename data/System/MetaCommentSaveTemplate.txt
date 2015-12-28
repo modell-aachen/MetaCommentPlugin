@@ -2,10 +2,10 @@
 
 %TMPL:DEF{"ModacMailTo"}%%QUERY{"Responsible"}%%TMPL:END%
 
-%TMPL:DEF{"ModacMailSubject"}%%MAKETEXT{"[_1] saved a comment in [_2]" args="%MetaComment_author%,%WEB%.%TOPIC%"}%%TMPL:END%
+%TMPL:DEF{"ModacMailSubject"}%%MAKETEXT{"[_1] saved a comment in [_2]" args="%USERNAME%,%WEB%.%TOPIC%"}%%TMPL:END%
 
 %TMPL:DEF{"ModacMailContents"}%
-%MAKETEXT{"[_1] saved a comment in [_2]:" args="%MetaComment_author%,%SCRIPTURL{view}%/%WEB%/%TOPIC%"}%
+%MAKETEXT{"[_1] saved a comment in [_2]:" args="%USERNAME%,%SCRIPTURL{view}%/%WEB%/%TOPIC%"}%
 
 %MetaComment_title{default="%MAKETEXT{"(no title)"}%"}%
 
