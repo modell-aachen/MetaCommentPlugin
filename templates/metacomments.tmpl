@@ -286,7 +286,8 @@
     <input type="hidden" name="t" value="%GMTIME{"$epoch"}%" />
     <div class="foswikiFormStep">
       %MAKETEXT{"Who do you want to notify about this comment?"}%
-      %RENDERFOREDIT{fields="User" form="System.MetaCommentDummyForm" User_value="" User_size="50" User_type="user+multi" User_name="who"}%%BR%
+      <input name="_who_present" value="1" type="hidden" /><select class="foswikiSelect2Field foswikiUserField" style="width: 50ex;" multiple="multiple" name="who" data-url="%SCRIPTURL{view}%/%SYSTEMWEB%/MoreFormfieldsAjaxHelper?skin=text;contenttype=text/plain;section=select2::user" data-width="element" data-allow-clear="false"></select>
+      <!-- Unfortunately this does not work, because it requires change permissions: %<nop>RENDERFOREDIT{fields="User" form="System.MetaCommentDummyForm" User_value="" User_size="50" User_type="user+multi" User_name="who"}%-->%BR%
       <span class="foswikiSallish foswikiGrayText">%MAKETEXT{"Please note, that people who have already been notified will not be notified again."}%</span>
     </div>
     <div class="foswikiFormStep foswikiLast">
