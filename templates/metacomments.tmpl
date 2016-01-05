@@ -182,7 +182,7 @@
   %IF{"context canComment and $COMMENTSTATE!='closed' and not ('%TMPL:P{"comments::format"}%' =~ 'reverse|insidetab')" 
     then="<a href='#' class='cmtReply' title='%MAKETEXT{"Reply on this comment"}%'>%JQICON{"comment"}%</a>"
   }%<!-- -->
-  %IF{"($ismoderator or '$author'='%WIKINAME%') and $COMMENTSTATE!='closed'" 
+  %IF{"($ismoderator or '$author'='%WIKINAME%' or '$author'='%RENDERUSER{format="$cUID"}%') and $COMMENTSTATE!='closed'"
     then="<a href='#' class='cmtEdit' title='%MAKETEXT{"Edit this comment"}%'>%JQICON{"pencil"}%</a>"
   }%<!-- --> 
   %IF{"$COMMENTSTATE!='closed' and context authenticated"
@@ -191,7 +191,7 @@
   %IF{"$COMMENTMODERATION='on' and $ismoderator and '$state'=~'\bunapproved\b'"
     then="<a href='#' class='cmtApprove' title='%MAKETEXT{"Approve this comment"}%'>%JQICON{"medal_gold_1"}%</a>"
   }%<!-- -->
-  %IF{"($ismoderator or '$author'='%WIKINAME%') and $COMMENTSTATE!='closed'" 
+  %IF{"($ismoderator or '$author'='%WIKINAME%' or '$author'='%RENDERUSER{format="$cUID"}%') and $COMMENTSTATE!='closed'"
     then="<a href='#' class='cmtDelete' title='%MAKETEXT{"Delete this comment"}%'>%JQICON{"bin"}%</a>"
   }%<!-- -->
 </div>
@@ -286,7 +286,7 @@
     <input type="hidden" name="t" value="%GMTIME{"$epoch"}%" />
     <div class="foswikiFormStep">
       %MAKETEXT{"Who do you want to notify about this comment?"}%
-      %RENDERFOREDIT{fields="User" form="System.MetaCommentDummyForm" User_value="" User_size="50" User_type="user+multi" User_name="who"}%%BR%
+      %RENDERFORDISPLAY{format="$edit" fields="User" form="System.MetaCommentDummyForm" User_value="" User_size="50" User_type="user+multi" User_name="who"}%%BR%
       <span class="foswikiSallish foswikiGrayText">%MAKETEXT{"Please note, that people who have already been notified will not be notified again."}%</span>
     </div>
     <div class="foswikiFormStep foswikiLast">
