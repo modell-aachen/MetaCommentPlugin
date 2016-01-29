@@ -45,14 +45,8 @@ sub new {
   $this->{anonCommenting} = 0 unless defined $this->{anonCommenting};
 
   my $context = Foswiki::Func::getContext();
-  my $canComment = 0;
-  $canComment = 1 if
-    Foswiki::Func::checkAccessPermission('COMMENT', $this->{loginName}, undef, $this->{baseTopic}, $this->{baseWeb}) ||
-    Foswiki::Func::checkAccessPermission('CHANGE', $this->{loginName}, undef, $this->{baseTopic}, $this->{baseWeb});
-
-  $canComment = 0 if Foswiki::Func::isGuest() && !$this->{anonCommenting};
+  my $canComment = _canComment($this);
   $context->{canComment} = 1 if $canComment; # set a context flag
-    
 
   return bless($this, $class);
 }
@@ -187,9 +181,7 @@ sub jsonRpcSaveComment {
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     unless Foswiki::Func::checkAccessPermission("VIEW", $this->{loginName}, undef, $topic, $web);
 
-  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission('COMMENT', $this->{loginName}, undef, $topic, $web) ||
-           Foswiki::Func::checkAccessPermission('CHANGE', $this->{loginName}, undef, $topic, $web);
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied") unless $this->_canComment();
 
   my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
   my $isModerator = $this->isModerator($web, $topic, $meta);
@@ -964,6 +956,26 @@ $doc->add_fields('catchall' => $title);
       $indexer->log("ERROR: ".$e->{-text});
     };
   }
+}
+
+##############################################################################
+sub _canComment {
+  my ($this) = @_;
+
+  my $canComment = 0;
+  if($Foswiki::cfg{MetaCommentPlugin}{AlternativeACLCheck}) {
+    $canComment = 1 if Foswiki::Func::isTrue(
+        Foswiki::Func::expandCommonVariables($Foswiki::cfg{MetaCommentPlugin}{AlternativeACLCheck})
+    );
+  } else {
+    $canComment = 1 if
+      Foswiki::Func::checkAccessPermission('COMMENT', $this->{loginName}, undef, $this->{baseTopic}, $this->{baseWeb}) ||
+      Foswiki::Func::checkAccessPermission('CHANGE', $this->{loginName}, undef, $this->{baseTopic}, $this->{baseWeb});
+  }
+
+  $canComment = 0 if Foswiki::Func::isGuest() && !$this->{anonCommenting};
+
+  return $canComment;
 }
 
 1;
