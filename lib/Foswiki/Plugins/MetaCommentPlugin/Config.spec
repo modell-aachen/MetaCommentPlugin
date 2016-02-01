@@ -10,7 +10,7 @@ $Foswiki::cfg{MetaCommentPlugin}{AnonymousCommenting} = 0;
 $Foswiki::cfg{MetaCommentPlugin}{DisplayNewLines} = 0;
 
 # **STRING**
-# Set this to an alternative ACL check (TML) or to 0 or an empty string for the default check.<br/>Recommended setting for KVPPlugin:<em>%<nop>WORKFLOWALLOWS{"comment" emptyIs="0"}%</em>
+# Set this to an alternative ACL check (TML) or to 0 or an empty string for the default check.<br/>Recommended setting for KVPPlugin:<em>%<nop>WORKFLOWALLOWS{"allowcomment" emptyIs="0"}%</em>
 $Foswiki::cfg{MetaCommentPlugin}{AlternativeACLCheck} = '';
 
 1;
