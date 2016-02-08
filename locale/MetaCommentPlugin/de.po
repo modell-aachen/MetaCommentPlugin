@@ -181,7 +181,7 @@ msgstr "Diesen Kommentar beantworten"
 
 #: templates/metacomments.tmpl
 msgid "Sorry, commenting not allowed."
-msgstr ""
+msgstr "Leider haben Sie nicht die Rechte, um zu kommentieren."
 
 #: templates/metacomments.tmpl
 msgid "Submit"
