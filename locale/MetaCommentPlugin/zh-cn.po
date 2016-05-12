@@ -4,14 +4,16 @@ msgstr ""
 "Project-Id-Version: Foswiki $Id\n"
 "Report-Msgid-Bugs-To: osthold@modell-aachen.de\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2010-11-09 08:01+0200\n"
-"Language-Team: Modell Aachen\n"
-"Language: zh_CN\n"
+"PO-Revision-Date: 2016-05-12 13:24+0200\n"
+"Last-Translator: Modell Aachen <access@modell-aachen.de>\n"
+"Language-Team: Simplified Chinese <http://translate.modell-"
+"aachen.de/projects/metacommentplugin/releasenew-york/zh_CN/>\n"
+"Language: zh-cn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.0.5\n"
+"X-Generator: Weblate 1.9\n"
 "X-Poedit-Country: Taiwan\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
@@ -21,51 +23,51 @@ msgstr "%1评论"
 
 #: data/System/MetaCommentDeleteTemplate.txt
 msgid "%1 deleted a comment in %2"
-msgstr ""
+msgstr "%1 删除了 %2处的意见。"
 
 #: data/System/MetaCommentSaveTemplate.txt
 msgid "%1 saved a comment in %2"
-msgstr ""
+msgstr "%1保存了 %2处的意见。"
 
 #: data/System/MetaCommentSaveTemplate.txt
 msgid "%1 saved a comment in %2:"
-msgstr ""
+msgstr "%1保存了 %2处的意见:"
 
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "%1 updated a comment in %2"
-msgstr ""
+msgstr "%1保存了 %2处的意见:"
 
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "%1 updated a comment in %2:"
-msgstr ""
+msgstr "%1保存了 %2处的意见:"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 msgid "%1 wants to notify you about a comment in %2"
-msgstr ""
+msgstr "%1请您注意在%2处的意见"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 msgid "%1 wants to notify you about a comment in %2:"
-msgstr ""
+msgstr "%1请您注意在%2处的意见:"
 
 #: data/System/MetaCommentDeleteTemplate.txt
 msgid "(No text)"
-msgstr ""
+msgstr "(无内容)"
 
 #: data/System/MetaCommentDeleteTemplate.txt
 msgid "(No title)"
-msgstr ""
+msgstr "(无标题)"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 #: data/System/MetaCommentSaveTemplate.txt
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "(no text)"
-msgstr ""
+msgstr "(无内容)"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 #: data/System/MetaCommentSaveTemplate.txt
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "(no title)"
-msgstr ""
+msgstr "(无标题)"
 
 #: templates/metacomments.tmpl
 msgid "Add a comment"
@@ -93,7 +95,7 @@ msgstr "你是否确认删除2%在3%上的评论1%?"
 
 #: templates/metacomments.tmpl
 msgid "Are you sure that you want to notify comment %1 posted by %2 on %3?"
-msgstr ""
+msgstr "您确定要通知您，当由 %2 在 %3上发布的 意见%1的时候?"
 
 #: templates/metacomments.tmpl
 msgid "Cancel"
@@ -113,7 +115,7 @@ msgstr "删除此条评论"
 
 #: templates/metacomments.tmpl
 msgid "Don't notify anyone"
-msgstr ""
+msgstr "不通知任何人"
 
 #: templates/metacomments.tmpl
 msgid "Edit comment"
@@ -125,7 +127,7 @@ msgstr "编辑此条评论"
 
 #: templates/metacomments.tmpl
 msgid "Mark as read"
-msgstr ""
+msgstr "标注为已读"
 
 #: templates/metacomments.tmpl
 msgid "No, thanks"
@@ -133,15 +135,15 @@ msgstr "不，谢谢"
 
 #: templates/metacomments.tmpl
 msgid "Notify comment?"
-msgstr ""
+msgstr "通知意见?"
 
 #: templates/metacomments.tmpl
 msgid "Notify these people"
-msgstr ""
+msgstr "通知以下人员"
 
 #: templates/metacomments.tmpl
 msgid "Notify this comment"
-msgstr ""
+msgstr "请注意该意见"
 
 #: templates/metacomments.tmpl
 msgid "OK"
@@ -161,7 +163,7 @@ msgstr "请 [[%1][登陆]置评。"
 
 #: templates/metacomments.tmpl
 msgid "Please note, that people who have already been notified will not be notified again."
-msgstr ""
+msgstr "请注意，已经收到通知的人将不会再次收到通知。"
 
 #: data/System/MetaCommentPlugin.txt
 msgid "RSS comments feed for the %1 web"
@@ -189,7 +191,7 @@ msgstr "提交"
 
 #: templates/metacomments.tmpl
 msgid "Who do you want to notify about this comment?"
-msgstr ""
+msgstr "关于该意见您想通知谁?"
 
 #: templates/metacomments.tmpl
 msgid "Yes, approve"
