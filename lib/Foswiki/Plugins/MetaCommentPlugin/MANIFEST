@@ -11,6 +11,7 @@ data/System/MetaCommentUpdateTemplate.txt 0664
 lib/Foswiki/Plugins/MetaCommentPlugin/Config.spec 0444
 lib/Foswiki/Plugins/MetaCommentPlugin/Core.pm 0444
 lib/Foswiki/Plugins/MetaCommentPlugin.pm 0444
+lib/Foswiki/Plugins/SafeWikiPlugin/Signatures/MetaCommentPlugin.pm 0444
 locale/MetaCommentPlugin/cs.po 0644
 locale/MetaCommentPlugin/de.po 0644
 locale/MetaCommentPlugin/fr.po 0644
