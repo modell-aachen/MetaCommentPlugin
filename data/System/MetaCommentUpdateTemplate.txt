@@ -11,3 +11,5 @@
 
 %MetaComment_text{default="%MAKETEXT{"(no text)"}%"}%
 %TMPL:END%
+
+%TMPL:DEF{"ModacMailFrom"}%%TMPL:P{"ModacNoReply"}%%TMPL:END%
