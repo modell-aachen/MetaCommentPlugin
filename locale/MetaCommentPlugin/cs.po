@@ -1,70 +1,70 @@
 #: templates/metacomments.tmpl
 msgid "%1 comments"
-msgstr ""
+msgstr "%1 Komentáře"
 
 #: data/System/MetaCommentDeleteTemplate.txt
 msgid "%1 deleted a comment in %2"
-msgstr ""
+msgstr "%1 vymazal komentář v %2 "
 
 #: data/System/MetaCommentSaveTemplate.txt
 msgid "%1 saved a comment in %2"
-msgstr ""
+msgstr "%1 uložil komentář v %2 "
 
 #: data/System/MetaCommentSaveTemplate.txt
 msgid "%1 saved a comment in %2:"
-msgstr ""
+msgstr "%1 uložil komentář v %2:"
 
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "%1 updated a comment in %2"
-msgstr ""
+msgstr "%1 aktualizoval komentář v %2 "
 
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "%1 updated a comment in %2:"
-msgstr ""
+msgstr "%1 aktualizoval komentář v %2:"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 msgid "%1 wants to notify you about a comment in %2"
-msgstr ""
+msgstr "%1 chce Vás informovat o komentáři v %2 "
 
 #: data/System/MetaCommentNotifyTemplate.txt
 msgid "%1 wants to notify you about a comment in %2:"
-msgstr ""
+msgstr "%1 chce Vás informovat o komentáři v %2:"
 
 #: data/System/MetaCommentDeleteTemplate.txt
 msgid "(No text)"
-msgstr ""
+msgstr "(bez textu)"
 
 #: data/System/MetaCommentDeleteTemplate.txt
 msgid "(No title)"
-msgstr ""
+msgstr "(bez titulu)"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 #: data/System/MetaCommentSaveTemplate.txt
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "(no text)"
-msgstr ""
+msgstr "(bez textu)"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 #: data/System/MetaCommentSaveTemplate.txt
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "(no title)"
-msgstr ""
+msgstr "(bez titulu)"
 
 #: templates/metacomments.tmpl
 msgid "Add a comment"
-msgstr ""
+msgstr "přidat komentář "
 
 #: templates/metacomments.tmpl
 msgid "Add a comment to this topic"
-msgstr ""
+msgstr "přidat komentář k tomuto tématu"
 
 #: templates/metacomments.tmpl
 msgid "Approve comment?"
-msgstr ""
+msgstr "Komentář potvrdit?"
 
 #: templates/metacomments.tmpl
 msgid "Approve this comment"
-msgstr ""
+msgstr "Potvrdit tento komentář "
 
 #: templates/metacomments.tmpl
 msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
@@ -80,59 +80,59 @@ msgstr ""
 
 #: templates/metacomments.tmpl
 msgid "Cancel"
-msgstr ""
+msgstr "Storno"
 
 #: templates/metacommentsrss.tmpl
 msgid "Comments"
-msgstr ""
+msgstr "Komentáře"
 
 #: templates/metacomments.tmpl
 msgid "Delete comment?"
-msgstr ""
+msgstr "Komentář vymazat?"
 
 #: templates/metacomments.tmpl
 msgid "Delete this comment"
-msgstr ""
+msgstr "Vymazat tento komentář "
 
 #: templates/metacomments.tmpl
 msgid "Don't notify anyone"
-msgstr ""
+msgstr "Nikomu podat zprávu."
 
 #: templates/metacomments.tmpl
 msgid "Edit comment"
-msgstr ""
+msgstr "Komentář zpracovat"
 
 #: templates/metacomments.tmpl
 msgid "Edit this comment"
-msgstr ""
+msgstr "Zpracovat tento komentář "
 
 #: templates/metacomments.tmpl
 msgid "Mark as read"
-msgstr ""
+msgstr "označit jako přečtený"
 
 #: templates/metacomments.tmpl
 msgid "No, thanks"
-msgstr ""
+msgstr "Ne, děkuji"
 
 #: templates/metacomments.tmpl
 msgid "Notify comment?"
-msgstr ""
+msgstr "Komentář hlásit?"
 
 #: templates/metacomments.tmpl
 msgid "Notify these people"
-msgstr ""
+msgstr "Tyto lidi informovat"
 
 #: templates/metacomments.tmpl
 msgid "Notify this comment"
-msgstr ""
+msgstr "Hlásit tento komentář "
 
 #: templates/metacomments.tmpl
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: templates/metacomments.tmpl
 msgid "One comment"
-msgstr ""
+msgstr "Komentář "
 
 #: templates/metacomments.tmpl
 msgid "Please [[%1][login]] or [[%2][register]] to comment."
@@ -145,47 +145,49 @@ msgstr ""
 #: templates/metacomments.tmpl
 msgid "Please note, that people who have already been notified will not be notified again."
 msgstr ""
+"Dbejte na to, že osoby, kterým již byla podána zprávy, nelze ještě jednou "
+"informovat."
 
 #: data/System/MetaCommentPlugin.txt
 msgid "RSS comments feed for the %1 web"
-msgstr ""
+msgstr "RSS komentáře feed pro %1 web"
 
 #: templates/metacomments.tmpl
 msgid "RSS feed of the comments on this topic"
-msgstr ""
+msgstr "RSS feed komentářů pro toto téma"
 
 #: templates/metacomments.tmpl
 msgid "Reply on comment"
-msgstr ""
+msgstr "Odpovědět na komentář "
 
 #: templates/metacomments.tmpl
 msgid "Reply on this comment"
-msgstr ""
+msgstr "Na tento komentář odpovědět"
 
 #: templates/metacomments.tmpl
 msgid "Sorry, commenting not allowed."
-msgstr ""
+msgstr "Promiňte, komentování není dovoleno."
 
 #: templates/metacomments.tmpl
 msgid "Submit"
-msgstr ""
+msgstr "Odeslat"
 
 #: templates/metacomments.tmpl
 msgid "Who do you want to notify about this comment?"
-msgstr ""
+msgstr "Koho chcete tímto komentářem uvědomit?"
 
 #: templates/metacomments.tmpl
 msgid "Yes, approve"
-msgstr ""
+msgstr "Ano, potvrdit"
 
 #: templates/metacomments.tmpl
 msgid "Yes, delete"
-msgstr ""
+msgstr "Ano, vymazat"
 
 #: templates/metacomments.tmpl
 msgid "needs approval"
-msgstr ""
+msgstr "Je nutné potvrzení "
 
 #: templates/metacomments.tmpl
 msgid "permlink"
-msgstr ""
+msgstr "Permalink (trvalý odkaz)"
