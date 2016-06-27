@@ -20,11 +20,11 @@ msgstr "%1 Komentáře"
 
 #: data/System/MetaCommentDeleteTemplate.txt
 msgid "%1 deleted a comment in %2"
-msgstr "%1 vymazal komentář v %2 "
+msgstr "%1 vymazal komentář v %2"
 
 #: data/System/MetaCommentSaveTemplate.txt
 msgid "%1 saved a comment in %2"
-msgstr "%1 uložil komentář v %2 "
+msgstr "%1 uložil komentář v %2"
 
 #: data/System/MetaCommentSaveTemplate.txt
 msgid "%1 saved a comment in %2:"
