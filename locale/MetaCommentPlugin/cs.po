@@ -1,3 +1,19 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-06-27 15:51+0200\n"
+"PO-Revision-Date: 2016-06-27 15:52+0200\n"
+"Last-Translator: Modell Aachen <access@modell-aachen.de>\n"
+"Language-Team: Czech <http://translate.modell-"
+"aachen.de/projects/metacommentplugin/releasenew-york/cs/>\n"
+"Language: cs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Weblate 1.9\n"
+
 #: templates/metacomments.tmpl
 msgid "%1 comments"
 msgstr "%1 Komentáře"
@@ -69,14 +85,16 @@ msgstr "Potvrdit tento komentář "
 #: templates/metacomments.tmpl
 msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
 msgstr ""
+"Jste si jist/á, že chcete potvrdit komentář %1, který %2 zveřejnil na %3?"
 
 #: templates/metacomments.tmpl
 msgid "Are you sure that you want to delete comment %1 posted by %2 on %3?"
 msgstr ""
+"Jste si jist/á, že chcete vymazat komentář %1, který %2 zveřejnil na %3?"
 
 #: templates/metacomments.tmpl
 msgid "Are you sure that you want to notify comment %1 posted by %2 on %3?"
-msgstr ""
+msgstr "Jste si jist/á, že chcete hlásit komentář %1, který %2 zveřejnil na %3?"
 
 #: templates/metacomments.tmpl
 msgid "Cancel"
@@ -137,10 +155,12 @@ msgstr "Komentář "
 #: templates/metacomments.tmpl
 msgid "Please [[%1][login]] or [[%2][register]] to comment."
 msgstr ""
+"Prosím [[%1][přihlaste se]] nebo [[%2][registrujte se]], abyste mohl/a  "
+"komentovat."
 
 #: templates/metacomments.tmpl
 msgid "Please [[%1][login]] to comment."
-msgstr ""
+msgstr "Prosím [[%1][přihlaste se]], abyste mohl/a  komentovat."
 
 #: templates/metacomments.tmpl
 msgid "Please note, that people who have already been notified will not be notified again."
