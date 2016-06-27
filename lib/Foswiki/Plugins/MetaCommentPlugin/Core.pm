@@ -68,7 +68,7 @@ sub jsonRpcReadComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $web, $topic);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
 
   my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
 
@@ -113,7 +113,7 @@ sub jsonRpcNotifyComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $web, $topic);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
 
   my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
 
@@ -158,7 +158,7 @@ sub jsonRpcGetComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $web, $topic);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
 
   my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
 
@@ -185,7 +185,7 @@ sub jsonRpcSaveComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $web, $topic);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     unless Foswiki::Func::checkAccessPermission('COMMENT', $this->{wikiName}, undef, $topic, $web) ||
@@ -285,7 +285,7 @@ sub jsonRpcApproveComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $web, $topic);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     unless Foswiki::Func::checkAccessPermission('CHANGE', $this->{wikiName}, undef, $topic, $web);
@@ -324,7 +324,7 @@ sub jsonRpcUpdateComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $web, $topic);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     unless Foswiki::Func::checkAccessPermission('COMMENT', $this->{wikiName}, undef, $topic, $web) ||
@@ -412,7 +412,7 @@ sub jsonRpcDeleteComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $web, $topic);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     unless Foswiki::Func::checkAccessPermission('COMMENT', $this->{wikiName}, undef, $topic, $web) ||
