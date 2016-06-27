@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-06-27 15:51+0200\n"
-"PO-Revision-Date: 2016-06-27 15:52+0200\n"
+"PO-Revision-Date: 2016-06-27 15:54+0200\n"
 "Last-Translator: Modell Aachen <access@modell-aachen.de>\n"
 "Language-Team: Czech <http://translate.modell-"
 "aachen.de/projects/metacommentplugin/releasenew-york/cs/>\n"
@@ -32,7 +32,7 @@ msgstr "%1 uložil komentář v %2:"
 
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "%1 updated a comment in %2"
-msgstr "%1 aktualizoval komentář v %2 "
+msgstr "%1 aktualizoval komentář v %2"
 
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "%1 updated a comment in %2:"
@@ -40,7 +40,7 @@ msgstr "%1 aktualizoval komentář v %2:"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 msgid "%1 wants to notify you about a comment in %2"
-msgstr "%1 chce Vás informovat o komentáři v %2 "
+msgstr "%1 chce Vás informovat o komentáři v %2"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 msgid "%1 wants to notify you about a comment in %2:"
@@ -68,7 +68,7 @@ msgstr "(bez titulu)"
 
 #: templates/metacomments.tmpl
 msgid "Add a comment"
-msgstr "přidat komentář "
+msgstr "přidat komentář"
 
 #: templates/metacomments.tmpl
 msgid "Add a comment to this topic"
@@ -80,7 +80,7 @@ msgstr "Komentář potvrdit?"
 
 #: templates/metacomments.tmpl
 msgid "Approve this comment"
-msgstr "Potvrdit tento komentář "
+msgstr "Potvrdit tento komentář"
 
 #: templates/metacomments.tmpl
 msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
@@ -110,11 +110,11 @@ msgstr "Komentář vymazat?"
 
 #: templates/metacomments.tmpl
 msgid "Delete this comment"
-msgstr "Vymazat tento komentář "
+msgstr "Vymazat tento komentář"
 
 #: templates/metacomments.tmpl
 msgid "Don't notify anyone"
-msgstr "Nikomu podat zprávu."
+msgstr "Nikomu podat zprávu"
 
 #: templates/metacomments.tmpl
 msgid "Edit comment"
@@ -122,7 +122,7 @@ msgstr "Komentář zpracovat"
 
 #: templates/metacomments.tmpl
 msgid "Edit this comment"
-msgstr "Zpracovat tento komentář "
+msgstr "Zpracovat tento komentář"
 
 #: templates/metacomments.tmpl
 msgid "Mark as read"
@@ -142,7 +142,7 @@ msgstr "Tyto lidi informovat"
 
 #: templates/metacomments.tmpl
 msgid "Notify this comment"
-msgstr "Hlásit tento komentář "
+msgstr "Hlásit tento komentář"
 
 #: templates/metacomments.tmpl
 msgid "OK"
@@ -150,7 +150,7 @@ msgstr "OK"
 
 #: templates/metacomments.tmpl
 msgid "One comment"
-msgstr "Komentář "
+msgstr "Komentář"
 
 #: templates/metacomments.tmpl
 msgid "Please [[%1][login]] or [[%2][register]] to comment."
@@ -178,7 +178,7 @@ msgstr "RSS feed komentářů pro toto téma"
 
 #: templates/metacomments.tmpl
 msgid "Reply on comment"
-msgstr "Odpovědět na komentář "
+msgstr "Odpovědět na komentář"
 
 #: templates/metacomments.tmpl
 msgid "Reply on this comment"
@@ -206,7 +206,7 @@ msgstr "Ano, vymazat"
 
 #: templates/metacomments.tmpl
 msgid "needs approval"
-msgstr "Je nutné potvrzení "
+msgstr "Je nutné potvrzení"
 
 #: templates/metacomments.tmpl
 msgid "permlink"
