@@ -888,7 +888,7 @@ sub indexTopicHandler {
     $title = substr $comment->{text}, 0, 20 unless $title;
 
     my $collection = $Foswiki::cfg{SolrPlugin}{DefaultCollection} || "wiki";
-    my $language = $indexer->getContentLanguage($web, $topic);
+    my $language = $indexer->getContentLanguage($web, $topic) || 'en';
 
     my $state = $comment->{state}||'null';
 
