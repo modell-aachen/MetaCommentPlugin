@@ -207,6 +207,9 @@ msgstr "benötigt Freigabe"
 msgid "permlink"
 msgstr ""
 
+msgid "Comment:"
+msgstr "Kommentar:"
+
 #~ msgid "Reply to comment %1"
 #~ msgstr "Auf Kommentar %1 antworten"
 

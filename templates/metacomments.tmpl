@@ -1,6 +1,11 @@
 %{ ################################################################################ 
    metacomments - entry point
 }%
+
+%TMPL:DEF{"metacomments::commentmetajson"}%%{
+}%{comment_id:"$id", index:"$index", author:"%RENDERUSER{$author}%", date:"$date"}%{
+}%%TMPL:END%
+
 %TMPL:DEF{"metacomments"}%<!-- -->
 %CLEAR%
 <div id='comments' class='cmtComments cmtStyle_%IF{"defined COMMENTFORMAT" then="%COMMENTFORMAT%" else="%TMPL:P{"comments::format::default"}%"}% cmtState_%IF{"defined COMMENTSTATE" then="%COMMENTSTATE%" else="open"}% cmtModeration_%IF{"defined COMMENTMODERATION" then="%COMMENTMODERATION%" else="off"}%'>
@@ -143,7 +148,7 @@
 }%
 %TMPL:DEF{"comments::format::linear"}%<!-- -->
 <div class='cmtCommentContainer cmtComment$evenodd' id='cmtComment$index'>
-  <div id='comment$id' class='cmtComment $percntIF{"$COMMENTMODERATION='on' and '$state'=~'\bunapproved\b'" then="cmtCommentNeedsApproval"}$percnt {comment_id:"$id", index:"$index", author:"$percntRENDERUSER{$author}$percnt", date:"$date"}'>
+  <div id='comment$id' class='cmtComment $percntIF{"$COMMENTMODERATION='on' and '$state'=~'\bunapproved\b'" then="cmtCommentNeedsApproval"}$percnt %TMPL:P{"metacomments::commentmetajson"}%'>
     <h3 class='foswikiRight cmtCommentNr'>$index</h3>
     %TMPL:P{
       "comment::photo" 
@@ -207,7 +212,7 @@
 }%
 %TMPL:DEF{"comments::format::threaded"}%<!-- -->
 <div class='cmtCommentContainer cmtComment$evenodd $percntIF{"$COMMENTMODERATION='on' and '$state'=~'\bunapproved\b'" then="cmtCommentNeedsApproval"}$percnt' id='cmtComment$index'>
-  <div id='comment$id' class='cmtComment {comment_id:"$id", index:"$index", author:"$percntRENDERUSER{$author}$percnt", date:"$date"}'>
+  <div id='comment$id' class='cmtComment %TMPL:P{"metacomments::commentmetajson"}%'>
     <h3 class='foswikiRight cmtCommentNr'>$index</h3>
     %TMPL:P{
       "comment::photo" 
@@ -245,7 +250,7 @@
 }%
 %TMPL:DEF{"comments::format::reverse"}%<!-- -->
 <div class='cmtCommentContainer cmtComment$evenodd' id='cmtComment$index'>
-  <div id='comment$id' class='cmtComment {comment_id:"$id", index:"$index", author:"$percntRENDERUSER{$author}$percnt", date:"$date"}'>
+  <div id='comment$id' class='cmtComment %TMPL:P{"metacomments::commentmetajson"}%'>
     <h3 class='foswikiRight cmtCommentNr'>$index</h3>
     %TMPL:P{
       "comment::photo" 

@@ -12,4 +12,4 @@
 %MetaComment_text{default="%MAKETEXT{"(No text)"}%"}%
 %TMPL:END%
 
-%TMPL:DEF{"ModacMailFrom"}%%WIKIWEBMASTERNAME% <%WIKIWEBMASTER%>%TMPL:END%
+%TMPL:DEF{"ModacMailFrom"}%%TMPL:P{"ModacNoReply"}%%TMPL:END%
