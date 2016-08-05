@@ -124,11 +124,10 @@ sub jsonRpcNotifyComment {
     }
   }
 
-  _setPreferences($comment);
+  my $preferences = _getPreferences($comment);
+  $preferences->{MetaComment_TO_NOTIFY} = $request->param('who');
 
-  Foswiki::Func::setPreferencesValue('MetaComment_TO_NOTIFY', $request->param('who'));
-
-  Foswiki::Contrib::MailTemplatesContrib::sendMail('MetaCommentNotify', {SkipUsers => $skipUsers} );
+  Foswiki::Contrib::MailTemplatesContrib::sendMail('MetaCommentNotify', {SkipUsers => $skipUsers, GenerateInAdvance => 1}, $preferences, 1 );
 
   $comment->{notified} = join(',', keys %$skipUsers);
   $meta->putKeyed(
@@ -228,7 +227,7 @@ sub jsonRpcSaveComment {
     $comment
   );
 
-  _notify($meta, $comment, 'MetaCommentSave');
+  _notify($meta, $comment, 'MetaCommentSave', {});
 
   Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, forcenewrevision=>1}) unless DRY;
   writeEvent("comment", "state=($state) title=".($title||'').' text='.substr($cmtText, 0, 200)); # SMELL: does not objey approval state
@@ -237,11 +236,12 @@ sub jsonRpcSaveComment {
 }
 
 sub _notify {
-  my ($meta, $comment, $template) = @_;
+  my ($meta, $comment, $template, $preferences) = @_;
 
-  _setPreferences($comment);
+  $preferences = {%$preferences, %{_getPreferences($comment)}};
+
   my $notifiedUsers = {};
-  Foswiki::Contrib::MailTemplatesContrib::sendMail($template, {SkipUsers => $notifiedUsers} );
+  Foswiki::Contrib::MailTemplatesContrib::sendMail($template, {SkipUsers => $notifiedUsers, GenerateInAdvance => 1}, $preferences, 1 );
 
   $comment->{notified} = join(',', keys %$notifiedUsers);
   $meta->putKeyed(
@@ -374,10 +374,7 @@ sub jsonRpcUpdateComment {
   );
 
   # This has to come from the old one
-  Foswiki::Func::setPreferencesValue('MetaComment_notified', $comment->{notified} || '');
-  Foswiki::Func::setPreferencesValue('MetaComment_read', $comment->{read} || '');
-
-  _notify($meta, $newComment, 'MetaCommentUpdate');
+  _notify($meta, $newComment, 'MetaCommentUpdate', {MetaComment_notified => ($comment->{notified} || ''), MetaComment_read => ( $comment->{read} || '')});
 
   Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1}) unless DRY;
   writeEvent("commentupdate", "state=($state) title=".($title||'')." text=".substr($cmtText, 0, 200)); 
@@ -385,12 +382,15 @@ sub jsonRpcUpdateComment {
   return;
 }
 
-sub _setPreferences {
+sub _getPreferences {
     my ($comment) = @_;
 
+    my $preferences = {};
+
     foreach my $key ( keys %$comment ) {
-        Foswiki::Func::setPreferencesValue("MetaComment_$key", $comment->{$key}) if $comment->{$key} ne '';
+        $preferences->{"MetaComment_$key"} = $comment->{$key} if $comment->{$key} ne '';
     }
+    return $preferences;
 }
 
 ##############################################################################
@@ -442,8 +442,9 @@ sub jsonRpcDeleteComment {
 
   Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1}) unless DRY;
   writeEvent("commentdelete", "state=($comment->{state}) title=".($comment->{title}||'')." text=".substr($comment->{text}, 0, 200)); 
-  _setPreferences($comment);
-  Foswiki::Contrib::MailTemplatesContrib::sendMail('MetaCommentDelete');
+
+  my $preferences = _getPreferences($comment);
+  Foswiki::Contrib::MailTemplatesContrib::sendMail('MetaCommentDelete', {}, $preferences, 1 );
 
   return;
 }
@@ -888,7 +889,7 @@ sub indexTopicHandler {
     $title = substr $comment->{text}, 0, 20 unless $title;
 
     my $collection = $Foswiki::cfg{SolrPlugin}{DefaultCollection} || "wiki";
-    my $language = $indexer->getContentLanguage($web, $topic);
+    my $language = $indexer->getContentLanguage($web, $topic) || 'en';
 
     my $state = $comment->{state}||'null';
 
