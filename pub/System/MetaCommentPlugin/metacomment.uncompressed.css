@@ -52,7 +52,7 @@ h3.cmtCommentNr {
 .ui-dialog .cmtAuthor,
 .ui-dialog .cmtCommentNr {
   font-weight:bold;
-  white-space:nowrap;
+  word-wrap: break-word;
 }
 .cmtControls {
   background-color:#fff;
