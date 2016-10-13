@@ -23,29 +23,33 @@ msgstr "%1 Kommentare"
 msgid "%1 deleted a comment in %2"
 msgstr "%1 hat einen Kommentar in %2 gelöscht"
 
+#: data/System/MetaCommentDeleteTemplate.txt
+msgid "%1 deleted a comment in %2 (%3)"
+msgstr "%1 hat einen Kommentar in %2 (%3) gelöscht"
+
 #: data/System/MetaCommentSaveTemplate.txt
 msgid "%1 saved a comment in %2"
 msgstr "%1 hat einen Kommentar in %2 gespeichert"
 
 #: data/System/MetaCommentSaveTemplate.txt
-msgid "%1 saved a comment in %2:"
-msgstr "%1 hat einen Kommentar in %2 gespeichert:"
+msgid "%1 saved a comment in %2 (%3):"
+msgstr "%1 hat einen Kommentar in %2 (%3) gespeichert:"
 
 #: data/System/MetaCommentUpdateTemplate.txt
 msgid "%1 updated a comment in %2"
 msgstr "%1 hat einen Kommentar in %2 geändert"
 
 #: data/System/MetaCommentUpdateTemplate.txt
-msgid "%1 updated a comment in %2:"
-msgstr "%1 hat einen Kommentar in %2 geändert:"
+msgid "%1 updated a comment in %2 (%3):"
+msgstr "%1 hat einen Kommentar in %2 (%3) geändert:"
 
 #: data/System/MetaCommentNotifyTemplate.txt
 msgid "%1 wants to notify you about a comment in %2"
 msgstr "%1 möchte Ihnen einen Kommentar in %2 mitteilen"
 
 #: data/System/MetaCommentNotifyTemplate.txt
-msgid "%1 wants to notify you about a comment in %2:"
-msgstr "%1 möchte Ihnen einen Kommentar in %2 mitteilen:"
+msgid "%1 wants to notify you about a comment in %2 (%3):"
+msgstr "%1 möchte Ihnen einen Kommentar in %2 (%3) mitteilen:"
 
 #: data/System/MetaCommentDeleteTemplate.txt
 msgid "(No text)"
