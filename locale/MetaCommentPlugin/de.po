@@ -97,7 +97,7 @@ msgstr "Sind Sie sicher, dass Sie Kommentar %1 von %2 erstellt am %3 löschen wo
 
 #: templates/metacomments.tmpl
 msgid "Are you sure that you want to notify comment %1 posted by %2 on %3?"
-msgstr "Sind Sie sicher, dass Sie den Kommentar %1 von %2 in %3 mitteilen wollen?"
+msgstr "Sind Sie sicher, dass Sie den Kommentar %1 von %2 vom %3 mitteilen wollen?"
 
 #: templates/metacomments.tmpl
 msgid "Cancel"
