@@ -776,13 +776,17 @@ sub formatComments {
         $comment->{text} =~ s/(\r\n|\n|\r)/%BR%/g;
     }
 
+    my $date = Foswiki::Time::formatTime(($comment->{date}||0));
+    my $dstr = "%SUBST{text=\"$date\" pattern=\"([A-Za-z]{3})\" format=\"\$percntMAKETEXT{\$1}\$percnt\"}%";
+    my ($meta) = Foswiki::Func::readTopic($comment->{web}, $comment->{topic});
+    $date = $meta->expandMacros($dstr);
     my $line = expandVariables($params->{format},
       author=>$comment->{author},
       state=>$comment->{state},
       count=>$params->{count},
       ismoderator=>$params->{ismoderator},
       timestamp=>$comment->{date} || 0,
-      date=>Foswiki::Time::formatTime(($comment->{date}||0)),
+      date=>$date,
       modified=>Foswiki::Time::formatTime(($comment->{modified}||0)),
       isodate=> Foswiki::Func::formatTime($comment->{modified} || $comment->{date}, 'iso', 'gmtime'),
       evenodd=>($index % 2)?'Odd':'Even',
