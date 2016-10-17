@@ -2,10 +2,10 @@
 
 %TMPL:DEF{"ModacMailTo"}%%MetaComment_notified%%TMPL:END%
 
-%TMPL:DEF{"ModacMailSubject"}%%MAKETEXT{"[_1] deleted a comment in [_2]" arg1="%RENDERUSER{"%MetaComment_author%"}%" arg2="%WEB%" arg3="%TOPIC%"}%%TMPL:END%
+%TMPL:DEF{"ModacMailSubject"}%%MAKETEXT{"[_1] deleted a comment in [_2]" arg1="%RENDERUSER{"%MetaComment_author%"}%" arg2="%TOPICTITLE{"%WEB%.%TOPIC%"}%"}%%TMPL:END%
 
 %TMPL:DEF{"ModacMailContents"}%
-%MAKETEXT{"[_1] deleted a comment in [_2]" arg1="%RENDERUSER{"%MetaComment_author%"}%" arg2="%SCRIPTURL{view}%/%WEB%/%TOPIC%"}%:
+%MAKETEXT{"[_1] deleted a comment in [_2] ([_3])" arg1="%RENDERUSER{"%MetaComment_author%"}%" arg2="%TOPICTITLE{"%WEB%.%TOPIC%"}%" arg3="%SCRIPTURL{view}%/%WEB%/%TOPIC%"}%:
 
 %MetaComment_title{default="%MAKETEXT{"(No title)"}%"}%
 
