@@ -23,12 +23,16 @@ msgstr ""
 msgid "%1 deleted a comment in %2"
 msgstr ""
 
+#: data/System/MetaCommentDeleteTemplate.txt
+msgid "%1 deleted a comment in %2 (%3)"
+msgstr ""
+
 #: data/System/MetaCommentSaveTemplate.txt
 msgid "%1 saved a comment in %2"
 msgstr ""
 
 #: data/System/MetaCommentSaveTemplate.txt
-msgid "%1 saved a comment in %2:"
+msgid "%1 saved a comment in %2 (%3):"
 msgstr ""
 
 #: data/System/MetaCommentUpdateTemplate.txt
@@ -36,7 +40,7 @@ msgid "%1 updated a comment in %2"
 msgstr ""
 
 #: data/System/MetaCommentUpdateTemplate.txt
-msgid "%1 updated a comment in %2:"
+msgid "%1 updated a comment in %2 (%3):"
 msgstr ""
 
 #: data/System/MetaCommentNotifyTemplate.txt
@@ -44,7 +48,7 @@ msgid "%1 wants to notify you about a comment in %2"
 msgstr ""
 
 #: data/System/MetaCommentNotifyTemplate.txt
-msgid "%1 wants to notify you about a comment in %2:"
+msgid "%1 wants to notify you about a comment in %2 (%3):"
 msgstr ""
 
 #: data/System/MetaCommentDeleteTemplate.txt
