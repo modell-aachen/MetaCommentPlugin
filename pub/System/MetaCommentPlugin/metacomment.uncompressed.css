@@ -114,3 +114,8 @@ a.cmtPermLink,
 .cmtDenyMessage {
   margin:1.3846em 0em 0em;
 }
+
+.comment-text {
+  background:transparent; 
+  border-color:transparent;
+}
