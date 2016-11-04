@@ -118,4 +118,7 @@ a.cmtPermLink,
 .comment-text {
   background:transparent; 
   border-color:transparent;
+  font-family:arial, verdana, sans-serif;
+  font-size: 100%;
+  padding: 0px 0px 0px 0px;
 }
