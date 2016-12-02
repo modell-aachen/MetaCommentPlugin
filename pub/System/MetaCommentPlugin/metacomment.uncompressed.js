@@ -51,6 +51,7 @@ jQuery(function($) {
         );
       } else {
         $(".cmtDialog form").resetForm();
+        $('.cmtDialog form select.foswikiSelect2FieldInited[multiple]').val('').trigger('change'); // unfortunately select2 does not support clear
         callback.call();
       }
     };
