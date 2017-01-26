@@ -926,7 +926,7 @@ sub indexTopicHandler {
     );
 
     if($comment->{notified}) {
-      foreach my $notified ( split(',', $comment->{notified}) ) {
+      foreach my $notified ( split(',', $comment->{notified} =~ s#\s##gr) ) {
         $commentDoc->add_fields(
                 'notified_lst' => $notified
         );
@@ -934,7 +934,7 @@ sub indexTopicHandler {
     }
 
     if($comment->{read}) {
-      foreach my $read ( split(',', $comment->{read}) ) {
+      foreach my $read ( split(',', $comment->{read} =~ s#\s##gr) ) {
         $commentDoc->add_fields(
                 'read_lst' => $read
         );
@@ -947,8 +947,8 @@ sub indexTopicHandler {
       $commentDoc->add_fields(@aclFields) if @aclFields;
     }
 
-    
-$doc->add_fields('catchall' => $title);
+
+    $doc->add_fields('catchall' => $title);
     $doc->add_fields('catchall' => $comment->{text});
     $doc->add_fields('contributor' => $comment->{author});
 
