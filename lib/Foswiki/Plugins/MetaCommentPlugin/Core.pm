@@ -125,7 +125,12 @@ sub jsonRpcNotifyComment {
   }
 
   my $preferences = _getPreferences($comment);
-  $preferences->{MetaComment_TO_NOTIFY} = $request->param('who');
+  #If notification addresses more than one, parameter needs to be casted to array
+  if(ref($request->param('who')) eq 'ARRAY') {
+    $preferences->{MetaComment_TO_NOTIFY} = join(",", @{$request->param('who')});
+  } else {
+    $preferences->{MetaComment_TO_NOTIFY} = $request->param('who');
+  }
 
   Foswiki::Contrib::MailTemplatesContrib::sendMail('MetaCommentNotify', {SkipUsers => $skipUsers, GenerateInAdvance => 1}, $preferences, 1 );
 
