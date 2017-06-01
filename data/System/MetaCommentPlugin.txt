@@ -38,6 +38,25 @@ Each comment is stored into a =META:COMMENT= field of a topic with properties
 
 ---++ Configuring the comment system
 
+---+++ Using !MetaCommentPlugin with Q.wiki
+By default Q.wiki allows commenting on a page only if that page is workflow
+controlled.
+
+In order to allow placing comments on any topic in a given web you have to adjust
+that webs' !WebPreferences and do some minor adjustments to = {MetaCommentPlugin}{AlternativeACLCheck}=
+in =/bin/configure=.
+
+*Settings for !WebPreferences:*
+<verbatim>
+   * Set DISPLAYCOMMENTS = on
+   * Set ALLOWTOPICCOMMENT = *
+</verbatim>
+
+*{MetaCommentPlugin}{AlternativeACLCheck}:*
+<verbatim>
+$Foswiki::cfg{MetaCommentPlugin}{AlternativeACLCheck} = %WORKFLOWALLOWS{"allowcomment" emptyIs="$percentIF{\"$TOPIC allows 'comment'\" then=\"1\"}$percent"}%;
+</verbatim>
+
 ---+++ Using !MetaCommentPlugin on !NatSkin
 The easiest way to switch on commenting on a page is when using it together with Foswiki:Extensions/NatSkin.
 When opening the topic editor, there's a "Settings" tab that allows you to switch on and off commenting,
