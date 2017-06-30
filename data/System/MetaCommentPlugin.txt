@@ -31,12 +31,31 @@ Each comment is stored into a =META:COMMENT= field of a topic with properties
    * name: id of the comment, used in =ref= for threaded comments
    * author: !WikiName of the author of this comment
    * date: timestamp when this comment was created
-   * modified: timestamp when this comment was last modified 
+   * modified: timestamp when this comment was last modified
    * ref: name of another comment within the same thread this comment is a subcomment of
    * text: the comment text
    * title: title text of this comment
 
 ---++ Configuring the comment system
+
+---+++ Using !MetaCommentPlugin with Q.wiki
+By default Q.wiki allows commenting on a page only if that page is workflow
+controlled.
+
+In order to allow placing comments on any topic in a given web you have to adjust
+that webs' !WebPreferences and do some minor adjustments to = {MetaCommentPlugin}{AlternativeACLCheck}=
+in =/bin/configure=.
+
+*Settings for !WebPreferences:*
+<verbatim>
+   * Set DISPLAYCOMMENTS = on
+   * Set ALLOWTOPICCOMMENT = *
+</verbatim>
+
+*{MetaCommentPlugin}{AlternativeACLCheck}:*
+<verbatim>
+$Foswiki::cfg{MetaCommentPlugin}{AlternativeACLCheck} = %WORKFLOWALLOWS{"allowcomment" emptyIs="$percentIF{\"$TOPIC allows 'comment'\" then=\"1\"}$percent"}%;
+</verbatim>
 
 ---+++ Using !MetaCommentPlugin on !NatSkin
 The easiest way to switch on commenting on a page is when using it together with Foswiki:Extensions/NatSkin.
@@ -57,11 +76,11 @@ There are a couple of formats how comments are displayed on the topic:
 
 <verbatim>   * Set COMMENTFORMAT = threaded</verbatim>
 
-Other values: 
+Other values:
    * linear: list comments in linear order, i.e. there are no replies to comments directly
    * threaded (default): nested commenting; allows to reply on a reply
    * reverse: list comments in linear order in reverse twitter-like fashion
-   * insidetab: list comments inside a tab at the bottom of the page; 
+   * insidetab: list comments inside a tab at the bottom of the page;
      only available when used together with Foswiki:Extensions/TopicInteractionPlugin)
 
 A discussion can be either open or closed:
@@ -77,7 +96,7 @@ on all of the web.
 
 !MetaCommentPlugin separaters permission to comment on a topic from plain change access rights of a topic.
 That way you may restrict write access to a topic while still open it up for commenting to a wider audience.
-This is done by using a separate =COMMENT= access control list. 
+This is done by using a separate =COMMENT= access control list.
 
 Given the current topic is write restricted only
 allowing the original author to make changes, the following setting will permit commenting:
@@ -107,7 +126,7 @@ Anonymous commenting is disabled using the ={MetaCommentPlugin}{AnonymousComment
 This will protect your site from guests spamming your pages. When this flag is disabled, users will at least
 have to log in to be able to comment. Normal access control rules then still apply.
 
-Contrary to the normal Foswiki access control mechanism it does not suffice to set the ALLOW rules for a guest accordingly. 
+Contrary to the normal Foswiki access control mechanism it does not suffice to set the ALLOW rules for a guest accordingly.
 It is required to at least enable the ={MetaCommentPlugin}{AnonymousCommenting}= flag in your site configuration.
 Once enabled, you are still able to block anonymous commenting using the normal access control rules per web and/or topic.
 
@@ -130,7 +149,7 @@ role. So to configure moderators per topic use:
    * Set DENYTOPICMODERATE = <comma separated list of users and/or groups>
 </verbatim>
 
-Or use a per web configuration in the !WebPreferences using 
+Or use a per web configuration in the !WebPreferences using
 
 <verbatim>
    * Set ALLOWWEBMODERATE = <comma separated list of users and/or groups>
@@ -202,8 +221,8 @@ Example:
 Use this to render a list of all unapproved comments in a web:
 
 <verbatim class="tml">
-%METACOMMENTS{web="Sandbox" 
-  search="1" 
+%METACOMMENTS{web="Sandbox"
+  search="1"
   header="| *Comment* | *Topic* | *Comment* | *Author* | *Date* | $n"
   format="| [[$permlink][Comment$id]] | [[$web.$topic]] |$title $summary | <nobr>[[%USERSWEB%.$author]]</nobr> | <nobr>$date</nobr> |$n"
   footer="<span class='foswikiAlert'>$count</span>"
@@ -231,7 +250,7 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 
    * =THEWEB= specifies the web to search for comments, defaults to the current web
    * =WHERE= specifies a filter on topics while searching =THEWEB=, defaults to =1= (means: all topics)
-   * =LIMIT= limits the number of recent comments to be listed, defaults to =10= 
+   * =LIMIT= limits the number of recent comments to be listed, defaults to =10=
 
 <verbatim class="tml">
 %STARTSECTION{"webcomments"}%<a href='%SCRIPTURLPATH{"view"}%/%THEWEB{default="%BASEWEB%"}%/%BASETOPIC%?template=metacommentsrss;contenttype=text/xml;search=%WHERE{default="1"}%;limit=%LIMIT{default="10"}%' class='cmtRssFeed foswikiGrayText foswikiSmallish foswikiHideOnPrint' title='%MAKETEXT{"RSS comments feed for the [_1] web" args="%THEWEB{default="%BASEWEB%"}%"}%'>%JQICON{"feed"}% RSS</a>%ENDSECTION{"webcomments"}%
@@ -267,7 +286,7 @@ In order to send notification mails create a corresponding template for your ski
                          reject commenting when discussion is already closed; \
                          added example how to display all unapproved comments in a web; \
                          added docu how to render an rss feed of all comments in a web |
-|  13 Aug 2013: | 2.40 - disable anonymous commenting by default | 
+|  13 Aug 2013: | 2.40 - disable anonymous commenting by default |
 |  02 Jun 2013: | 2.32 - fixed reply-modal not closing after submit |
 |  23 May 2013: | 2.31 - fixed commenting using latest jquery/jquery-ui combo |
 |  14 Mar 2013: | 2.30 - fixed access rights on unapproved comments being index by solr |
