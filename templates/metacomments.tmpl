@@ -18,7 +18,7 @@
 }%<!-- -->
 %TMPL:P{"comments::list"}%<!-- -->%JQREQUIRE{"textboxlist"}%
 %IF{"not $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
-  then="%IF{"context canComment and not $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
+  then="%IF{"context canComment and not $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed' and not $USERNAME ingroup 'ReadOnlyGroup'" 
     then="$dollarpercntTMPL:P{\\"comments::add::default\\"}$dollarpercnt"
     else="$dollarpercntTMPL:P{\\"comments::add::denied\\"}$dollarpercnt"
   }%"
