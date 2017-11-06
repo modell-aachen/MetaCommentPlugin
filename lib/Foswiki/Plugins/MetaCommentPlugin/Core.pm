@@ -179,6 +179,9 @@ sub jsonRpcSaveComment {
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     if Foswiki::Func::isGuest() && !$this->{anonCommenting}; 
 
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
+    if Foswiki::Func::isGroupMember("ReadOnlyGroup",$this->{session}{user});
+
   throw Foswiki::Contrib::JsonRpcContrib::Error(404, "Topic $web.$topic does not exist") 
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
