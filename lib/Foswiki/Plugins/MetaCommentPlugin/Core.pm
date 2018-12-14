@@ -963,7 +963,6 @@ sub indexTopicHandler {
     # add the document to the index
     try {
       $indexer->add($commentDoc);
-      $indexer->commit();
     } catch Error::Simple with {
       my $e = shift;
       $indexer->log("ERROR: ".$e->{-text});
